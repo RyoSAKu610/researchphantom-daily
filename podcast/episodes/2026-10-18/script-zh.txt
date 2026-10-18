@@ -1,0 +1,5 @@
+你好，这里是 Phantomresearch Daily。今天是2026年10月18日，主题是「自动定理证明」。下面简短介绍三篇论文，不对结果作断言。引用原文英文摘要开头。
+第一篇论文：「Lean Graph Search for Formal Theorem Proving」。作者是Yihan Xu、Jia-Chen Gu、Junyi Zhang等。Retrieving relevant lemmas is crucial for formal theorem proving, enabling
+第二篇论文：「Learning Lean Feedback for Efficient Proof-Candidate Evaluation on GPUs」。作者是Lazar Milikic、Etienne Bamas、Emmanuel Abbe等。Training language models for formal theorem proving requires large numbers
+第三篇论文：「Do Theorem Provers Need Theorem-Proving Agents? mini-Lean-agent: A Coding-Agent Baseline for Lean」。作者是Tomas Ortega、Simon Park、Ayush Khaitan等。General-purpose coding agents use standard shell and file interactions,
+今天的话题是「自动定理证明」。每天更换主题，同一内容有日本語・English・中文・한국어版本，过往节目在网站上。详情请参阅各原论文。来源：arXiv，依各论文的许可使用。本音频由本地生成。论文编号：2610.22339、2610.21881、2610.17331。

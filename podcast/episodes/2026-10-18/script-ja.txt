@@ -1,0 +1,4 @@
+こんにちは、Phantomresearch Dailyです。2026年10月18日、今日のテーマは「定理の自動証明」です。論文を二本、短く紹介します。結果は断定せず、原文の英語抄録から冒頭を引用します。
+一本目、「Lean Graph Search for Formal Theorem Proving」。著者はYihan Xu、Jia-Chen Gu、Junyi Zhangほかです。Retrieving relevant lemmas is crucial for formal theorem proving, enabling provers to build
+二本目、「Learning Lean Feedback for Efficient Proof-Candidate Evaluation on GPUs」。著者はLazar Milikic、Etienne Bamas、Emmanuel Abbeほかです。Training language models for formal theorem proving requires large numbers of verifier
+今日は「定理の自動証明」でした。毎日テーマが変わります。日本語・English・中文・한국어でも配信しています。過去の回はサイトへ。詳細は各原論文でどうぞ。出典はarXiv、各論文のライセンスに従います。音声はローカル生成です。論文IDは2610.22339、2610.21881です。

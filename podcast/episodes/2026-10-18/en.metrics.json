@@ -1,0 +1,20 @@
+{
+  "provider": "edge-tts",
+  "model": "en-US-AndrewNeural",
+  "model_commit": null,
+  "language": "en",
+  "voice": "en-US-AndrewNeural",
+  "style_chars": 0,
+  "text_chars": 1296,
+  "durationSeconds": 98.064,
+  "bytes": 588764,
+  "sha256": "2647c0f8913ebab76118665c073af16165e57258dae036a7abd3661326ca4eab",
+  "peak": 0.82321,
+  "rms_dbfs": -18.56,
+  "clipped_fraction": 0.0,
+  "silent_fraction": 0.084,
+  "leading_silence_seconds": 0.0,
+  "trailing_silence_seconds": 0.5,
+  "longest_silence_seconds": 0.5,
+  "seconds_per_char": 0.076
+}

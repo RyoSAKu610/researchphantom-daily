@@ -1,0 +1,82 @@
+# Scheduled safety net: generate missing podcast episodes entirely on
+# GitHub-hosted runners (edge-tts only), commit + push the results, and let
+# the `deploy` workflow publish the site.
+#
+# 06:30 JST is the regular slot; the 06:37 run is a retry margin (a delayed
+# runner or a transient arXiv/API hiccup gets a second chance; it finds
+# everything generated, changes nothing and exits 0).
+#
+# No irodori/voicestudio servers exist on GitHub-hosted runners, so ALL
+# languages are forced to the edge-tts engine via PODCAST_TTS_MAP. This only
+# ever fills dates that are missing on main: the bot VM's daily.sh is the
+# primary generator with the real engines; daily.mjs is idempotent and skips
+# dates whose episode.json exists, so this workflow cannot overwrite
+# bot-generated audio. (The scheduled cron only fires on the default branch.)
+#
+# Pages deployment is intentionally NOT duplicated here: the push below
+# triggers .github/workflows/deploy.yml, which owns upload-pages-artifact +
+# deploy-pages. Fewer things can race.
+name: daily-catchup
+
+on:
+  schedule:
+    - cron: "30 21 * * *"   # 06:30 JST
+    - cron: "37 21 * * *"   # 06:37 JST (retry margin)
+  workflow_dispatch:
+
+permissions:
+  contents: write           # push the generated episodes
+
+concurrency:
+  group: daily-catchup
+  cancel-in-progress: false
+
+jobs:
+  catchup:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Tokyo
+      # daily.mjs defaults to PODCAST_TTS_ENGINE=qwen when unset, which is not
+      # available here (needs .venv-tts + model weights); be explicit.
+      PODCAST_TTS_ENGINE: edge
+      PODCAST_TTS_MAP: "ja:edge,en:edge,zh:edge,ko:edge"
+    steps:
+      - name: Checkout (fetch recent history for catchup context)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 30
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install edge-tts (pinned)
+        run: pip install "edge-tts==7.3.1"
+
+      - name: Generate missing episodes (edge TTS everywhere)
+        run: node scripts/podcast/daily.mjs --catchup
+        # note: daily.mjs also rebuilds podcast-site/ (not committed; the site
+        # workflow rebuilds it identically from the committed episodes).
+
+      - name: Commit and push generated episodes
+        run: |
+          if git diff --quiet HEAD -- && [ -z "$(git status --porcelain --untracked-files=all)" ]; then
+            echo "nothing to do; everything already generated"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && { echo "no staged changes"; exit 0; }
+          git commit -m "daily: $(TZ=Asia/Tokyo date +%F) generated (github runner catchup)"
+          # bot VM may have pushed concurrently; rebase and retry once
+          if ! git push origin HEAD; then
+            git pull --rebase origin HEAD || true
+            git push origin HEAD
+          fi

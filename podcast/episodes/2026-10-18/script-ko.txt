@@ -1,0 +1,4 @@
+안녕하세요, Phantomresearch Daily입니다. 2026년 10월 18일 방송입니다. 오늘의 주제는 "자동 정리 증명"입니다. 논문 두 편을 짧게 소개합니다. 결과를 단정하지 않고, 원문 초록 도입부를 인용합니다.
+첫 번째 논문: "Lean Graph Search for Formal Theorem Proving". 저자: Yihan Xu, Jia-Chen Gu, Junyi Zhang 외. Retrieving relevant lemmas is crucial for formal theorem
+두 번째 논문: "Learning Lean Feedback for Efficient Proof-Candidate Evaluation on GPUs". 저자: Lazar Milikic, Etienne Bamas, Emmanuel Abbe 외. Training language models for formal theorem proving requires
+오늘은 "자동 정리 증명"이었습니다. 주제는 매일 바뀝니다. 日本語, English, 中文, 한국어 버전도 있고, 지난 방송은 사이트에. 자세한 내용은 원문에서. 출처: arXiv, 라이선스는 각 논문을 따릅니다. 로컬에서 생성했습니다. 논문 번호: 2610.22339, 2610.21881.

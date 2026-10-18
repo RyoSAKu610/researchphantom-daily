@@ -1,0 +1,8 @@
+podcast-site/
+logs/
+*.log
+__pycache__/
+.venv-edge/
+.venv-tts/
+.DS_Store
+scripts/podcast/bot/refs/

@@ -1,0 +1,68 @@
+[
+  {
+    "arxivId": "1706.03762",
+    "title": "Attention Is All You Need",
+    "authors": ["Ashish Vaswani", "Noam Shazeer", "Niki Parmar", "Jakob Uszkoreit", "Llion Jones"],
+    "primaryCategory": "cs.CL",
+    "year": 2017,
+    "published": "2017-06-12",
+    "url": "https://arxiv.org/abs/1706.03762",
+    "pdfUrl": "https://arxiv.org/pdf/1706.03762",
+    "excerpt": "再帰や畳み込みを使わず、Attentionを中心に入力と出力の関係を学ぶTransformerを提案した論文。位置情報と複数のAttentionヘッドを組み合わせ、WMT 2014の英独・英仏の機械翻訳で、品質と学習の並列化を両立できることを示した。"
+  },
+  {
+    "arxivId": "1810.04805",
+    "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+    "authors": ["Jacob Devlin", "Ming-Wei Chang", "Kenton Lee", "Kristina Toutanova"],
+    "primaryCategory": "cs.CL",
+    "year": 2018,
+    "published": "2018-10-11",
+    "url": "https://arxiv.org/abs/1810.04805",
+    "pdfUrl": "https://arxiv.org/pdf/1810.04805",
+    "excerpt": "BERTは、左右両方の文脈を各層で利用するTransformerの言語表現を、ラベルなしの文章から事前学習する。単語の一部を予測する学習などを経て、タスクに応じた出力層を追加しモデル全体を微調整することで、質問応答や自然言語推論など11の課題で当時の最高性能を報告した。"
+  },
+  {
+    "arxivId": "2106.09685",
+    "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+    "authors": ["Edward J. Hu", "Yelong Shen", "Phillip Wallis", "Zeyuan Allen-Zhu", "Yuanzhi Li"],
+    "primaryCategory": "cs.CL",
+    "year": 2021,
+    "published": "2021-06-17",
+    "url": "https://arxiv.org/abs/2106.09685",
+    "pdfUrl": "https://arxiv.org/pdf/2106.09685",
+    "excerpt": "LoRAは事前学習済みの重みを固定し、重みの更新を低ランク行列の積として学ぶ手法。下流タスクで学習するパラメータと保存する差分を小さくする。"
+  },
+  {
+    "arxivId": "2006.11239",
+    "title": "Denoising Diffusion Probabilistic Models",
+    "authors": ["Jonathan Ho", "Ajay Jain", "Pieter Abbeel"],
+    "primaryCategory": "cs.LG",
+    "year": 2020,
+    "published": "2020-06-19",
+    "url": "https://arxiv.org/abs/2006.11239",
+    "pdfUrl": "https://arxiv.org/pdf/2006.11239",
+    "excerpt": "画像へ徐々にノイズを加える過程に対応して、ノイズを除く逆過程を学習する拡散確率モデルを研究した論文。ノイズ予測を使った学習とスコアマッチングの関係を示し、無条件のCIFAR-10やLSUNの画像生成で高いサンプル品質を報告した。"
+  },
+  {
+    "arxivId": "2103.00020",
+    "title": "Learning Transferable Visual Models From Natural Language Supervision",
+    "authors": ["Alec Radford", "Jong Wook Kim", "Chris Hallacy", "Aditya Ramesh", "Gabriel Goh"],
+    "primaryCategory": "cs.CV",
+    "year": 2021,
+    "published": "2021-02-26",
+    "url": "https://arxiv.org/abs/2103.00020",
+    "pdfUrl": "https://arxiv.org/pdf/2103.00020",
+    "excerpt": "CLIPは、インターネットから集めた4億組の画像とテキストの対応を学ぶ。画像と文章を比較できる表現にすることで、分類したい概念を自然言語で指定し、対象データセットで追加学習しないゼロショット転移を可能にする。"
+  },
+  {
+    "arxivId": "2005.11401",
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    "authors": ["Patrick Lewis", "Ethan Perez", "Aleksandra Piktus", "Fabio Petroni", "Vladimir Karpukhin"],
+    "primaryCategory": "cs.CL",
+    "year": 2020,
+    "published": "2020-05-22",
+    "url": "https://arxiv.org/abs/2005.11401",
+    "pdfUrl": "https://arxiv.org/pdf/2005.11401",
+    "excerpt": "RAGは、事前学習した文章生成モデルの内部知識と、Wikipediaの文書を検索する外部メモリを組み合わせる。検索文書を条件に回答を生成する二つの定式化を比較し、オープンドメイン質問応答や知識を要する文章生成で有効性を調べた。"
+  }
+]

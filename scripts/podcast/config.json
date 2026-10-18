@@ -1,0 +1,28 @@
+{
+  "title": "Phantomresearch Daily",
+  "subtitle": {
+    "ja": "毎日変わる研究テーマを、4言語で少しだけ。",
+    "en": "A different research topic every day, briefly, in four languages."
+  },
+  "siteBaseUrl": "http://127.0.0.1:4173/podcast",
+  "site": {
+    "baseUrl": "https://ryosaku610.github.io/researchphantom-daily"
+  },
+  "languages": ["ja", "en", "zh", "ko"],
+  "languageLabels": {
+    "ja": "日本語",
+    "en": "English",
+    "zh": "中文",
+    "ko": "한국어"
+  },
+  "maxPapers": 3,
+  "maxExcerptChars": {
+    "ja": 220,
+    "en": 300,
+    "zh": 180,
+    "ko": 200
+  },
+  "backfillDays": 3,
+  "episodeDir": "podcast/episodes",
+  "stateDir": "podcast/state"
+}

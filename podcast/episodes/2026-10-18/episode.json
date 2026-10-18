@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "date": "2026-10-18",
+  "topic": {
+    "id": "automated-theorem-proving",
+    "labels": {
+      "ja": "定理の自動証明",
+      "en": "Automated theorem proving",
+      "zh": "自动定理证明",
+      "ko": "자동 정리 증명"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-18T17:13:30+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.22339",
+      "title": "Lean Graph Search for Formal Theorem Proving",
+      "authors": [
+        "Yihan Xu",
+        "Jia-Chen Gu",
+        "Junyi Zhang",
+        "Di Wu",
+        "Haikang Deng",
+        "Po-Nien Kung",
+        "Kai-Wei Chang",
+        "Amit Sahai"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.22339",
+      "pdfUrl": "https://arxiv.org/pdf/2610.22339",
+      "excerpt": "Retrieving relevant lemmas is crucial for formal theorem proving, enabling provers to build machine-checkable proofs from established mathematical results."
+    },
+    {
+      "arxivId": "2610.21881",
+      "title": "Learning Lean Feedback for Efficient Proof-Candidate Evaluation on GPUs",
+      "authors": [
+        "Lazar Milikic",
+        "Etienne Bamas",
+        "Emmanuel Abbe",
+        "Viktor Kunčak"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.21881",
+      "pdfUrl": "https://arxiv.org/pdf/2610.21881",
+      "excerpt": "Training language models for formal theorem proving requires large numbers of verifier calls. Slow checks and timeouts often leave GPUs waiting and withhold rewards from potentially correct proofs."
+    },
+    {
+      "arxivId": "2610.17331",
+      "title": "Do Theorem Provers Need Theorem-Proving Agents? mini-Lean-agent: A Coding-Agent Baseline for Lean",
+      "authors": [
+        "Tomas Ortega",
+        "Simon Park",
+        "Ayush Khaitan",
+        "Liam Fowl",
+        "Alex Kontorovich",
+        "Sanjeev Arora"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-12",
+      "url": "https://arxiv.org/abs/2610.17331",
+      "pdfUrl": "https://arxiv.org/pdf/2610.17331",
+      "excerpt": "General-purpose coding agents use standard shell and file interactions, yet formal theorem-proving agents often rely on specialized, ad-hoc tooling."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 90.936,
+      "bytes": 545996,
+      "sha256": "e7a4a9dc3166b3dc995400d9165a9d60f30856a9a152a919b9618cd5825d2e7a",
+      "voice": "ja-JP-NanamiNeural",
+      "error": null
+    },
+    "en": {
+      "label": "English",
+      "status": "ok",
+      "text": "script-en.txt",
+      "audio": "en.mp3",
+      "durationSeconds": 98.064,
+      "bytes": 588764,
+      "sha256": "2647c0f8913ebab76118665c073af16165e57258dae036a7abd3661326ca4eab",
+      "voice": "en-US-AndrewNeural",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 92.904,
+      "bytes": 557804,
+      "sha256": "7f5737cadbee425462903dc178b38f215a9dd944b1ad755c9108d79d0ad7de12",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "error": null
+    },
+    "ko": {
+      "label": "한국어",
+      "status": "ok",
+      "text": "script-ko.txt",
+      "audio": "ko.mp3",
+      "durationSeconds": 77.568,
+      "bytes": 465788,
+      "sha256": "81ef3a44167ec38150653a8638c8e95721f7f4833801a429dd0ff44407a235f4",
+      "voice": "ko-KR-SunHiNeural",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"theorem proving\"",
+    "audio brief shortened to stay within the ~60-110s target for: ja, ko (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=edge, en=edge, zh=edge, ko=edge"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "lastRunAt": "2026-10-18T17:13:31+09:00",
+  "results": [
+    {
+      "date": "2026-10-18",
+      "ok": true,
+      "audioLanguages": [
+        "ja",
+        "en",
+        "zh",
+        "ko"
+      ]
+    }
+  ],
+  "siteBuiltAt": "2026-10-18T17:13:31+09:00"
+}

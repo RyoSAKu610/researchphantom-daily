@@ -1,0 +1,114 @@
+{
+  "provider": "local-qwen3-tts-customvoice-mlx",
+  "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-6bit",
+  "sampleRate": 24000,
+  "bitrate": "128k",
+  "codec": "libmp3lame",
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "speaker": "ono_anna",
+      "language": "Japanese",
+      "style": "落ち着いた研究ブリーフの朗読。明瞭で自然な間をとり、数字と専門用語ははっきり、英語のタイトルは区別して読む。",
+      "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+      "charsPerSecond": [3.0, 14.0]
+    },
+    "en": {
+      "label": "English",
+      "speaker": "aiden",
+      "language": "English",
+      "style": "Calm research-brief narrator. Clear articulation, natural pacing, steady volume.",
+      "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+      "charsPerSecond": [6.0, 30.0]
+    },
+    "zh": {
+      "label": "中文",
+      "speaker": "serena",
+      "language": "Chinese",
+      "style": "平静的研究简报旁白。发音清晰，自然停顿，数字与专业术语读清楚。",
+      "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+      "charsPerSecond": [2.5, 12.0]
+    },
+    "ko": {
+      "label": "한국어",
+      "speaker": "sohee",
+      "language": "Korean",
+      "style": "차분한 연구 브리핑 낭독. 또렷한 발음, 자연스러운 호흡, 숫자와 전문 용어를 분명하게.",
+      "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+      "charsPerSecond": [2.5, 12.0]
+    }
+  },
+  "edge": {
+    "provider": "edge-tts",
+    "bitrate": "48k",
+    "channels": 1,
+    "languages": {
+      "ja": {
+        "label": "日本語",
+        "voice": "ja-JP-NanamiNeural",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [2.0, 16.0]
+      },
+      "en": {
+        "label": "English",
+        "voice": "en-US-AndrewNeural",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [4.0, 30.0]
+      },
+      "zh": {
+        "label": "中文",
+        "voice": "zh-CN-XiaoxiaoNeural",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [2.0, 14.0]
+      },
+      "ko": {
+        "label": "한국어",
+        "voice": "ko-KR-SunHiNeural",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [2.0, 14.0]
+      }
+    }
+  },
+  "irodori": {
+    "provider": "irodori-tts-server",
+    "model": "irodori-tts",
+    "url": "http://127.0.0.1:8088/v1/audio/speech",
+    "bitrate": "48k",
+    "channels": 1,
+    "languages": {
+      "ja": {
+        "label": "日本語",
+        "caption": "kanade",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [2.0, 14.0]
+      }
+    }
+  },
+  "voicestudio": {
+    "provider": "voicestudio-omnivoice",
+    "model": "omnivoice-gguf",
+    "url": "http://127.0.0.1:3900/v1/audio/speech",
+    "bitrate": "48k",
+    "channels": 1,
+    "languages": {
+      "en": {
+        "label": "English",
+        "voice": "Phantom-EN",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [3.0, 20.0]
+      },
+      "zh": {
+        "label": "中文",
+        "voice": "Phantom-ZH",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [1.5, 12.0]
+      },
+      "ko": {
+        "label": "한국어",
+        "voice": "Phantom-KO",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [1.5, 12.0]
+      }
+    }
+  }
+}
