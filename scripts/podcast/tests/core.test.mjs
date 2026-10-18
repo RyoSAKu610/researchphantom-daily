@@ -10,7 +10,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { poolOrder, pickTopic, pickFallback, planCatchupDates, loadHistory, saveHistory, writeJsonAtomic, parseISODate } from "../select.mjs";
 import { buildQueryUrl, fetchPapers, parseAtom } from "../arxiv.mjs";
-import { buildScript, cleanAbstract, DURATION_MAX_SECONDS, estimateSpokenSeconds, trimExcerpt } from "../script.mjs";
+import { buildScript, cleanAbstract, DURATION_MAX_SECONDS, DURATION_MIN_SECONDS, DURATION_TARGET_SECONDS, estimateSpokenSeconds, trimExcerpt } from "../script.mjs";
 import { buildTtsEnv, engineForLang, engineVoiceFor, exitCodeFor, localIso, parseCliArgs, parseTtsEnv, resolvePython, resolveTtsPython, runTts, shouldSkip, verifyAudio, voiceFor } from "../daily.mjs";
 
 const moduleDir = fileURLToPath(new URL("../", import.meta.url));
@@ -54,19 +54,28 @@ test("config.json matches the frozen contract", async () => {
   assert.deepEqual(config, {
     title: "Phantomresearch Daily",
     subtitle: {
-      ja: "毎日変わる研究テーマを、4言語で少しだけ。",
-      en: "A different research topic every day, briefly, in four languages.",
+      ja: "毎日変わる研究テーマを、4言語で。",
+      en: "A different research topic every day, in four languages.",
+      zh: "每天不同的研究主题，用四种语言。",
+      ko: "매일 바뀌는 연구 주제를, 네 언어로.",
     },
     siteBaseUrl: "http://127.0.0.1:4173/podcast",
     site: { baseUrl: "https://ryosaku610.github.io/researchphantom-daily" },
     languages: ["ja", "en", "zh", "ko"],
     languageLabels: { ja: "日本語", en: "English", zh: "中文", ko: "한국어" },
-    maxPapers: 3,
-    maxExcerptChars: { ja: 220, en: 300, zh: 180, ko: 200 },
+    maxPapers: 8,
+    maxExcerptChars: { ja: 700, en: 1100, zh: 700, ko: 700 },
+    duration: { minSeconds: 300, maxSeconds: 1200, targetSeconds: 660 },
     backfillDays: 3,
     episodeDir: "podcast/episodes",
     stateDir: "podcast/state",
   });
+});
+
+test("episode-length contract is frozen at 5..20 minutes with an 11-minute target", async () => {
+  assert.equal(DURATION_MIN_SECONDS, 300);
+  assert.equal(DURATION_MAX_SECONDS, 1200);
+  assert.equal(DURATION_TARGET_SECONDS, 660);
 });
 
 test("topics.json has >=21 valid, unique topics with four labels each", async () => {
@@ -245,11 +254,14 @@ test("buildScript quotes titles, trims excerpts and keeps http out (all language
     assert.ok(estimatedSeconds > 0 && estimatedSeconds <= DURATION_MAX_SECONDS, `${lang}: estimated ${estimatedSeconds}s outside target`);
     assert.ok(text.includes("Alice Example") && !text.includes("Dan Example"), `${lang}: author line`);
     assert.ok(text.includes("et al.") || text.includes("ほか") || text.includes("等") || text.includes("외"), `${lang}: et al. marker`);
-    assert.deepEqual(segments.map((segment) => segment.label), ["intro", "paper-1", "paper-2", "outro"]);
+    assert.deepEqual(
+      segments.map((segment) => segment.label),
+      ["intro", "topic-overview", "paper-1", "commentary-paper1", "paper-2", "commentary-paper2", "outro"],
+    );
   }
 });
 
-test("buildScript shrinks quotes and papers to stay near the 60-110s target", () => {
+test("buildScript grows or shrinks toward the 5-20 minute target and reports met", () => {
   const longPapers = [
     { arxivId: "2610.11111", title: "A First Very Long Research Paper Title About Systems", authors: ["A One", "B Two", "C Three", "D Four"], abstract: LONG_ABSTRACT },
     { arxivId: "2610.22222", title: "A Second Very Long Research Paper Title About Models", authors: ["E Five", "F Six", "G Seven", "H Eight"], abstract: LONG_ABSTRACT },
@@ -257,13 +269,17 @@ test("buildScript shrinks quotes and papers to stay near the 60-110s target", ()
   ];
   for (const lang of ["ja", "en", "zh", "ko"]) {
     const result = buildScript(lang, { date: "2026-10-18", topic: TOPIC, papers: longPapers, maxExcerptChars: LIMITS[lang] });
-    assert.ok(result.estimatedSeconds <= DURATION_MAX_SECONDS, `${lang}: estimated ${result.estimatedSeconds}s`);
+    assert.equal(result.met, true, `${lang}: met flag`);
+    assert.ok(result.estimatedSeconds >= DURATION_MIN_SECONDS && result.estimatedSeconds < DURATION_MAX_SECONDS, `${lang}: estimated ${result.estimatedSeconds}s`);
+    assert.ok(result.plannedSeconds >= DURATION_MIN_SECONDS && result.plannedSeconds < DURATION_MAX_SECONDS, `${lang}: planned ${result.plannedSeconds}s`);
     assert.ok(result.papersUsed >= 1 && result.papersUsed <= 3, `${lang}: papersUsed ${result.papersUsed}`);
-    assert.equal(result.segments.length, result.papersUsed + 2, `${lang}: segment count`);
+    // intro + topic-overview + (paper + commentary) per paper + outro
+    assert.equal(result.segments.length, result.papersUsed * 2 + 3, `${lang}: segment count`);
     for (let index = 0; index < result.papersUsed; index += 1) {
       assert.ok(result.text.includes(longPapers[index].title), `${lang}: missing title ${index}`);
       const excerpt = trimExcerpt(longPapers[index].abstract, result.excerptLimit);
       if (excerpt) assert.ok(result.text.includes(excerpt), `${lang}: excerpt ${index} not verbatim`);
+      assert.ok(result.text.includes(`commentary-paper${index + 1}`) || result.segments.some((segment) => segment.label === `commentary-paper${index + 1}`), `${lang}: commentary label ${index}`);
     }
     if (result.papersUsed < 3) assert.ok(!result.text.includes(longPapers[result.papersUsed].title), `${lang}: unused paper leaked`);
   }
@@ -291,9 +307,58 @@ test("buildScript uses a different quote cue for curated entries and handles emp
   assert.ok(jaArxiv.text.includes("原文"));
   const empty = buildScript("en", { date: "2026-10-18", topic: TOPIC, papers: [] });
   assert.ok(empty.text.includes("No papers"));
-  assert.equal(empty.segments.length, 2);
+  assert.equal(empty.segments.length, 3);  // intro + topic-overview + outro
   assert.throws(() => buildScript("fr", { date: "2026-10-18", topic: TOPIC, papers: [] }));
   assert.throws(() => buildScript("ja", { date: "not-a-date", topic: TOPIC, papers: [] }));
+});
+
+test("buildScript countPhrase/orderPhrase extend to eight papers", () => {
+  const eighth = Array.from({ length: 8 }, (_, index) => ({
+    arxivId: `2610.2000${index}`,
+    title: `Tiny Paper ${index + 1}`,
+    authors: ["Solo Author"],
+    abstract: "",
+  }));
+  const ja = buildScript("ja", { date: "2026-10-18", topic: TOPIC, papers: eighth });
+  assert.equal(ja.papersUsed, 8);
+  assert.ok(ja.text.includes("八本"));
+  assert.ok(ja.text.includes("八本目") && ja.text.includes("七本目") && ja.text.includes("五本目"), ja.text);
+  assert.ok(!ja.text.includes("8本"));
+  const en = buildScript("en", { date: "2026-10-18", topic: TOPIC, papers: eighth });
+  assert.ok(en.text.includes("eight papers"), en.text);
+  assert.ok(en.text.includes("Eighth paper:"));
+});
+
+test("buildScript never deadlocks on tiny input: short day with met=false", () => {
+  for (const lang of ["ja", "en", "zh", "ko"]) {
+    const result = buildScript(lang, {
+      date: "2026-10-18",
+      topic: TOPIC,
+      papers: [{ arxivId: "2610.00001", title: "Tiny", authors: ["Solo"], abstract: "" }],
+    });
+    assert.equal(result.papersUsed, 1);
+    assert.equal(result.met, false);
+    assert.ok(result.estimatedSeconds < DURATION_MIN_SECONDS, `${lang}: short day ${result.estimatedSeconds}s`);
+    assert.ok(result.text.includes("Tiny") && result.text.includes(result.segments.at(-1).text), `${lang}: full script still rendered`);
+    assert.equal(result.segments.length, 5);  // intro + overview + paper + commentary + outro
+  }
+});
+
+test("estimate boundaries: min/max and growth beyond min via full-abstract plan", () => {
+  const rate = 0.1685;
+  assert.ok(Math.abs(estimateSpokenSeconds("ja", "あ".repeat(Math.round(DURATION_MIN_SECONDS / rate))) - DURATION_MIN_SECONDS) < 1);
+  const enRate = 0.082;
+  assert.ok(estimateSpokenSeconds("en", "a".repeat(Math.round(DURATION_MIN_SECONDS / enRate))) >= DURATION_MIN_SECONDS);
+  // Enough long abstracts must reach past min for a single-paper day too.
+  const longSingleAbstract = "A long abstract sentence detailing methods and experiments that keeps going for many pages in the preprint. ".repeat(40);
+  const single = buildScript("en", {
+    date: "2026-10-18",
+    topic: TOPIC,
+    papers: [{ arxivId: "2610.00002", title: "One Long Paper", authors: ["A", "B", "C", "D"], abstract: longSingleAbstract }],
+    maxExcerptChars: LIMITS.en,
+  });
+  assert.equal(single.met, true);
+  assert.ok(single.estimatedSeconds >= DURATION_MIN_SECONDS, `${single.estimatedSeconds}s`);
 });
 
 test("estimateSpokenSeconds is monotonic in text length", () => {

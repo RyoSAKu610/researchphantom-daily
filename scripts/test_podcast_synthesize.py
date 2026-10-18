@@ -126,11 +126,11 @@ class ProbeIssueTests(unittest.TestCase):
     def test_rejects_wrong_codec_duration_and_size(self):
         self.assertTrue(synth.probe_issues({"codec": "aac", "duration": 120.0}, 200000))
         self.assertTrue(synth.probe_issues({"codec": "mp3", "duration": 5.0}, 200000))
-        self.assertTrue(synth.probe_issues({"codec": "mp3", "duration": 700.0}, 200000))
+        self.assertTrue(synth.probe_issues({"codec": "mp3", "duration": 1300.0}, 200000))
         self.assertTrue(synth.probe_issues({"codec": "mp3", "duration": 120.0}, 9999))
 
     def test_accepts_valid_mp3_container(self):
-        self.assertEqual(synth.probe_issues({"codec": "mp3", "duration": 120.0}, 200000), [])
+        self.assertEqual(synth.probe_issues({"codec": "mp3", "duration": 700.0}, 200000), [])
 
 
 @unittest.skipUnless(FFMPEG and FFPROBE, "ffmpeg and ffprobe are required for MP3 fixtures")
@@ -154,7 +154,8 @@ class Mp3FixtureTests(unittest.TestCase):
         self.assertAlmostEqual(probe["duration"], 12.0, delta=0.5)
 
     def test_audio_metrics_on_real_tone(self):
-        target = self.make_mp3("tone.mp3", 12)
+        # 320 s: an episode-length fixture so the 300..1200 s container gate passes.
+        target = self.make_mp3("tone.mp3", 320)
         probe = synth.probe_mp3(target, FFPROBE)
         self.assertEqual(synth.probe_issues(probe, target.stat().st_size), [])
         metrics = synth.audio_metrics(target, probe["duration"], 120, FFMPEG)
@@ -214,7 +215,7 @@ class CliValidationTests(unittest.TestCase):
         self.assertFalse(self.out.exists())
 
     def test_short_and_long_text_rejected(self):
-        for candidate, tail in (("短いテキスト。", "got 7"), ("あ" * 8001, "got 8001")):
+        for candidate, tail in (("短いテキスト。", "got 7"), ("あ" * 15001, "got 15001")):
             self.text_file.write_text(candidate, encoding="utf-8")
             result = self.run_cli(*self.base())
             self.assertNotEqual(result.returncode, 0)

@@ -2,67 +2,149 @@
   "version": 1,
   "date": "2026-10-18",
   "topic": {
-    "id": "automated-theorem-proving",
+    "id": "robot-manipulation",
     "labels": {
-      "ja": "定理の自動証明",
-      "en": "Automated theorem proving",
-      "zh": "自动定理证明",
-      "ko": "자동 정리 증명"
+      "ja": "ロボットによる物体操作",
+      "en": "Robot manipulation",
+      "zh": "机器人操作",
+      "ko": "로봇 조작"
     }
   },
   "source": "arxiv",
-  "generatedAt": "2026-10-18T17:13:30+09:00",
+  "generatedAt": "2026-10-19T02:12:06+09:00",
   "papers": [
     {
-      "arxivId": "2610.22339",
-      "title": "Lean Graph Search for Formal Theorem Proving",
+      "arxivId": "2610.22372",
+      "title": "LIBERO-PeRM: Benchmarking Personalized Robotic Manipulation",
       "authors": [
-        "Yihan Xu",
-        "Jia-Chen Gu",
-        "Junyi Zhang",
-        "Di Wu",
-        "Haikang Deng",
-        "Po-Nien Kung",
-        "Kai-Wei Chang",
-        "Amit Sahai"
+        "Zhixu Li",
+        "Keqian Tang",
+        "Litian Gong",
+        "Jingyu Yao",
+        "Wenqian Zhang",
+        "Tianze Xu",
+        "Zehao Wang",
+        "Yuping Wang"
       ],
-      "primaryCategory": "cs.LG",
+      "primaryCategory": "cs.RO",
       "published": "2026-10-15",
-      "url": "https://arxiv.org/abs/2610.22339",
-      "pdfUrl": "https://arxiv.org/pdf/2610.22339",
-      "excerpt": "Retrieving relevant lemmas is crucial for formal theorem proving, enabling provers to build machine-checkable proofs from established mathematical results."
+      "url": "https://arxiv.org/abs/2610.22372",
+      "pdfUrl": "https://arxiv.org/pdf/2610.22372",
+      "excerpt": "Personalization is essential for general-purpose robots to transition into household environments and achieve true practicality. While general robotic manipulation has been extensively studied, personalized robotic manipulation (PeRM) lacks a controlled benchmark for separating task completion from preference satisfaction. We introduce LIBERO-PeRM, a benchmark for preference learning in embodied agents. LIBERO-PeRM studies five questions: 1) how policies follow preferences in zero-shot settings; 2) how they learn single preferences from demonstrations; 3) how efficiently they acquire preferences as demonstrations increase; 4) how learned preferences generalize across layouts and tasks; and 5) how policies compose preferences and behave under conflicts. We propose a controlled formulation and taxonomy of observable preferences in simulation, covering motion, skill, and user-profile choices. This formulation is restricted to language-expressible preferences that can be instantiated in LIBERO without changing the task goal, evaluated automatically, and reused across tasks."
     },
     {
-      "arxivId": "2610.21881",
-      "title": "Learning Lean Feedback for Efficient Proof-Candidate Evaluation on GPUs",
+      "arxivId": "2610.22337",
+      "title": "Sim-to-Real Reinforcement Learning for Path-Safe Target Reaching in Robotic Harvesting of Hydroponic Lettuce",
       "authors": [
-        "Lazar Milikic",
-        "Etienne Bamas",
-        "Emmanuel Abbe",
-        "Viktor Kunčak"
+        "Al Bashir",
+        "Partho Ghose",
+        "Yibin Wang",
+        "Robert G. Hardin",
+        "Joshua Peeples",
+        "Genhua Niu",
+        "Azlan Zahid"
       ],
-      "primaryCategory": "cs.LG",
+      "primaryCategory": "cs.RO",
       "published": "2026-10-15",
-      "url": "https://arxiv.org/abs/2610.21881",
-      "pdfUrl": "https://arxiv.org/pdf/2610.21881",
-      "excerpt": "Training language models for formal theorem proving requires large numbers of verifier calls. Slow checks and timeouts often leave GPUs waiting and withhold rewards from potentially correct proofs."
+      "url": "https://arxiv.org/abs/2610.22337",
+      "pdfUrl": "https://arxiv.org/pdf/2610.22337",
+      "excerpt": "Robotic harvesting requires precise manipulation to ensure accurate positioning of the end-effector, especially in a constraint workspace. This study introduces the Path-Safe Approach Proximal Policy Optimization (PSA-PPO), a target-conditioned local reaching framework designed for robotic harvesting of nutrient film technique (NFT)-hydroponic lettuce in greenhouses. The proposed PSA-PPO preserves the standard clipped PPO objective while introducing a harvesting-oriented policy formulation that integrates target-conditioned observations, corridor-aware spatial constraints, trajectory-history-based safety encoding, and task-specific success criteria for constrained robotic manipulation. PSAPPO was trained entirely in Isaac Lab and successfully transferred to a physical UR10e robotic arm without any real-world policy fine-tuning."
     },
     {
-      "arxivId": "2610.17331",
-      "title": "Do Theorem Provers Need Theorem-Proving Agents? mini-Lean-agent: A Coding-Agent Baseline for Lean",
+      "arxivId": "2610.22323",
+      "title": "Mem4Act: Learning Effective Latent Memory for Long-Horizon Robotic Manipulation",
       "authors": [
-        "Tomas Ortega",
-        "Simon Park",
-        "Ayush Khaitan",
-        "Liam Fowl",
-        "Alex Kontorovich",
-        "Sanjeev Arora"
+        "Yun Zhang",
+        "Zhiyu Huang",
+        "Tianhui Cai",
+        "Chen Tang",
+        "Wei Wang",
+        "Jiaqi Ma"
       ],
-      "primaryCategory": "cs.AI",
-      "published": "2026-10-12",
-      "url": "https://arxiv.org/abs/2610.17331",
-      "pdfUrl": "https://arxiv.org/pdf/2610.17331",
-      "excerpt": "General-purpose coding agents use standard shell and file interactions, yet formal theorem-proving agents often rely on specialized, ad-hoc tooling."
+      "primaryCategory": "cs.RO",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.22323",
+      "pdfUrl": "https://arxiv.org/pdf/2610.22323",
+      "excerpt": "Long-horizon robotic manipulation fundamentally requires memory: agents must retain task-relevant information from past observations and interactions and use it to guide future actions. Existing approaches typically preserve raw historical observations, compressed visual tokens, or language summaries, but these representations either expose the action policy to increasingly long histories or risk discarding task-relevant temporal, semantic, and perceptual information. We introduce Mem4Act, a framework for learning effective latent memory as a fixed-size representation explicitly optimized for long-horizon robotic control. Mem4Act addresses three coupled challenges: how to efficiently cover long histories, what information memory should retain, and how to ensure the policy actually relies on memory."
+    },
+    {
+      "arxivId": "2610.22193",
+      "title": "MOSS: Mode-Oriented Source Shaping for Robot Flow Matching Policies",
+      "authors": [
+        "Zirun Ma",
+        "Jindou Jia",
+        "Tuo An",
+        "Jiaqi Bai",
+        "Jiahua Dong",
+        "Jianfei Yang"
+      ],
+      "primaryCategory": "cs.RO",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.22193",
+      "pdfUrl": "https://arxiv.org/pdf/2610.22193",
+      "excerpt": "In robotic manipulation, the same observation often admits multiple feasible actions. Generative policies such as diffusion and flow matching naturally capture such multimodal behaviors, yet which mode is executed is left to random sampling and cannot be actively controlled. We propose Mode-Oriented Source Shaping (MOSS), which turns mode selection into an explicit choice of where generation starts. We first reveal, both empirically and theoretically, that deterministic flow transport induces mode-dependent structure in the source space. Under ideal deterministic ODE transport, distinct behavioral modes have distinct source-space preimages, while practical approximation errors can blur their boundaries due to imbalanced data, limited model capacity, and few inference steps. Motivated by this source-space structure, MOSS constructs semantically aligned mode-specific Gaussian sources that encode mode identity in the initial noise. A modality-strength estimator predicts the local degree of multimodality, which adaptively controls the geometry of the mode-specific sources."
+    },
+    {
+      "arxivId": "2610.22146",
+      "title": "FastVLA: Task-Conditioned and Temporally Adaptive Visual Token Compression for Efficient Vision-Language-Action Models",
+      "authors": [
+        "Jiuyi Xu",
+        "Chengyuan Qian",
+        "Zhengzhong Tu",
+        "Yang Sui",
+        "Yangming Shi"
+      ],
+      "primaryCategory": "cs.RO",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.22146",
+      "pdfUrl": "https://arxiv.org/pdf/2610.22146",
+      "excerpt": "Vision-Language-Action (VLA) models present a promising paradigm for general-purpose robot manipulation, but closed-loop deployment is often limited by inference efficiency: at each timestep, high-resolution, often multi-view images are encoded into hundreds of visual tokens that dominate transformer computation and latency. Token compression via attention is a natural solution but is challenging for VLA control because (1) decision-critical tokens are determined by the task, not generic visual saliency, and (2) the token budget varies substantially across steps, so static metrics and budgets waste computation or discard control-critical tokens. We introduce FastVLA, a training-free, task-aware, and temporally adaptive visual token compression framework. At each step, FastVLA scores token importance via task-to-vision attention and adaptively sets the compression rate from the importance-distribution uniformity, measured by an inverse-Simpson metric with online sliding-window calibration."
+    },
+    {
+      "arxivId": "2610.21913",
+      "title": "Sub-Millisecond Reflexes for Continuous Physical Human-Robot Interaction",
+      "authors": [
+        "Jon Škerlj",
+        "Sami Haddadin"
+      ],
+      "primaryCategory": "cs.RO",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.21913",
+      "pdfUrl": "https://arxiv.org/pdf/2610.21913",
+      "excerpt": "Continuous physical human-robot interaction requires robots to rapidly adapt their control behaviour without interrupting task execution. However, existing ROS 2 control architectures rely on stop-to-switch mechanisms that introduce substantial delays and interrupt execution. We present an open-source, sub-millisecond reflex engine based on an enhanced ROS 2-compatible multimode controller that enables deterministic switching between control modalities and integrates reflex behaviours for mitigating contact hazards and kinematic limit violations. Experiments on a Franka Robotics manipulator demonstrate switching delays below 0.1 ms, more than four orders of magnitude faster than conventional ros2_control, while maintaining continuous operation during safety-critical events. In a multi-stage manipulation task, the proposed framework reduced execution time by 3.5% and peak trajectory jerk by more than threefold."
+    },
+    {
+      "arxivId": "2610.21798",
+      "title": "Cross-Embodiment Causal Transfer from Human Videos to Robot Manipulation",
+      "authors": [
+        "Xingyu Zhang",
+        "Yingchao Li",
+        "Peizheng Guo",
+        "Jie Hu",
+        "Changwen Zheng",
+        "Wenwen Qiang"
+      ],
+      "primaryCategory": "cs.RO",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.21798",
+      "pdfUrl": "https://arxiv.org/pdf/2610.21798",
+      "excerpt": "Scaling robot manipulation models requires large amounts of interaction data, yet collecting diverse real-robot experience remains costly. Human manipulation videos, in contrast, provide abundant and diverse task experience that could potentially benefit robot learning. However, differences in morphology, action spaces, and control mechanisms make human motions unsuitable as direct supervision for robot actions, raising a scientific question: what knowledge in human videos should be transferred across embodiments to robot manipulation? To address this question, we analyze subtask transfer through the lens of causal beams, focusing on which contextual conditions and interaction dependencies should be retained to support local task effects. Based on this perspective, we propose Causal-Beam-Guided Subtask Transfer (CBST). CBST learns manipulation-related representations from human videos and grounds them in task-level semantic variables using robot demonstrations."
+    },
+    {
+      "arxivId": "2610.21621",
+      "title": "SPEAR: Selective Preference Elicitation with Adaptive Rewards for VLM-Guided Robotic Manipulation",
+      "authors": [
+        "Zewen Wu",
+        "Ruizhe Liu",
+        "Pei Zhou",
+        "Feng Chen",
+        "Yanchao Yang"
+      ],
+      "primaryCategory": "cs.RO",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.21621",
+      "pdfUrl": "https://arxiv.org/pdf/2610.21621",
+      "excerpt": "Recent Vision-Language Models (VLMs) enable automated preference labeling for robotic manipulation, yet their deployment remains impractical since each query incurs substantial inference cost, while VLMs frequently abstain on visually challenging comparisons. We propose SPEAR, a framework that transforms VLMs into efficient preference oracles via two synergistic mechanisms. First, we design distinguishability-aware query selection to reduce abstention rates by targeting only informative and distinguishable comparisons. Second, we deploy an adaptive reward transition that bootstraps exploration with VLM-synthesized guidance before preference-based refinement. Experiments on the manipulation benchmarks demonstrate that SPEAR achieves 88.9% average success, outperforming baselines by 23.3 percentage points, while significantly reducing abstention and wall-clock training time on contact-rich tasks. SPEAR learns three Mobile ALOHA manipulation tasks fully online on real hardware, demonstrating end-to-end real-world applicability."
     }
   ],
   "languages": {
@@ -71,9 +153,9 @@
       "status": "ok",
       "text": "script-ja.txt",
       "audio": "ja.mp3",
-      "durationSeconds": 90.936,
-      "bytes": 545996,
-      "sha256": "e7a4a9dc3166b3dc995400d9165a9d60f30856a9a152a919b9618cd5825d2e7a",
+      "durationSeconds": 443.88,
+      "bytes": 2663660,
+      "sha256": "505594f25fcd7b6187101ed9b762e57e14a789cf84b95833aa5b92d445c59325",
       "voice": "ja-JP-NanamiNeural",
       "error": null
     },
@@ -82,9 +164,9 @@
       "status": "ok",
       "text": "script-en.txt",
       "audio": "en.mp3",
-      "durationSeconds": 98.064,
-      "bytes": 588764,
-      "sha256": "2647c0f8913ebab76118665c073af16165e57258dae036a7abd3661326ca4eab",
+      "durationSeconds": 527.736,
+      "bytes": 3166796,
+      "sha256": "5c9c352704febb5a8d7f4487349a6d76dd5ec1a462628b0ad31a68e05fac3d84",
       "voice": "en-US-AndrewNeural",
       "error": null
     },
@@ -93,9 +175,9 @@
       "status": "ok",
       "text": "script-zh.txt",
       "audio": "zh.mp3",
-      "durationSeconds": 92.904,
-      "bytes": 557804,
-      "sha256": "7f5737cadbee425462903dc178b38f215a9dd944b1ad755c9108d79d0ad7de12",
+      "durationSeconds": 449.4,
+      "bytes": 2696780,
+      "sha256": "eae8f61189e71858c7960697db8d06e7aaf168c9975039a4b89e1befe5ef1c8b",
       "voice": "zh-CN-XiaoxiaoNeural",
       "error": null
     },
@@ -104,16 +186,16 @@
       "status": "ok",
       "text": "script-ko.txt",
       "audio": "ko.mp3",
-      "durationSeconds": 77.568,
-      "bytes": 465788,
-      "sha256": "81ef3a44167ec38150653a8638c8e95721f7f4833801a429dd0ff44407a235f4",
+      "durationSeconds": 363.72,
+      "bytes": 2182700,
+      "sha256": "cdccb3341e4ee8b7bc3b0f605c810bd5fe30536024cc165c631f065ddfb14a70",
       "voice": "ko-KR-SunHiNeural",
       "error": null
     }
   },
   "notes": [
-    "papers fetched from the arXiv export API for keyword \"theorem proving\"",
-    "audio brief shortened to stay within the ~60-110s target for: ja, ko (full paper links and abstracts remain in this episode data)",
+    "papers fetched from the arXiv export API for keyword \"robot manipulation\"",
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, en, ko (full paper links and abstracts remain in this episode data)",
     "TTS engines: ja=edge, en=edge, zh=edge, ko=edge"
   ]
 }

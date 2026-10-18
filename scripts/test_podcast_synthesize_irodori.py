@@ -29,7 +29,7 @@ FFMPEG = os.environ.get("FFMPEG") or (
 FFPROBE = os.environ.get("FFPROBE") or (
     "/opt/homebrew/bin/ffprobe" if Path("/opt/homebrew/bin/ffprobe").is_file() else shutil.which("ffprobe"))
 VOICES = Path(__file__).resolve().parent / "podcast/voices.json"
-TEXT_LONG = "毎日の研究テーマを四言語で少しだけ届けるポッドキャストです。今日も明瞭な朗読でお伝えします。" * 3
+TEXT_LONG = "毎日の研究テーマを四言語で少しだけ届けるポッドキャストです。今日も明瞭な朗読でお伝えします。" * 17
 
 
 def load_adapters():
@@ -207,7 +207,7 @@ class RunTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
-        self.wav = make_wav(12.0, amplitude="0.4")
+        self.wav = make_wav(310.0, amplitude="0.4")  # 300..1200 s container gate
 
     def cli_args(self, url, ja_text=None):
         text = Path(self.directory.name) / "episode.txt"
@@ -249,7 +249,7 @@ class CliTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
-        self.wav = make_wav(12.0, amplitude="0.4")
+        self.wav = make_wav(310.0, amplitude="0.4")  # 300..1200 s container gate
         self.text = Path(self.directory.name) / "episode.txt"
         self.text.write_text(TEXT_LONG, encoding="utf-8")
 

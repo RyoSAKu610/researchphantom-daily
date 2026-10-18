@@ -1,0 +1,20 @@
+{
+  "provider": "edge-tts",
+  "model": "ja-JP-NanamiNeural",
+  "model_commit": null,
+  "language": "ja",
+  "voice": "ja-JP-NanamiNeural",
+  "style_chars": 0,
+  "text_chars": 3984,
+  "durationSeconds": 478.272,
+  "bytes": 2870012,
+  "sha256": "87be886d95e0eb5f4a6637b63259d72f2f92ee4b0080e44eb179d7520c6365fb",
+  "peak": 0.66924,
+  "rms_dbfs": -18.66,
+  "clipped_fraction": 0.0,
+  "silent_fraction": 0.114,
+  "leading_silence_seconds": 0.0,
+  "trailing_silence_seconds": 1.0,
+  "longest_silence_seconds": 1.0,
+  "seconds_per_char": 0.12
+}

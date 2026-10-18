@@ -33,9 +33,13 @@ VOICES_PATH = Path(__file__).resolve().parent / "voices.json"
 SAMPLE_RATE = 24000
 MAX_TOKENS = 3000
 MIN_CHARS = 50
-MAX_CHARS = 8000
-DURATION_MIN = 10.0
-DURATION_MAX = 600.0
+# 15k chars: en at 0.082 s/char is ~1230 s of pacing headroom; ja/zh/ko hit the
+# MAX_TOKENS model limit long before this, so script.mjs owns the real ceiling.
+MAX_CHARS = 15000
+# Frozen episode-length contract (config.json "duration"): 5 minutes inclusive
+# .. 20 minutes exclusive.
+DURATION_MIN = 300.0
+DURATION_MAX = 1200.0
 MIN_BYTES = 10000
 PEAK_MIN = 0.02
 RMS_DBFS_MIN = -36.0

@@ -1,8 +1,10 @@
 {
   "title": "Phantomresearch Daily",
   "subtitle": {
-    "ja": "毎日変わる研究テーマを、4言語で少しだけ。",
-    "en": "A different research topic every day, briefly, in four languages."
+    "ja": "毎日変わる研究テーマを、4言語で。",
+    "en": "A different research topic every day, in four languages.",
+    "zh": "每天不同的研究主题，用四种语言。",
+    "ko": "매일 바뀌는 연구 주제를, 네 언어로."
   },
   "siteBaseUrl": "http://127.0.0.1:4173/podcast",
   "site": {
@@ -15,12 +17,17 @@
     "zh": "中文",
     "ko": "한국어"
   },
-  "maxPapers": 3,
+  "maxPapers": 8,
   "maxExcerptChars": {
-    "ja": 220,
-    "en": 300,
-    "zh": 180,
-    "ko": 200
+    "ja": 700,
+    "en": 1100,
+    "zh": 700,
+    "ko": 700
+  },
+  "duration": {
+    "minSeconds": 300,
+    "maxSeconds": 1200,
+    "targetSeconds": 660
   },
   "backfillDays": 3,
   "episodeDir": "podcast/episodes",

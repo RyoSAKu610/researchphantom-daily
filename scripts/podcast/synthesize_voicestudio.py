@@ -52,7 +52,9 @@ DEFAULT_URL = "http://127.0.0.1:3900/v1/audio/speech"
 DEFAULT_MODEL = "omnivoice-gguf"
 DEFAULT_VOICE = "default"
 DEFAULT_FORMAT = "wav"
-DEFAULT_TIMEOUT_SECONDS = 300.0
+# 1800 s: server engines render 5-20 minute episodes on CPU-only hosts; three
+# attempts with backoff keep the post_speech retry logic unchanged.
+DEFAULT_TIMEOUT_SECONDS = 1800.0
 RETRY_ATTEMPTS = 3
 RETRY_BACKOFF_SECONDS = 1.0
 MAX_ERROR_BODY = 200

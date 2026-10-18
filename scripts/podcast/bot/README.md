@@ -79,8 +79,9 @@ voicestudio-speech` が 200 か / GET /v1/audio/voices に **`Phantom-EN`,
 全 pass なら `doctor: all checks passed`。Irodori が down でも **warning 扱い**で
 exit code には反映しない — `daily.mjs` は per-language の失敗を許容する設計で、Irodori
 が無くても ja はその日の音声 failure として記録されるだけ（他言語・site 構築は壊れない）。
-※ bot VM では edge への自動 fallback は opt-in（`PODCAST_FALLBACK_EDGE=1`）で、既定では
-server 系 failure の報告を優先する設計です。
+※ bot VM では **edge への自動 fallback は既定動作**（欠落言語がある日を edge で再生成し、
+常に 4 言語completion を目指す）。`PODCAST_FALLBACK_EDGE=0` を明示した時だけ opt-out で、
+server 系 failure の報告を優先させる設計です。
 
 ## 3. 音声プロファイル（Phantom-EN / Phantom-ZH / Phantom-KO）の作成
 
@@ -127,8 +128,8 @@ ssh -L 3900:127.0.0.1:3900 <user>@<bot-host>
 
 ```bash
 bash scripts/podcast/bot/daily.sh
-# 障害時に指定日分だけ edge で自動リトライしたい場合のみ:
-PODCAST_FALLBACK_EDGE=1 bash scripts/podcast/bot/daily.sh
+# 明示的に edge への自動 fallback を止めたい場合のみ（通常は不要）:
+PODCAST_FALLBACK_EDGE=0 bash scripts/podcast/bot/daily.sh
 ```
 
 Grok Bot に貼る Skill / Routine は、「**`daily.sh` を実行 → exit code と
@@ -142,11 +143,11 @@ Grok Bot に貼る Skill / Routine は、「**`daily.sh` を実行 → exit code
    ko:voicestudio" node scripts/podcast/daily.mjs --catchup`。**`--catchup` が常に
    付く**（週末等に漏れた日付欠落は default backfillDays=3 で自動バックフィル）。
 4. **exit code に応じた fallback**: `0`=OK / `3`=episode は書けたが音声ゼロ（server 起因
-   が多い）/ `1`=pipeline error / `2`=lock・環境欠け。**edge への自動 fallback は既定では
-   走らない。** `PODCAST_FALLBACK_EDGE=1` を付けた時のみ、**音声が完全ゼロ・または一部
-   言語だけ欠けた日付**を edge まわり（全 4 言語 edge）で `--force` 再生成する
-   （bot VM 側は「server 系の failure を報告するのが優先」で、edge は GitHub Actions
-   側が main 保険、という方針の opt-in 実装）。
+   が多い）/ `1`=pipeline error / `2`=lock・環境欠け。**edge への自動 fallback は既定で
+   走る。** 音声が完全ゼロ・または一部言語だけ欠けた日付を edge まわり（全 4 言語 edge）
+   で `--force` 再生成し、**常に 4 言語がそろう**。`PODCAST_FALLBACK_EDGE=0` を付けた時
+   だけ opt-out（server 系 failure の報告を優先、edge は GitHub Actions 側の main 保険と
+   いう旧方針に戻す）。
 5. `git add -A` → `git commit -m "daily: <date> generated"` → `git push origin HEAD`。
    push 失敗は非 fatal（差分は手元に残り、次回 catchup で re-try）。push 成功で
    `.github/workflows/deploy.yml`（GitHub Pages deploy）が走る。

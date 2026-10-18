@@ -6,8 +6,9 @@
 # Exit code: 0 when every REQUIRED check passes, 1 otherwise.
 # The Irodori :8088 check is advisory only: daily.mjs records per-language
 # failures, so an unreachable Irodori simply leaves that day's JA without
-# audio instead of crashing the run (opt-in `PODCAST_FALLBACK_EDGE=1` adds an
-# edge-tts rerun for failed dates, see scripts/podcast/bot/daily.sh).
+# audio instead of crashing the run (by default `podcast/state` dates with
+# missing audio are re-synthesized with edge-tts via daily.sh — set
+# `PODCAST_FALLBACK_EDGE=0` to opt out of that, see scripts/podcast/bot/daily.sh).
 #
 # Env knobs:
 #   QUIET=1            print failures only (still prints the final line)

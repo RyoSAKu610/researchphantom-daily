@@ -29,7 +29,7 @@ FFPROBE = os.environ.get("FFPROBE") or (
     "/opt/homebrew/bin/ffprobe" if Path("/opt/homebrew/bin/ffprobe").is_file() else shutil.which("ffprobe"))
 VOICES = Path(__file__).resolve().parent / "podcast/voices.json"
 EDGE_TTS_INSTALLED = importlib.util.find_spec("edge_tts") is not None
-TEXT_LONG = "Phantomresearch Daily covers a fresh research topic briefly in four languages. " * 3
+TEXT_LONG = "Phantomresearch Daily covers a fresh research topic briefly in four languages. " * 14
 
 
 def load_adapters():
@@ -135,7 +135,7 @@ class RunTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
-        self.payload, self.chunks = make_mp3(12.0)
+        self.payload, self.chunks = make_mp3(310.0)  # 300..1200 s container gate needs episode length
         FakeCommunicate.instances = []
         FakeCommunicate.audio_chunks = self.chunks
         self._previous = sys.modules.get("edge_tts")

@@ -1,6 +1,10 @@
 [
   {
     "date": "2026-10-18",
+    "topicId": "robot-manipulation"
+  },
+  {
+    "date": "2026-10-19",
     "topicId": "automated-theorem-proving"
   }
 ]

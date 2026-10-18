@@ -31,7 +31,7 @@ FFPROBE = os.environ.get("FFPROBE") or (
     "/opt/homebrew/bin/ffprobe" if Path("/opt/homebrew/bin/ffprobe").is_file() else shutil.which("ffprobe"))
 VOICES = Path(__file__).resolve().parent / "podcast/voices.json"
 TEXT_LONG = ("Today's research brief covers a fresh topic in clear narration "
-             "with steady volume and natural pacing for listeners everywhere. ") * 3
+             "with steady volume and natural pacing for listeners everywhere. ") * 8
 
 
 def load_adapters():
@@ -238,8 +238,9 @@ class RunTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
-        # 20 s so the hard pacing gate passes: TEXT_LONG ~ 384 chars vs en [3, 20] chars/s.
-        self.wav = make_wav(20.0, amplitude="0.4")
+        # 310 s: the 300..1200 s container gate needs episode-length audio;
+        # TEXT_LONG (en, ~3070 chars at 310 s) also satisfies the en pacing bounds.
+        self.wav = make_wav(310.0, amplitude="0.4")
 
     def cli_args(self, url, text_source=None, language="en"):
         text = Path(self.directory.name) / "episode.txt"
@@ -299,7 +300,7 @@ class CliTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
-        self.wav = make_wav(20.0, amplitude="0.4")
+        self.wav = make_wav(310.0, amplitude="0.4")  # 300..1200 s container gate
         self.text = Path(self.directory.name) / "episode.txt"
         self.text.write_text(TEXT_LONG, encoding="utf-8")
 

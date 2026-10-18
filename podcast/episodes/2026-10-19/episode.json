@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "date": "2026-10-19",
+  "topic": {
+    "id": "automated-theorem-proving",
+    "labels": {
+      "ja": "定理の自動証明",
+      "en": "Automated theorem proving",
+      "zh": "自动定理证明",
+      "ko": "자동 정리 증명"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-19T02:17:56+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.22339",
+      "title": "Lean Graph Search for Formal Theorem Proving",
+      "authors": [
+        "Yihan Xu",
+        "Jia-Chen Gu",
+        "Junyi Zhang",
+        "Di Wu",
+        "Haikang Deng",
+        "Po-Nien Kung",
+        "Kai-Wei Chang",
+        "Amit Sahai"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.22339",
+      "pdfUrl": "https://arxiv.org/pdf/2610.22339",
+      "excerpt": "Retrieving relevant lemmas is crucial for formal theorem proving, enabling provers to build machine-checkable proofs from established mathematical results. Recent retrieval systems match library declarations to a target theorem or its intermediate proof steps, but make limited use of multi-hop dependencies among declarations. These dependencies can reveal supporting lemmas that are not necessarily lexically similar to the target theorem but recur in proofs of related problems. To this end, we propose LeanGraphSearch, a graph-based retrieval method for Lean 4 that constructs a graph from Mathlib's forward dependencies and traverses it to uncover supporting lemmas through multi-hop dependency chains. Specifically, LeanGraphSearch links each declaration to the premises it depends on, uses a graph-based ranking algorithm to propagate relevance from semantically matched declarations to their dependencies, and reranks the expanded candidates against the original query."
+    },
+    {
+      "arxivId": "2610.21881",
+      "title": "Learning Lean Feedback for Efficient Proof-Candidate Evaluation on GPUs",
+      "authors": [
+        "Lazar Milikic",
+        "Etienne Bamas",
+        "Emmanuel Abbe",
+        "Viktor Kunčak"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.21881",
+      "pdfUrl": "https://arxiv.org/pdf/2610.21881",
+      "excerpt": "Training language models for formal theorem proving requires large numbers of verifier calls. Slow checks and timeouts often leave GPUs waiting and withhold rewards from potentially correct proofs. We train neural evaluators to predict Lean 4 verdicts and compiler feedback on GPUs using 4.84M labelled programs. We compare two validity classifiers with a feedback model that annotates proof attempts with predicted goal states and error messages. A two-stage evaluator that screens candidates with a classifier and scores its positive predictions with the feedback model reaches 87.8% accuracy in predicting whether Lean accepts a candidate proof, evaluated on a 68,932-program benchmark collected from public provers. The combined evaluator processes 3.5 candidates per second on one H100, 4.2x the throughput of our 64-worker Lean baseline with environment reuse. Finally, we combine our evaluator with Lean verdicts to obtain a hybrid reward system that shortens GRPO training steps by approximately 31%."
+    },
+    {
+      "arxivId": "2610.17331",
+      "title": "Do Theorem Provers Need Theorem-Proving Agents? mini-Lean-agent: A Coding-Agent Baseline for Lean",
+      "authors": [
+        "Tomas Ortega",
+        "Simon Park",
+        "Ayush Khaitan",
+        "Liam Fowl",
+        "Alex Kontorovich",
+        "Sanjeev Arora"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-12",
+      "url": "https://arxiv.org/abs/2610.17331",
+      "pdfUrl": "https://arxiv.org/pdf/2610.17331",
+      "excerpt": "General-purpose coding agents use standard shell and file interactions, yet formal theorem-proving agents often rely on specialized, ad-hoc tooling. This makes it difficult to determine which components of theorem-proving agents provide benchmark gains: an improved base model, a specialized harness, a specific tool, or a combination of any of them. We introduce mini-Lean-agent, a deliberately minimal agent for Lean tasks whose only model-visible tool is bash. The model must use bash to inspect and edit the repository, search local libraries, invoke Lean, and manage its own intermediate work, while a separate trusted evaluator verifies the final artifact. We compare mini-Lean-agent against AxProverBase and Numina-Lean-Agent on the Putnam 2025 benchmark. Experiments with Gemini 3.8 Flash as the base model show that mini-Lean-agent solves 7/12 problems at \\ 1.28 per problem. This suggests that a generic coding agent with a minimal harness can already achieve strong performance on Lean benchmarks."
+    },
+    {
+      "arxivId": "2610.16350",
+      "title": "Generalizing Green's Syzygy Theorems to Symmetric Products of Curves",
+      "authors": [
+        "Wenbo Niu",
+        "Peter Yi Wei"
+      ],
+      "primaryCategory": "math.AG",
+      "published": "2026-10-12",
+      "url": "https://arxiv.org/abs/2610.16350",
+      "pdfUrl": "https://arxiv.org/pdf/2610.16350",
+      "excerpt": "Let be a smooth projective curve of genus , and let denote the tautological line bundle on its -th symmetric product . We prove effective vanishing criteria for Koszul cohomology , extending two classical theorems of Mark Green. The main ingredient is a weight-one vanishing theorem proved by induction on , using a filtration of the kernel bundle of to reduce the required cohomological vanishings to lower symmetric products. As a consequence, when and , satisfies property for . This bound is sharp for elliptic symmetric squares and also gives evidence for a folklore conjecture on adjoint syzygies."
+    },
+    {
+      "arxivId": "2610.14923",
+      "title": "TLA-Verus: Generating and Solving Temporal Proof Obligations with LLM Agents",
+      "authors": [
+        "Kseniia Strelbytska",
+        "Balázs Szilágyi",
+        "Anna Mészáros",
+        "Ferenc Huszár"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-10",
+      "url": "https://arxiv.org/abs/2610.14923",
+      "pdfUrl": "https://arxiv.org/pdf/2610.14923",
+      "excerpt": "The TLA+ (temporal logic of actions) formal specification toolkit has seen widespread adoption in modeling modern distributed software systems including databases, storage systems, ledgers and coordination protocols. This popularity is despite its two significant limitations for software verification: Firstly, TLA+ offers no way to detect drift between software implementation and mathematical specification; secondly, TLC and TLAPS cannot provide satisfactory proofs of arbitrary temporal logic properties. We address the second limitation and take a first step towards the first by translating TLA+ specifications into Verus, an auto-active verifier built for Rust, via both a deterministic transpiler and an agentic translator. We demonstrate that our LLM-based pipeline is able to generate proof obligations from TLA+ specifications at scale, and to produce fully machine checkable proofs of both safety and liveness properties."
+    },
+    {
+      "arxivId": "2610.14164",
+      "title": "Intrinsic Contraction Theory and Stabilization of Probability Measures on the Wasserstein Space",
+      "authors": [
+        "Min Kim",
+        "Joshua D. Ibrahim",
+        "Soon-Jo Chung"
+      ],
+      "primaryCategory": "math.OC",
+      "published": "2026-10-09",
+      "url": "https://arxiv.org/abs/2610.14164",
+      "pdfUrl": "https://arxiv.org/pdf/2610.14164",
+      "excerpt": "Deterministic flows can contract Wasserstein distances between probability laws without being contractive in point-state space. We develop a differential contraction theory for pushforward flows on forward-invariant subsets of the 2-Wasserstein space that quotients out the gauge freedom of the continuity equation. Weighted Helmholtz-Hodge decomposition and the Wasserstein contingent cone define the weighted horizontal tangent cone (whtc). Requiring the contraction quadratic form to be nonpositive only on the whtc yields the Intrinsic Wasserstein Contraction Condition (IWCC), which generalizes the classical contraction LMI and recovers it on Dirac measures. An almost-everywhere Euler approximation based on the superposition principle and Banach-valued Lebesgue differentiation theorem proves that IWCC is sufficient for intrinsic Wasserstein contraction. Law contraction without point-state contraction is illustrated by a rotationally symmetric shear example."
+    },
+    {
+      "arxivId": "2610.13091",
+      "title": "A Lipschitz refinement of the Bebutov-Kakutani dynamical embedding theorem for connected Lie group actions",
+      "authors": [
+        "Yonatan Gutman",
+        "Qiang Huo",
+        "Kangbo Ouyang"
+      ],
+      "primaryCategory": "math.DS",
+      "published": "2026-10-09",
+      "url": "https://arxiv.org/abs/2610.13091",
+      "pdfUrl": "https://arxiv.org/pdf/2610.13091",
+      "excerpt": "Let be a connected Lie group equipped with a compatible right-invariant metric and let act continuously on a compact metrizable space . We prove that admits a -equivariant embedding into the right argument shift action on the space of one-Lipschitz maps from to if and only if the set of fixed points topologically embeds into . This generalizes a theorem proved by Gutman, Huo and Tsukamoto for -flows."
+    },
+    {
+      "arxivId": "2610.12622",
+      "title": "Removing Boundary Smoothness from the Hot-Spots Conclusion in the Simple-Eigenvalue Case",
+      "authors": [
+        "Krzysztof Burdzy"
+      ],
+      "primaryCategory": "math.AP",
+      "published": "2026-10-08",
+      "url": "https://arxiv.org/abs/2610.12622",
+      "pdfUrl": "https://arxiv.org/pdf/2610.12622",
+      "excerpt": "We give a reduction from a smooth-domain theorem excluding interior critical points of first positive Neumann eigenfunctions to a non-strict hot-spots conclusion on arbitrary bounded simply connected planar domains with compact Neumann resolvent and simple first positive eigenvalue. The main analytic step is spectral convergence under exhaustion by conformal images of concentric disks. A reflection extension, conformal invariance of Dirichlet energy, and compactness of the Sobolev embedding give a direct proof. A truncation argument justifies square integrability of the transferred extensions without any boundary regularity. The smooth-domain theorem proved by OpenAI is an external input; the approximation argument is proved here in full. The paper was generated by ChatGPT with prompts from the listed author."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 478.272,
+      "bytes": 2870012,
+      "sha256": "87be886d95e0eb5f4a6637b63259d72f2f92ee4b0080e44eb179d7520c6365fb",
+      "voice": "ja-JP-NanamiNeural",
+      "error": null
+    },
+    "en": {
+      "label": "English",
+      "status": "ok",
+      "text": "script-en.txt",
+      "audio": "en.mp3",
+      "durationSeconds": 546.648,
+      "bytes": 3280268,
+      "sha256": "cf311ac05de061024acf5d39e5f09da7967577850b716176c7052bc4f290445b",
+      "voice": "en-US-AndrewNeural",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 443.208,
+      "bytes": 2659628,
+      "sha256": "43511e66f015408a6e4730a2cb1e1e38f607eda4ea1c1cd0dbac4f5073f5aeab",
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "error": null
+    },
+    "ko": {
+      "label": "한국어",
+      "status": "ok",
+      "text": "script-ko.txt",
+      "audio": "ko.mp3",
+      "durationSeconds": 379.2,
+      "bytes": 2275580,
+      "sha256": "edcf847432064b7406be68a793f6570551c4608090db89771903e15c6f4ee7ab",
+      "voice": "ko-KR-SunHiNeural",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"theorem proving\"",
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: en (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=edge, en=edge, zh=edge, ko=edge"
+  ]
+}

@@ -22,7 +22,7 @@ import {
 const moduleDir = fileURLToPath(new URL(".", import.meta.url));
 const projectRoot = fileURLToPath(new URL("../..", import.meta.url));
 const LOCK_STALE_MS = 30 * 60 * 1000;
-const TTS_TIMEOUT_MS = 900000;
+const TTS_TIMEOUT_MS = 1800000;  // 30 min: 5-20 minute episodes can be slow on CPU-only engines
 const DEFAULT_VOICES = { ja: "ono_anna", en: "aiden", zh: "serena", ko: "sohee" };
 const DEFAULT_ENGINE_VOICES = {
   edge: { ja: "ja-JP-NanamiNeural", en: "en-US-AndrewNeural", zh: "zh-CN-XiaoxiaoNeural", ko: "ko-KR-SunHiNeural" },
@@ -339,6 +339,11 @@ export async function loadConfig() {
     maxPapers: Math.max(1, Math.floor(Number(config.maxPapers)) || 3),
     maxExcerptChars: config.maxExcerptChars && typeof config.maxExcerptChars === "object" ? config.maxExcerptChars : {},
     backfillDays: Math.max(1, Math.floor(Number(config.backfillDays)) || 3),
+    duration: {
+      minSeconds: Math.floor(Number(config.duration?.minSeconds)) || 300,
+      maxSeconds: Math.floor(Number(config.duration?.maxSeconds)) || 1200,
+      targetSeconds: Math.floor(Number(config.duration?.targetSeconds)) || 660,
+    },
     episodeDir: typeof config.episodeDir === "string" && config.episodeDir ? config.episodeDir : "podcast/episodes",
     stateDir: typeof config.stateDir === "string" && config.stateDir ? config.stateDir : "podcast/state",
   };
@@ -441,7 +446,9 @@ async function generateEpisode(date, context) {
   let papers = [];
   let source = "curated";
   if (!args.offline) {
-    const fetched = await fetchPapers(topic.keyword, { max: Math.max(config.maxPapers + 2, 5) });
+    // Pool wider than maxPapers on purpose: buildScript may need to grow the
+    // episode (up to maxPapers) instead of only shrinking it.
+    const fetched = await fetchPapers(topic.keyword, { max: Math.max(config.maxPapers + 2, 10) });
     if (fetched.length > 0) {
       source = "arxiv";
       papers = fetched.slice(0, config.maxPapers);
@@ -500,10 +507,20 @@ async function generateEpisode(date, context) {
       error: result.error ?? null,
     };
     if (result.status !== "ok") notes.push(`${lang}: audio failed (${result.error})`);
-    else if (result.note) notes.push(`${lang}: ${result.note}`);
+    else {
+      if (result.note) notes.push(`${lang}: ${result.note}`);
+      // Episode-level duration gate (mirrors the adapter gate in
+      // synthesize*.py): record when a published track is outside [min, max).
+      const { minSeconds, maxSeconds } = config.duration;
+      const seconds = result.durationSeconds;
+      if (Number.isFinite(seconds)) {
+        if (seconds < minSeconds) notes.push(`${lang}: audio ${Math.round(seconds)}s is below config.duration.minSeconds (${minSeconds}s)`);
+        else if (seconds >= maxSeconds) notes.push(`${lang}: audio ${Math.round(seconds)}s is at/above config.duration.maxSeconds (${maxSeconds}s)`);
+      }
+    }
   }
   if (trimmedLanguages.length > 0) {
-    notes.push(`audio brief shortened to stay within the ~60-110s target for: ${trimmedLanguages.join(", ")} (full paper links and abstracts remain in this episode data)`);
+    notes.push(`audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ${trimmedLanguages.join(", ")} (full paper links and abstracts remain in this episode data)`);
   }
   const enginesUsed = [...new Set(config.languages.map((lang) => engineForLang(tts, lang)))];
   if (enginesUsed.some((engine) => engine !== "qwen")) {
