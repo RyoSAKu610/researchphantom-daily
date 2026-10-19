@@ -1,0 +1,20 @@
+{
+  "provider": "edge-tts",
+  "model": "ko-KR-SunHiNeural",
+  "model_commit": null,
+  "language": "ko",
+  "voice": "ko-KR-SunHiNeural",
+  "style_chars": 0,
+  "text_chars": 3893,
+  "durationSeconds": 360.84,
+  "bytes": 2165276,
+  "sha256": "60d173d215ee026fe120a5128a90e52dab129de7fa708805713b811780e40a3b",
+  "peak": 0.63803,
+  "rms_dbfs": -18.51,
+  "clipped_fraction": 0.0,
+  "silent_fraction": 0.118,
+  "leading_silence_seconds": 0.0,
+  "trailing_silence_seconds": 1.0,
+  "longest_silence_seconds": 1.0,
+  "seconds_per_char": 0.093
+}
