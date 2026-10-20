@@ -1,0 +1,21 @@
+{
+  "provider": "voicestudio-omnivoice",
+  "model": "omnivoice-gguf",
+  "model_commit": null,
+  "language": "ko",
+  "voice": "Phantom-KO",
+  "endpoint": "http://127.0.0.1:3901/v1/audio/speech",
+  "style_chars": 10,
+  "text_chars": 4049,
+  "durationSeconds": 342.528,
+  "bytes": 2055404,
+  "sha256": "9f96e2f279ad71af226f0d488d35318ed20bde50bdd38bbab8576efe95c13997",
+  "peak": 0.77122,
+  "rms_dbfs": -18.06,
+  "clipped_fraction": 0.0,
+  "silent_fraction": 0.055,
+  "leading_silence_seconds": 0.0,
+  "trailing_silence_seconds": 0.0,
+  "longest_silence_seconds": 1.0,
+  "seconds_per_char": 0.085
+}

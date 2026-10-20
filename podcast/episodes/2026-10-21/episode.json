@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "date": "2026-10-21",
+  "topic": {
+    "id": "human-computer-interaction",
+    "labels": {
+      "ja": "ヒューマン・コンピュータ・インタラクション",
+      "en": "Human-computer interaction",
+      "zh": "人机交互",
+      "ko": "인간-컴퓨터 상호작용"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-21T06:41:13+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.26758",
+      "title": "AI Misconception and Adoption Among Indonesian K-12 Teachers",
+      "authors": [
+        "Alham Fikri Aji",
+        "Afifa Amriani",
+        "Rendi Chevi",
+        "Ayu Purwarianti",
+        "Derry Wijaya"
+      ],
+      "primaryCategory": "cs.HC",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26758",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26758",
+      "excerpt": "Indonesia's fragmented geography and uneven infrastructure pose persistent challenges for adopting new educational technologies. While national initiatives aim to mainstream AI in K-12 schools by 2025, policy readiness does not automatically mean teachers are ready for the classroom. This study surveys Indonesian K-12 teachers to examine: (1) their understanding of AI, (2) how they and their students use AI, and (3) their views on the acceptability of AI in learning activities. Through semi-automated thematic analysis, we identify common misconceptions and use cases. Our findings reveal a notable mismatch: while teachers find AI use in education acceptable and support it for the sake of efficiency, they remain fully aware of the risks to learning depth and academic honesty. We also find that this high level of acceptance is currently coupled with a poor understanding of how AI actually works."
+    },
+    {
+      "arxivId": "2610.26703",
+      "title": "Comparing Computer Use Behavior Across Multiple Levels of Abstraction",
+      "authors": [
+        "Ananya Gubbi Mohanbabu",
+        "Rosiana Natalie",
+        "Anhong Guo",
+        "Amy Pavel"
+      ],
+      "primaryCategory": "cs.HC",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26703",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26703",
+      "excerpt": "Interaction traces record how people and agents use computers, and comparing them can reveal usability barriers, differences in expertise, and human--agent similarity. Yet traces are recorded as low-level, interface-specific actions, making comparisons difficult across tasks, interfaces, and input modalities. Existing approaches either compare these actions directly, reduce traces to aggregate outcomes, or summarize them at higher-level goals, obscuring where behavior differs. We present MAP (Multi-level Action Parsing), a hierarchical semantic representation and annotation pipeline that maps traces into a common vocabulary across linked levels of abstraction. MAP compares traces by sequence, recurring patterns, and effort, localizing differences by type and abstraction level. A technical evaluation across three computer use datasets shows high agreement with manual annotations and broad coverage of behavior."
+    },
+    {
+      "arxivId": "2610.26598",
+      "title": "TapID: Rapid touch interaction in virtual reality using wearable sensing",
+      "authors": [
+        "Manuel Meier",
+        "Paul Streli",
+        "Andreas Fender",
+        "Christian Holz"
+      ],
+      "primaryCategory": "cs.HC",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26598",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26598",
+      "excerpt": "Current Virtual Reality systems typically use cameras to capture user input from controllers or free-hand mid-air interaction. In this paper, we argue that this is a key impediment to productivity scenarios in VR, which require continued interaction over prolonged periods of time---a requirement that controller or free-hand input in mid-air does not satisfy. To address this challenge, we bring rapid touch interaction on surfaces to Virtual Reality---the input modality that users have grown used to on phones and tablets for continued use. We present TapID, a wrist-based inertial sensing system that complements headset-tracked hand poses to trigger input in VR. TapID embeds a pair of inertial sensors in a flexible strap, one at either side of the wrist; from the combination of registered signals, TapID reliably detects surface touch events and, more importantly, identifies the finger used for touch."
+    },
+    {
+      "arxivId": "2610.26538",
+      "title": "Small Average Error, Wide Individual Error: General-Purpose LLMs Estimating Energy Intake from Meal Photos in a Feeding Trial",
+      "authors": [
+        "Xiaomeng Li"
+      ],
+      "primaryCategory": "cs.HC",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26538",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26538",
+      "excerpt": "Photo-based estimation of food energy could ease dietary assessment, and general-purpose multimodal large language models (LLMs) make such estimates easy to obtain. Most evaluations use one photo taken before eating and compare with energy served, while dietary assessment needs energy eaten. We evaluated six models from two vendors (Claude Haiku, Sonnet and Opus 5.5; GPT-6 luna, 6.1 sol and 6 astra) on 802 meals from ACETADA, a controlled feeding trial with weighed intake, with the before photo only, before and after photos in separate calls (subtraction), or both photos in one request. Three results ran against intuition. Subtraction under-estimated intake for five of six models, because the models still report hundreds of kilocalories for a nearly empty tray. Scaling the before-only estimate by the average share eaten (0.87) matched much of the gain from the after photo; beyond that constant, the second photo lowered meal-level error by only 2.2 to 3.4 points, mainly in meals with food left."
+    },
+    {
+      "arxivId": "2610.26524",
+      "title": "Beyond Behavioral Accuracy: Evaluating Individual-Level Fidelity in LLM Investor Simulation",
+      "authors": [
+        "Jiajie He",
+        "Yuanhong Jiang",
+        "Xintong Chen",
+        "Dongling Ni",
+        "Wenjin Liu"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26524",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26524",
+      "excerpt": "Large language models (LLMs) are increasingly used as user simulators, but can they faithfully reproduce an individual's behavior and decision logic over time? We investigate this question in a longitudinal paper-trading study with 80 participants. Using rolling next-day predictions, we evaluate trading activity, buy-sell structure, asset selection, and portfolio outcomes, complemented by controlled input ablations and participant-rated explanation alignment. No evaluated LLM reliably outperforms a simple recent-activity persistence baseline for predicting trade occurrence, while buy-sell structure and asset selection remain difficult to reproduce. Similar activity-level performance can also yield substantially different portfolio trajectories. Ablations show that activity predictions depend primarily on recent trades, whereas asset choices are sensitive to multiple evidence sources. Participants rate explanations as more aligned with their recurring strategies than with their decision-specific rationales."
+    },
+    {
+      "arxivId": "2610.26485",
+      "title": "Promptile: Recovering and Reusing Prompting Strategies from LLM Interaction Histories",
+      "authors": [
+        "Qingyang Wan",
+        "Chang Liu",
+        "Zhoutong Ye",
+        "Chengwen Zhang",
+        "Yanru Qian",
+        "Zhike Wang",
+        "Jie Cai",
+        "Chun Yu"
+      ],
+      "primaryCategory": "cs.HC",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26485",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26485",
+      "excerpt": "As people use large language models (LLMs) over time, they develop their own ways of prompting to achieve desired results. These useful experiences often remain scattered and unorganized across conversations. Yet existing personalization approaches primarily capture user preferences or explicitly defined workflows. Through a formative study, we found that users develop prompting strategies that range from implicit instructions to explicit templates from these experiences. We further find that interaction behaviors provide evidence for these strategies, which can be decomposed and recombined for reuse across tasks. Building on these findings, we present Promptile, a framework that identifies and validates users' prompting strategies from interaction histories. Promptile organizes these strategies into reusable components that can be retrieved, combined, and adapted to users' current tasks. Our evaluation shows that Promptile accurately recovers and reuses these strategies, better aligning model outputs with users' expectations while reducing repetitive prompting effort."
+    },
+    {
+      "arxivId": "2610.26447",
+      "title": "Comparing Experiences of Speech-Driven Game Modification in Solo Play, Paired Play, and Paired Watching Using the Fighting Game PATCH FIGHTER",
+      "authors": [
+        "Maya Grace Torii",
+        "Takahito Murakami",
+        "Yoichi Ochiai"
+      ],
+      "primaryCategory": "cs.HC",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26447",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26447",
+      "excerpt": "Players often have ideas about a game while playing it, but turning them into changes usually means stepping out of play to edit it. We built PATCH FIGHTER, a two-player fighting game defined by 91 types of adjustable parameters. A large language model (LLM) reads players' conversations during play and rewrites these parameters between games, so players can change the game just by talking. We conducted a within-subjects experiment with 27 pairs (54 participants) comparing three conditions, solo play, paired play, and paired watching. Participants rated enjoyment after each game and answered a questionnaire on speech and changes after each condition. Paired play was the most enjoyable condition. In paired play, participants also felt more able to say what they thought about the game than in solo play. In interviews, participants valued talking with the partner and checking changes through their own play. Paired watching was less preferred because they could not try the changes themselves."
+    },
+    {
+      "arxivId": "2610.26411",
+      "title": "Exploring Visual Access and Proactive AI Tutoring for Handwritten Mathematics",
+      "authors": [
+        "Nachiket Kotalwar",
+        "Conrad Borchers",
+        "Shubham Gandhi",
+        "Partha Sarathi Purkayastha",
+        "David Yaron",
+        "Carolyn P. Rosé"
+      ],
+      "primaryCategory": "cs.CY",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26411",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26411",
+      "excerpt": "Handwritten work captures mathematical reasoning that learners may not express in typed or voice-dictated messages. We built a multimodal AI tutoring platform in which a phone camera gives the tutor a live view of learners' work on paper. In a randomized online study, 117 adults solved calculus problems with Text-Reactive, Visual-Reactive, or Visual-Proactive assistance. Analysis of 2,140 tutor messages showed that visual access shifted assistance toward checking ongoing work, while proactivity enhanced error identification and directive hints. Learners valued feedback grounded in their writing; those who received proactive help rated it as supportive, and about a third wanted it more often. These findings inform when tutors should intervene and what they should address. We release the platform, prompts, and instruments, together with 255,984 timestamped images of handwritten work linked to tutoring conversations, intervention decisions, and learning outcomes, to support multimodal tutoring systems that preserve the affordances of handwritten work while providing adaptive feedback."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 371.064,
+      "bytes": 2226620,
+      "sha256": "ebf2950a0aa123449caf390924cb9b1e23e921562288e1de265723f0304838b2",
+      "voice": "kanade",
+      "error": null
+    },
+    "en": {
+      "label": "English",
+      "status": "ok",
+      "text": "script-en.txt",
+      "audio": "en.mp3",
+      "durationSeconds": 492.84,
+      "bytes": 2957276,
+      "sha256": "bc0a5db0dfcae0166b0a0de3960eef892341b36091934230eb0aad5a9a74a7ea",
+      "voice": "Phantom-EN",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 394.824,
+      "bytes": 2369180,
+      "sha256": "65f247297d5dc23843699d392133acdd6741e7d3708414e4a37af47b52336083",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "ko": {
+      "label": "한국어",
+      "status": "ok",
+      "text": "script-ko.txt",
+      "audio": "ko.mp3",
+      "durationSeconds": 342.528,
+      "bytes": 2055404,
+      "sha256": "9f96e2f279ad71af226f0d488d35318ed20bde50bdd38bbab8576efe95c13997",
+      "voice": "Phantom-KO",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"human-computer interaction\"",
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, en, zh, ko (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=irodori, en=voicestudio, zh=voicestudio, ko=voicestudio"
+  ]
+}
