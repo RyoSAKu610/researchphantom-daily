@@ -18,5 +18,9 @@
   {
     "date": "2026-10-22",
     "topicId": "machine-translation"
+  },
+  {
+    "date": "2026-10-23",
+    "topicId": "multimodal-learning"
   }
 ]

@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "date": "2026-10-23",
+  "topic": {
+    "id": "multimodal-learning",
+    "labels": {
+      "ja": "マルチモーダル学習",
+      "zh": "多模态学习",
+      "de": "Multimodales Lernen",
+      "es": "Aprendizaje multimodal",
+      "ru": "Мультимодальное обучение",
+      "it": "Apprendimento multimodale"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-23T06:39:55+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.29621",
+      "title": "Reliability-Aware Probabilistic Fusion for Multimodal Learning with Incomplete Evidence",
+      "authors": [
+        "Patitapaban Palo",
+        "Abhisek Tiwari",
+        "Mattia Carletti",
+        "Anshul Thakur",
+        "Xiao Gu",
+        "David A. Clifton"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-21",
+      "url": "https://arxiv.org/abs/2610.29621",
+      "pdfUrl": "https://arxiv.org/pdf/2610.29621",
+      "excerpt": "Multimodal inputs may be missing or degraded, raising distinct questions of evidence availability and trust. We introduce a reliability-aware Gaussian Product-of-Experts (PoE) in which an input-dependent reliability weight tempers each modality's latent precision, while missing experts are omitted. We characterize how reliability and availability affect posterior information and expert influence. Across two clinical multimodal tasks, the full framework remains competitive with complete inputs and achieves its clearest mean-AUROC advantage under modality absence, particularly on HAIM-MIMIC-MM. Ablations show a substantial gain from missing-aware training and an additional HAIM improvement from reliability weighting under matched PoE, missing-aware, and consistency training. Unseen test-time corruptions are used diagnostically and reveal modality-dependent reliability-weight and latent-uncertainty responses, including failure under severe degradation."
+    },
+    {
+      "arxivId": "2610.27670",
+      "title": "Reusing Multimodal Agents: Efficient Evaluation of Sound Designs in Games",
+      "authors": [
+        "Thai Nguyen Van",
+        "Ibrahim Khan",
+        "Mury Fajar Dewantoro",
+        "Pratch Suntichaikul",
+        "Hai Van Pham",
+        "Ruck Thawonmas"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.27670",
+      "pdfUrl": "https://arxiv.org/pdf/2610.27670",
+      "excerpt": "This paper introduces a novel framework for efficiently evaluating in-game sound designs using multimodal learning and reinforcement learning. Sound design significantly influences gameplay and accessibility; however, objective evaluation methods, defined here as automated assessments based on agent performance rather than human ratings, often require retraining agents from scratch for each sound design. Our approach first pre-trains a multimodal encoder that encodes visual and auditory information into a shared latent space. A reinforcement learning agent is then trained using this latent representation. We fine-tune the multimodal encoder for each sound design while keeping the trained policy fixed, allowing us to isolate the effects of sound changes on agent behavior. To evaluate the proposed method, we conducted experiments on games from multiple genres, comparing the performance of blind agents (agents using only sound input) under various sound designs."
+    },
+    {
+      "arxivId": "2610.27036",
+      "title": "MOFFieldBench: A Machine Learning Benchmark for Continuous Electronic Fields in Metal-Organic Frameworks",
+      "authors": [
+        "Zhaolin Hu",
+        "Hehe Fan",
+        "Chenhao Rao",
+        "Wangyihan Guo",
+        "Meng Xu",
+        "Qiwei Yang",
+        "Yi Yang"
+      ],
+      "primaryCategory": "cond-mat.mtrl-sci",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.27036",
+      "pdfUrl": "https://arxiv.org/pdf/2610.27036",
+      "excerpt": "Machine-learning models for metal-organic frameworks (MOFs) predominantly rely on atomic structures, whereas electron-density (ED) and electrostatic-potential (ESP) fields remain underexplored as scalable learning representations. These continuous fields encode complementary spatial and electronic information relevant to structure-property relationships, particularly pore geometry and guest-framework interactions, but costly first-principles calculations, storage requirements and the scarcity of systematically aligned datasets limit their broader use. Here we introduce MOFFieldBench, a multimodal benchmark comprising approximately 46,000 MOFs with one-to-one aligned crystallographic structures, ED fields and ESP fields. A unified workflow integrates field generation, error-controlled compression and sparse point-cloud representation, supporting field reconstruction, prediction of 13 material properties, multimodal property prediction and pairwise cross-modal retrieval. ED and ESP provide competitive representations for pore geometry, adsorption and separation properties."
+    },
+    {
+      "arxivId": "2610.25617",
+      "title": "CheXFuse: Guided Differential Joint Attention Fusion for Robust Multimodal Chest X-Ray Classification in Data-Scarce Medical Settings",
+      "authors": [
+        "Muntaqim Ahmed Raju",
+        "Priyanka Siddappa",
+        "Md Shifat Haider Al Amin",
+        "Ruizhe Ma",
+        "Md Ripon Ahammed"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.25617",
+      "pdfUrl": "https://arxiv.org/pdf/2610.25617",
+      "excerpt": "A central challenge in multimodal learning is how to fuse modalities that differ substantially in predictive strength. When one modality provides a much stronger representation than another, indiscriminate cross-modal interaction can introduce weak, redundant, or unstable signals, limiting or even degrading performance relative to the strongest unimodal representation. To address this problem, we propose CheXFuse, a multimodal fusion framework based on Guided Differential Joint Attention (GuDJA). CheXFuse combines image and text token representations within a joint multimodal sequence, where learned token guidance emphasizes informative representations and differential attention reduces less useful attention responses. We evaluate CheXFuse on the Indiana University (IU) Chest X-ray dataset, using binary (normal vs. abnormal) classification as the downstream task. Experiments are conducted under both original-report and masked-report settings, with the latter serving as a controlled stress test under reduced textual informativeness."
+    },
+    {
+      "arxivId": "2610.24681",
+      "title": "MM-LeJEPA: Correlated Gaussian Regularization for Multimodal Joint-Embedding Predictive Architectures",
+      "authors": [
+        "Haowen Bai",
+        "Rui Gong$",
+        "Meichen Liu",
+        "Ming-Xuan Weng",
+        "Bihan Wen",
+        "Kim-Hui Yap"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-17",
+      "url": "https://arxiv.org/abs/2610.24681",
+      "pdfUrl": "https://arxiv.org/pdf/2610.24681",
+      "excerpt": "LeJEPA derives an isotropic Gaussian embedding target by minimizing, under its task assumptions, a Fisher information criterion that controls the task-averaged squared prediction bias. This enables unimodal self-supervised learning without reconstruction decoders, exponential-moving-average teachers, or contrastive negatives. However, its isotropic task prior does not account for the cross-modal structure of multimodal tasks that read shared content. We introduce MM-LeJEPA by extending LeJEPA's task assumptions to multimodal learning. Specifically, we model multimodal tasks as strength-weighted combinations of components that read independent information from the two modalities and components that read the same content from both. Under explicit gradient-moment, correspondence, and symmetry assumptions, we derive a correlated Gaussian target that minimizes a weighted Fisher information functional under a fixed total variance constraint."
+    },
+    {
+      "arxivId": "2610.24598",
+      "title": "AdamPM: Memory-Efficient LLM Optimization via Moment Pooling",
+      "authors": [
+        "Xiaowei Ji",
+        "Lishan Xu",
+        "Jianing An",
+        "Jie Luo",
+        "Wenjun Wu",
+        "Lei Huang"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-17",
+      "url": "https://arxiv.org/abs/2610.24598",
+      "pdfUrl": "https://arxiv.org/pdf/2610.24598",
+      "excerpt": "Adam is widely used for training large language models (LLMs) owing to its strong optimization performance and training stability, but its element-wise estimation for the first and second moments incur substantial memory overhead. Although numerous memory-efficient optimizers have been proposed, many incur additional computational overhead or require additional tuning of hyperparameters. Consequently, Adam remains a dominant and reliable choice for LLM pre-training. We propose AdamPM (Adam with Pooled Moments), a simple and memory-efficient variant of Adam that groups adjacent moment entries along the row or column dimension and represents each group by a single shared mean. AdamPM can well inherit Adam's hyperparameter settings and is readily integrated into existing Adam optimizer implementations, with less memory overhead. We systematically investigate pooling of both first and second moment estimates and identify second moment pooling as the effective design. With a group size of , AdamPM reduces second moment memory to of the original requirement."
+    },
+    {
+      "arxivId": "2610.24395",
+      "title": "MSCR: Jointly Balancing Utilization Across Modalities and Discovering Synergistic Information",
+      "authors": [
+        "Xinyu Chen",
+        "Liangjian Wen",
+        "Jiang Duan",
+        "Dongkai Wang",
+        "Yong Dai",
+        "Jiayu Bai",
+        "Jianzhuang Liu",
+        "Zhen Tian"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-17",
+      "url": "https://arxiv.org/abs/2610.24395",
+      "pdfUrl": "https://arxiv.org/pdf/2610.24395",
+      "excerpt": "In multimodal learning, modality imbalance often lets one modality dominate optimization and keeps the model from fully exploiting cross-modal interactions. Balance-oriented methods such as the Multimodal Competition Regularizer (MCR) perform well by alleviating this imbalance during training. These dynamic balancing methods, however, mainly adjust modality contributions and do not consider how imbalance affects the formation of synergistic information during fusion. Synergy is a major source of multimodal advantage, because it is predictive gain that cannot be recovered from unimodal evidence alone. We propose the Multimodal Synergistic Competition Regularizer (MSCR), a fusion method that jointly promotes balanced modality utilization and the discovery of synergistic information. MSCR has two complementary objectives. An anti-dominance objective suppresses excessive unimodal influence and leaves room for synergistic information, and a synergy objective encourages the fused predictor to outperform a non-synergistic unimodal reference."
+    },
+    {
+      "arxivId": "2610.23151",
+      "title": "CIIR - Class-Indexed Interface Representation Learning",
+      "authors": [
+        "Doo Yon Kim",
+        "Christian Wallraven"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-16",
+      "url": "https://arxiv.org/abs/2610.23151",
+      "pdfUrl": "https://arxiv.org/pdf/2610.23151",
+      "excerpt": "Multimodal learning commonly assumes paired or synchronized observations, yet independently collected datasets rarely provide such correspondence. We introduce CIIR, a modular encoder--decoder framework that connects heterogeneous datasets through a class-indexed address space while preserving each dataset's native input format and output module. A known local index selects address , and an input-dependent 128-dimensional address representation Z_k(x) is written to that address. To demonstrate CIIR, we learn this address space from handwritten digits, clothing images, spoken-digit spectrograms, and hand signs without synchronized or instance-matched samples. Newly trained label-free receivers recover the requested addresses with 94.7% macro-average Address Realization Accuracy. We then attach the unseen SVHN dataset after freezing the base address space and train only lightweight adapters, achieving 90.2% MNIST>SVHN and 82.3% SVHN>MNIST end-to-end Address Transfer Accuracy without target-side decoder labels."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 382.128,
+      "bytes": 2293004,
+      "sha256": "e48a3920d95e10863e2684361ab2ba8c62d95a15e55b46d49e27a7a853ac13b4",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 416.328,
+      "bytes": 2498204,
+      "sha256": "d1257e3b7ad0e6bb9a30e3a98a3199e7f43ffc97b4e1b3cab8ad7389bceabb40",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "failed",
+      "text": "script-de.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Sprachsynthese fehlgeschlagen (exit 1: error: Unsupported language 'de'; /home/box/research)"
+    },
+    "es": {
+      "label": "Español",
+      "status": "failed",
+      "text": "script-es.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Fallo en la síntesis de voz (exit 1: error: Unsupported language 'es'; /home/box/research)"
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "failed",
+      "text": "script-ru.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Ошибка синтеза речи (exit 1: error: Unsupported language 'ru'; /home/box/research)"
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "failed",
+      "text": "script-it.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Sintesi vocale non riuscita (exit 1: error: Unsupported language 'it'; /home/box/research)"
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"multimodal learning\"",
+    "de: audio failed (Sprachsynthese fehlgeschlagen (exit 1: error: Unsupported language 'de'; /home/box/research))",
+    "es: audio failed (Fallo en la síntesis de voz (exit 1: error: Unsupported language 'es'; /home/box/research))",
+    "ru: audio failed (Ошибка синтеза речи (exit 1: error: Unsupported language 'ru'; /home/box/research))",
+    "it: audio failed (Sintesi vocale non riuscita (exit 1: error: Unsupported language 'it'; /home/box/research))",
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, de, it (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=qwen, es=qwen, ru=qwen, it=qwen"
+  ]
+}
