@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "date": "2026-10-22",
+  "topic": {
+    "id": "machine-translation",
+    "labels": {
+      "ja": "機械翻訳",
+      "en": "Machine translation",
+      "zh": "机器翻译",
+      "ko": "기계 번역"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-22T16:36:17+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.29943",
+      "title": "Towards English - Mizo Legal Machine Translation: Corpus Creation, Analysis, and Benchmarks",
+      "authors": [
+        "Telem Joyson Singh",
+        "Sanabam Boyshana",
+        "Sanasam Ranbir Singh",
+        "Priyankoo Sarmah"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-21",
+      "url": "https://arxiv.org/abs/2610.29943",
+      "pdfUrl": "https://arxiv.org/pdf/2610.29943",
+      "excerpt": "Indian court proceedings are held in English, so speakers of languages with limited translation technology have limited access to them. We present the first English Mizo parallel dataset of Indian court judgments. It contains 13,168 sentence pairs from the Gauhati High Court and the Supreme Court of India. Professional native Mizo translators translated complete documents; sentence pairs were manually aligned, and two independent reviewers checked the results. Our study finds that English words are borrowed in a very selective way: official and legal terms are almost always kept in English, but words for everyday things like actions, situations, and results are usually expressed in native Mizo. Mizo diacritics are also used inconsistently across the corpus. When we fine tune the NLLB 200 1.3B model on our training data, it scores 27.47 BLEU on a balanced legal test set of 1,000 sentence pairs, an improvement of 7.16 BLEU over the base model. However, it still uses English words about three times more often than a human translator does."
+    },
+    {
+      "arxivId": "2610.28838",
+      "title": "How to Use Parallel Data for Multilingual Pretraining",
+      "authors": [
+        "Zhihong Huang",
+        "Yao Lu",
+        "Derek F. Wong",
+        "Hamid Alinejad-Rokny",
+        "Min Yang"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.28838",
+      "pdfUrl": "https://arxiv.org/pdf/2610.28838",
+      "excerpt": "High-quality human-translated parallel corpora can improve cross-lingual transfer, but are typically too small for large-scale pretraining. Machine-translated web corpora help overcome this limitation, making parallel data available at pretraining scale. Standard multilingual pretraining, however, samples source documents and their translations independently, without explicitly using their parallel structure. We investigate how to use the parallel structure of the data to improve multilingual pretraining by concatenating each document with its translation in the same training sequence. We compare this parallel pretraining (PPT) approach with standard pretraining (SPT), training models from scratch at matched token budgets. Surprisingly, despite the benefits of parallel data reported in prior cross-lingual work, PPT alone does not consistently improve language understanding over SPT."
+    },
+    {
+      "arxivId": "2610.27852",
+      "title": "UvA-MT's Participation in the WMT26 General Translation Shared Task",
+      "authors": [
+        "Di Wu",
+        "Sergey Troshin",
+        "Wafaa Mohammed",
+        "Seth Aycock",
+        "Evgeniia Tokarchuk",
+        "Vlad Niculae",
+        "Christof Monz"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.27852",
+      "pdfUrl": "https://arxiv.org/pdf/2610.27852",
+      "excerpt": "This paper presents UvA-MT's submission to the WMT 2026 General Machine Translation shared task, competing in the unconstrained track across all 23 translation directions. This year, we fully leverage the test-time methods of Large Language Models (LLMs) for machine translation. Specifically, (1) we use sequential sampling with a refinement prompt to generate a pool of translation candidates for each source segment, a strategy shown to outperform traditional parallel sampling; and (2) we employ LLMs as pairwise judges to select the best candidate via a round-robin voting mechanism, with offline evaluation on the WMT25 benchmark showing a very clear improvement over point-wise best-of-N selection. Combined, these two strategies form our WMT26 submission."
+    },
+    {
+      "arxivId": "2610.27674",
+      "title": "Hybrid Momentum Methods for Optimizing Deep Learning Models",
+      "authors": [
+        "Haifeng Xu",
+        "Yijin Ren",
+        "Chenyu Zhou",
+        "Qi Deng",
+        "Dongdong Ge",
+        "Yinyu Ye"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.27674",
+      "pdfUrl": "https://arxiv.org/pdf/2610.27674",
+      "excerpt": "Momentum is central to stochastic optimization in deep learning, including the training of large language models. Classical momentum methods typically rely on a fast exponential moving average (EMA) scheme, which discounts past gradients on a fixed timescale and may underweight older gradients that remain informative. This creates a trade-off between retaining long-term history and adapting to recent changes. We introduce Hybrid Momentum (HyM), which combines a linearly weighted average of past gradients with a geometrically discounted fast momentum. The former assigns weights proportional to the gradients' iteration indices and retains a growing span of history, while the latter emphasizes recent gradients. This hybrid construction is modular and can be combined with adaptive preconditioning and other update transformations. In particular, we propose HyMUON, which applies Newton--Schulz orthogonalization to the hybrid direction. Illustrative examples and controlled experiments demonstrate the benefits of combining gradient information across these two timescales."
+    },
+    {
+      "arxivId": "2610.26155",
+      "title": "DeepSEA: A Multilingual Evaluation Benchmark for Southeast Asia",
+      "authors": [
+        "Jiuzhou Han",
+        "Abhishek Bijay Mishra",
+        "Trevor Cohn",
+        "Shubham Mittal"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26155",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26155",
+      "excerpt": "While language models have demonstrated remarkable capabilities, their performance remains disproportionately skewed towards high-resource languages. This disparity is particularly acute for the 700 million inhabitants of Southeast Asia, where vast linguistic diversity remains under-represented in existing benchmarks, often suffering from limited language coverage or narrow task scopes. To address this, we introduce DeepSEA, a comprehensive benchmark constructed from established datasets through professional human translation into 12 Southeast Asian languages, spanning both high-resource (e.g., Indonesian, Thai, Vietnamese) and low-resource (e.g., Burmese, Khmer, Lao) tiers across five distinct tasks: mathematical reasoning, scientific reasoning, question answering, abstractive summarization, and machine translation. Extensive evaluation of frontier proprietary and open-weights models reveals that while frontier models like Gemini-3.7-Flash maintain robustness across resource tiers, smaller models face severe performance degradation on low-resource languages."
+    },
+    {
+      "arxivId": "2610.25406",
+      "title": "Towards Figurative Language Understanding in Moroccan Darija: An Evaluation of Large Language Models",
+      "authors": [
+        "Jihad R'baiti",
+        "Youssef Hmamouche",
+        "Emmanuele Chersoni",
+        "Chu-Ren Huang",
+        "Amal El Fallah Seghrouchni"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-18",
+      "url": "https://arxiv.org/abs/2610.25406",
+      "pdfUrl": "https://arxiv.org/pdf/2610.25406",
+      "excerpt": "Figurative language remains a major challenge for Machine Translation (MT) systems, as the intended meaning of such expressions often goes beyond literal translation. Although recent advances in Large Language Models (LLMs) improved the translation of Arabic dialects, benchmark resources for evaluating figurative language translation in Moroccan Darija remain scarce. To this end, we introduce the Moroccan Darija Figurative Language Corpus (MDFC), a benchmark dataset for MT and multiple-choice question (MCQ) selection covering idioms, metaphors, and proverbs. Using MDFC, we evaluate 19 open- and closed-weight language models and MT systems at both the expression and contextual levels under zero-shot and six-shot settings. We also conduct layer-wise similarity-based probing to determine how model representations distinguish figurative from literal meanings. Our findings reveal that closed-weight models achieve the strongest translation performance, while the benefits of contextual information vary across models and tasks."
+    },
+    {
+      "arxivId": "2610.25107",
+      "title": "Generation-Heavy Hybrid Machine Translation",
+      "authors": [
+        "Nizar Yahya Habash"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-18",
+      "url": "https://arxiv.org/abs/2610.25107",
+      "pdfUrl": "https://arxiv.org/pdf/2610.25107",
+      "excerpt": "The state of the art techniques in Machine Translation (MT) require large amounts of symmetric resources from source and target languages. This is true regardless of whether the approach is Transfer or Interlingua, Symbolic or Statistical. Symmetry within these approaches is necessary to ensure quality, robustness and retargetability. In reality, such symmetry, whether it is in terms of structural transfer lexicons, interlingual dictionaries or parallel corpora, is a major bottleneck in developing any MT system. This dissertation presents an approach to MT that addresses the lack of symmetry by exploiting symbolic and statistical target language resources in source-poor/target-rich language pairs. This approach is called Generation-Heavy Hybrid Machine Translation (GHMT). Expected source language resources include a syntactic parser and a simple one-to-many translation dictionary. No transfer rules or complex interlingual representations are used."
+    },
+    {
+      "arxivId": "2610.24730",
+      "title": "GLOSS-MT: Controllable Low-Resource Machine Translation with an Editable Dictionary",
+      "authors": [
+        "Mich-Seth Owusu",
+        "Stephen E. Moore",
+        "Akwasi Asare",
+        "Lawrence Adu Gyamfi",
+        "Paul Azunre",
+        "Joel Budu",
+        "Jonathan Asiamah"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-17",
+      "url": "https://arxiv.org/abs/2610.24730",
+      "pdfUrl": "https://arxiv.org/pdf/2610.24730",
+      "excerpt": "Adapting a pretrained machine translation (MT) model to new terminology usually requires new parallel data and another round of fine-tuning, which is costly for low-resource languages. We ask whether controllability can be added to MT, and the fine-tuning burden reduced, without degrading the pretrained model. GLOSS-MT looks up the source's noun phrases in an offline English-Twi dictionary, replaces every phrase found by its Twi translation in place, and fine-tunes a translation model once to translate these mixed inputs. We apply the same data and pipeline to NLLB-200 (600M, 1.3B, 3.3B), OPUS-MT en-tw and TranslateGemma 4B. On a document-level English-to-Asante Twi benchmark (84 documents, four domains), every fine-tune scores above its pretrained base in chrF2 (+2.85 to +5.48), and the three NLLB fine-tunes are the best open systems (50.12-50.80)."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 373.248,
+      "bytes": 2239724,
+      "sha256": "8970c2843481786a272aff5b91ec9785051e63be3f06766d3f9bfd2d2c6c8b6c",
+      "voice": "kanade",
+      "error": null
+    },
+    "en": {
+      "label": "English",
+      "status": "ok",
+      "text": "script-en.txt",
+      "audio": "en.mp3",
+      "durationSeconds": 516.552,
+      "bytes": 3099548,
+      "sha256": "2ac96cc0a55a9b9fdeea1f45f2a1cb08ba885a3919ff11c04ed8d00883e8f72a",
+      "voice": "Phantom-EN",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 396.744,
+      "bytes": 2380700,
+      "sha256": "e215d5810ceb441bc893ff92aa27d6bd7124f6b1db1b84ba72510220430cb6ac",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "ko": {
+      "label": "한국어",
+      "status": "ok",
+      "text": "script-ko.txt",
+      "audio": "ko.mp3",
+      "durationSeconds": 343.8,
+      "bytes": 2063036,
+      "sha256": "cda662b93abf14de893ae48caddc37991692e9915a271ce7ac1a6430b7b4a793",
+      "voice": "Phantom-KO",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"machine translation\"",
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, en, zh (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=irodori, en=voicestudio, zh=voicestudio, ko=voicestudio"
+  ]
+}
