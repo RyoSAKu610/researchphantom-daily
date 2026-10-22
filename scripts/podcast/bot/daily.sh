@@ -80,6 +80,9 @@ export TZ=Asia/Tokyo
 # (that can never happen while config.languages is exactly ja/en/zh/ko).
 export PODCAST_TTS_MAP="${PODCAST_TTS_MAP:-ja:irodori,en:voicestudio,zh:voicestudio,ko:voicestudio}"
 unset PODCAST_TTS_ENGINE || true
+# All engines route through the local tts-hub (127.0.0.1:3901) unless overridden.
+export VOICESTUDIO_URL="${VOICESTUDIO_URL:-http://127.0.0.1:3901/v1/audio/speech}"
+export IRODORI_TTS_URL="${IRODORI_TTS_URL:-http://127.0.0.1:3901/v1/audio/speech}"
 
 set +e
 node scripts/podcast/daily.mjs --catchup
@@ -92,12 +95,11 @@ fi
 
 # ------------------------------------------------------ default edge fallback -
 FINAL_RC="${RC}"
-# Default behaviour: for a completed run (0 or 3), dates that ended with
-# missing audio (fully or in some languages) are regenerated once with the
-# pure edge map so the four-language requirement always holds. Set
-# PODCAST_FALLBACK_EDGE=0 to opt out (report server failures instead).
+# Opt-in only (PODCAST_FALLBACK_EDGE=1): for a completed run (0 or 3), dates
+# that ended with missing audio are regenerated once with the pure edge map.
+# Default is 0: edge-tts is not used; server failures are reported instead.
 # Mirrors the "edge is the main safety net" policy from the bot README.
-if [ "${PODCAST_FALLBACK_EDGE:-1}" != "0" ] && { [ "${RC}" -eq 0 ] || [ "${RC}" -eq 3 ]; }; then
+if [ "${PODCAST_FALLBACK_EDGE:-0}" != "0" ] && { [ "${RC}" -eq 0 ] || [ "${RC}" -eq 3 ]; }; then
   EDGE_ENABLED=true
 else
   EDGE_ENABLED=false

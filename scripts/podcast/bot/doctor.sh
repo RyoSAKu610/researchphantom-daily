@@ -12,7 +12,7 @@
 #
 # Env knobs:
 #   QUIET=1            print failures only (still prints the final line)
-#   VOICESTUDIO_HOST   default 127.0.0.1:3900
+#   VOICESTUDIO_HOST   default 127.0.0.1:3901 (local tts-hub)
 #   IRODORI_HOST       default 127.0.0.1:8088
 
 set -euo pipefail
@@ -21,7 +21,7 @@ BOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # this script lives at <repo>/scripts/podcast/bot/, so the repo root is 3 levels up
 REPO_ROOT="$(cd "${BOT_DIR}/../../.." && pwd)"
 QUIET="${QUIET:-0}"
-VS_HOST="${VOICESTUDIO_HOST:-127.0.0.1:3900}"
+VS_HOST="${VOICESTUDIO_HOST:-127.0.0.1:3901}"
 IRODORI_HOST="${IRODORI_HOST:-127.0.0.1:8088}"
 API_KEY_FILE="${HOME}/.config/podcast-bot/omnivoice-api-key"
 
@@ -115,8 +115,7 @@ if command -v docker >/dev/null 2>&1; then
   if docker ps --format '{{.Names}}' 2>/dev/null | grep -qx omnivoice; then
     check_pass "VoiceStudio container 'omnivoice' is running"
   else
-    check_fail "VoiceStudio container 'omnivoice' is running" "not running" \
-      "docker start omnivoice (or re-run scripts/podcast/bot/setup.sh)"
+    say "  [warn] VoiceStudio container 'omnivoice' not visible via docker (not running or no docker group); checking the HTTP surface directly"
   fi
 else
   say "  [info] docker not installed; checking the HTTP surface directly"
