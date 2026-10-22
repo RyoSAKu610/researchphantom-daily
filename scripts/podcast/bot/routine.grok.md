@@ -28,7 +28,7 @@ bash scripts/podcast/bot/doctor.sh
 - `setup.sh` は冪等。失敗した step だけ該当箇所ログを見て再実行してよい
 - **push 認証**はユーザーが一度きり設定する（PAT/credential helper）。あなたは push 失敗時に報告するのみ
 - Irodori-TTS-Server が入手できたら、`IRODORI_SERVER_DIR=<展開ディレクトリ> bash scripts/podcast/bot/setup.sh` を再実行して systemd unit（`irodori-tts.service`）を install する
-- **voice profile の作成はユーザー実施**（SSH tunnel `ssh -L 3900:127.0.0.1:3900 <user>@<bot>` → Mac のブラウザで VoiceStudio UI → `Phantom-EN` / `Phantom-ZH` / `Phantom-KO` を reference clip 付きで作成）。bot が代行しない
+- **voice profile の作成はユーザー実施**（SSH tunnel `ssh -L 3900:127.0.0.1:3900 <user>@<bot>` → Mac のブラウザで VoiceStudio UI → `Phantom-ZH` / `Phantom-DE` / `Phantom-ES` / `Phantom-RU` / `Phantom-IT` を reference clip 付きで作成）。bot が代行しない
 
 ## 3. 毎日 06:30 (Asia/Tokyo) の Routine
 
@@ -47,15 +47,15 @@ bash scripts/podcast/bot/doctor.sh
 | 1 | パイプライン/環境エラー | 復旧表 → 報告 |
 | 2 | flock 中（前回実行が進行中 or 未解消ロック） | 10 分待って再試行 1 回。2 回目でも 2 なら `podcast/state/daily.sh.lock` の存在だけ報告（勝手に rm しない） |
 
-**冪等設計**: 今日日付の episode が既にあれば skip。欠けた直近3日（backfillDays）は `--catchup` で補完。**音声の欠けた日（全部・一部言語）は既定で edge-tts によりすぐ再生成され、常に 4 言語がそろう**。あなたが日付計算する必要はない。
+**冪等設計**: 今日日付の episode が既にあれば skip。欠けた直近3日（backfillDays）は `--catchup` で補完。**音声の欠けた日（全部・一部言語）は既定で edge-tts によりすぐ再生成され、常に 6 言語（ja / zh / de / es / ru / it）がそろう**。あなたが日付計算する必要はない。
 
 ## 4. 復旧手順（doctor.sh の FAIL に対する対応）
 
 | FAIL / 症状 | 対応 |
 |---|---|
 | VoiceStudio discovery `/ .well-known/voicestudio-speech` が不達 | `docker ps` → `docker logs --tail 50 omnivoice` → `docker restart omnivoice` → 60 秒待って再 doctor |
-| `Phantom-EN/ZH/KO` が `GET /v1/audio/voices` に無い | **ユーザーに依頼**（UI 操作で作成するもの）。bot では解決しない |
-| Irodori :8088 が不達（warning 扱い） | `systemctl status irodori-tts` → `systemctl restart irodori-tts` → 再 doctor。**ja が欠けても `daily.sh` は完走し、既定の edge fallback（ja=edge・全 4 言語）で即時再生成される**。GitHub Actions(`daily-catchup.yml`) も 06:37 JST 以降に ja=edge で補完する |
+| `Phantom-ZH/DE/ES/RU/IT` が `GET /v1/audio/voices` に無い | **ユーザーに依頼**（UI 操作で作成するもの）。bot では解決しない |
+| Irodori :8088 が不達（warning 扱い） | `systemctl status irodori-tts` → `systemctl restart irodori-tts` → 再 doctor。**ja が欠けても `daily.sh` は完走し、既定の edge fallback（ja=edge・全 6 言語）で即時再生成される**。GitHub Actions(`daily-catchup.yml`) も 06:37 JST 以降に ja=edge で補完する |
 | push が失敗する | 認証/ネットワークの問題。**3 回まで**リトライ（`git push origin HEAD` のみ）→ 失敗のままなら報告（差分は次回 catchup が拾う） |
 | `Automation run rate limit exceeded`（Grok プラットフォーム側） | スキップせず、時間を置いて手動再試行。生成が 06:30/06:37 の Actions 保険と catchup で拾われる |
 | node/ffmpeg/flock 等が消えた場合 | `bash scripts/podcast/bot/setup.sh` を再実行後に doctor |
@@ -68,7 +68,7 @@ bash scripts/podcast/bot/doctor.sh
 [ResearchPhantom Daily] <YYYY-MM-DD (JST)>
 doctor : all checks passed / <FAIL 要約>
 daily  : exit <code> (<所要時間>)
-output : 2026-10-19 ja / en / zh / ko（欠け言語があれば明示）
+output : 2026-10-19 ja / zh / de / es / ru / it（欠け言語があれば明示）
 commit : <sha> pushed → Pages deploy: <成功/失敗/進行中>
 issues : <none / n 行で要約＋該当ログ行>
 ```

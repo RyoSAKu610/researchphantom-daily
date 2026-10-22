@@ -7,7 +7,8 @@
 # everything generated, changes nothing and exits 0).
 #
 # No irodori/voicestudio servers exist on GitHub-hosted runners, so ALL
-# languages are forced to the edge-tts engine via PODCAST_TTS_MAP. This only
+# languages of the lineup (ja/zh/de/es/ru/it) are forced to the edge-tts
+# engine via PODCAST_TTS_MAP. This only
 # ever fills dates that are missing on main: the bot VM's daily.sh is the
 # primary generator with the real engines; daily.mjs is idempotent and skips
 # dates whose episode.json exists, so this workflow cannot overwrite
@@ -39,7 +40,7 @@ jobs:
       # daily.mjs defaults to PODCAST_TTS_ENGINE=qwen when unset, which is not
       # available here (needs .venv-tts + model weights); be explicit.
       PODCAST_TTS_ENGINE: edge
-      PODCAST_TTS_MAP: "ja:edge,en:edge,zh:edge,ko:edge"
+      PODCAST_TTS_MAP: "ja:edge,zh:edge,de:edge,es:edge,ru:edge,it:edge"
     steps:
       - name: Checkout (fetch recent history for catchup context)
         uses: actions/checkout@v4

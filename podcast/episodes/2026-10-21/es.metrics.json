@@ -1,0 +1,20 @@
+{
+  "provider": "edge-tts",
+  "model": "es-ES-ElviraNeural",
+  "model_commit": null,
+  "language": "es",
+  "voice": "es-ES-ElviraNeural",
+  "style_chars": 0,
+  "text_chars": 6202,
+  "durationSeconds": 410.832,
+  "bytes": 2465372,
+  "sha256": "0f4dfc62c2328a66e11240d11d55c28f89e44997b7461a5e4431a677fe1b1cff",
+  "peak": 0.85351,
+  "rms_dbfs": -19.14,
+  "clipped_fraction": 0.0,
+  "silent_fraction": 0.107,
+  "leading_silence_seconds": 0.0,
+  "trailing_silence_seconds": 1.0,
+  "longest_silence_seconds": 1.0,
+  "seconds_per_char": 0.066
+}

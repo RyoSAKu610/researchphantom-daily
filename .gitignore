@@ -6,3 +6,4 @@ __pycache__/
 .venv-tts/
 .DS_Store
 scripts/podcast/bot/refs/
+podcast/state/daily.sh.lock

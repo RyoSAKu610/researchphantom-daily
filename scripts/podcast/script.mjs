@@ -9,17 +9,28 @@
 // shrinks quotes and paper count. The aim is [min, max) with the estimate as
 // close as possible to DURATION_TARGET_SECONDS (5-20 minute episodes, ~11 min
 // target).
+//
+// Lineup (2026-10): ja / zh / de / es / ru / it. English and Korean left the
+// lineup; buildScript("en"/"ko") is deliberately an unsupported-language error.
+// Their templates were removed, not translated — the six kept languages each
+// get native, deterministic filler with no content claims.
 import { parseISODate } from "./select.mjs";
 
-const DEFAULT_MAX_EXCERPT = { ja: 700, en: 1100, zh: 700, ko: 700 };
+// Language-order in the lineup drives labels/joins; excerpt defaults mirror
+// config.json maxExcerptChars (CJK shorter, Latin/Cyrillic scripts longer).
+const DEFAULT_MAX_EXCERPT = { ja: 700, zh: 700, de: 1100, es: 1100, ru: 1100, it: 1100 };
 const DEFAULT_MAX_PAPERS = 8;
-const SUPPORTED = ["ja", "en", "zh", "ko"];
+// en/ko buildScript calls must fail loudly (unsupported language).
+const SUPPORTED = ["ja", "zh", "de", "es", "ru", "it"];
 // Special plan factor meaning "use the whole cleaned abstract, no trimming".
 const FULL_ABSTRACT_CAP = 1000000;
 
-// Seconds per character with the local Qwen3-TTS voices, measured from real
-// synthesize.py runs (ja 0.168, en 0.082, zh 0.134, ko 0.168 s/char).
-const SECONDS_PER_CHAR = { ja: 0.1685, en: 0.082, zh: 0.135, ko: 0.1685 };
+// Seconds per character estimates for the edge/voicestudio voices, used to
+// size scripts toward the frozen duration window. Provisional values (not yet
+// measured from long real runs): ja/zh from the historical qwen measurements,
+// de/es/ru/it are first-cut guesses calibrated against typical neural TTS
+// speaking rates of these languages; recalibrate after real synthesis runs.
+const SECONDS_PER_CHAR = { ja: 0.1685, zh: 0.135, de: 0.095, es: 0.105, ru: 0.095, it: 0.098 };
 // Frozen episode-length contract, mirrored by config.json "duration":
 // every episode must be >= 5 minutes and < 20 minutes, target ~11 minutes.
 export const DURATION_MIN_SECONDS = 300;
@@ -87,10 +98,24 @@ export function trimExcerpt(raw, limit) {
 
 // ---- small formatting helpers ----------------------------------------------
 
-const JOINT = { ja: "", en: " ", zh: "", ko: " " };
-const TITLE_QUOTES = { ja: ["「", "」"], en: ["\"", "\""], zh: ["「", "」"], ko: ["\"", "\""] };
-const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const DEFAULT_LANGUAGE_LABELS = { ja: "日本語", en: "English", zh: "中文", ko: "한국어" };
+// JOINT "" means "no space needed between clauses" (CJK), used only where the
+// gluing language is the script language itself.
+const JOINT = { ja: "", zh: "", de: " ", es: " ", ru: " ", it: " " };
+// CJK keeps corner brackets; German uses the low-high „…" pair; Spanish,
+// Russian and Italian use guillemets «…».
+const TITLE_QUOTES = {
+  ja: ["「", "」"],
+  zh: ["「", "」"],
+  de: ["\u201E", "\u201C"],
+  es: ["«", "»"],
+  ru: ["«", "»"],
+  it: ["«", "»"],
+};
+const MONTHS_DE = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+const MONTHS_ES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const MONTHS_RU = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+const MONTHS_IT = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+const DEFAULT_LANGUAGE_LABELS = { ja: "日本語", zh: "中文", de: "Deutsch", es: "Español", ru: "Русский", it: "Italiano" };
 
 function normalizeLang(lang) {
   const value = String(lang ?? "").trim().toLowerCase();
@@ -99,27 +124,33 @@ function normalizeLang(lang) {
 }
 
 function formatDate(lang, parsed) {
-  if (lang === "en") return `${MONTHS_EN[parsed.month - 1]} ${parsed.day}, ${parsed.year}`;
-  if (lang === "ko") return `${parsed.year}년 ${parsed.month}월 ${parsed.day}일`;
-  return `${parsed.year}年${parsed.month}月${parsed.day}日`;
+  if (lang === "ja" || lang === "zh") return `${parsed.year}年${parsed.month}月${parsed.day}日`;
+  if (lang === "de") return `${parsed.day}. ${MONTHS_DE[parsed.month - 1]} ${parsed.year}`;
+  if (lang === "es") return `${parsed.day} de ${MONTHS_ES[parsed.month - 1]} de ${parsed.year}`;
+  if (lang === "ru") return `${parsed.day} ${MONTHS_RU[parsed.month - 1]} ${parsed.year}`;
+  return `${parsed.day} ${MONTHS_IT[parsed.month - 1]} ${parsed.year}`;
 }
 
 function countPhrase(lang, count) {
   const words = {
     ja: ["", "一本", "二本", "三本", "四本", "五本", "六本", "七本", "八本"],
-    en: ["", "one", "two", "three", "four", "five", "six", "seven", "eight"],
     zh: ["", "一篇", "两篇", "三篇", "四篇", "五篇", "六篇", "七篇", "八篇"],
-    ko: ["", "한 편", "두 편", "세 편", "네 편", "다섯 편", "여섯 편", "일곱 편", "여덟 편"],
+    de: ["", "ein Paper", "zwei Paper", "drei Paper", "vier Paper", "fünf Paper", "sechs Paper", "sieben Paper", "acht Paper"],
+    es: ["", "un artículo", "dos artículos", "tres artículos", "cuatro artículos", "cinco artículos", "seis artículos", "siete artículos", "ocho artículos"],
+    ru: ["", "одну статью", "две статьи", "три статьи", "четыре статьи", "пять статей", "шесть статей", "семь статей", "восемь статей"],
+    it: ["", "un articolo", "due articoli", "tre articoli", "quattro articoli", "cinque articoli", "sei articoli", "sette articoli", "otto articoli"],
   };
-  return words[lang][count] ?? (lang === "ja" ? `${count}本` : lang === "zh" ? `${count}篇` : lang === "ko" ? `${count}편` : String(count));
+  return words[lang][count] ?? (lang === "ja" ? `${count}本` : lang === "zh" ? `${count}篇` : String(count));
 }
 
 function orderPhrase(lang, index) {
   const words = {
     ja: ["一本目", "二本目", "三本目", "四本目", "五本目", "六本目", "七本目", "八本目"],
-    en: ["First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth"],
     zh: ["一", "二", "三", "四", "五", "六", "七", "八"],
-    ko: ["첫 번째", "두 번째", "세 번째", "네 번째", "다섯 번째", "여섯 번째", "일곱 번째", "여덟 번째"],
+    de: ["Der erste Beitrag", "Der zweite Beitrag", "Der dritte Beitrag", "Der vierte Beitrag", "Der fünfte Beitrag", "Der sechste Beitrag", "Der siebte Beitrag", "Der achte Beitrag"],
+    es: ["El primer artículo", "El segundo artículo", "El tercer artículo", "El cuarto artículo", "El quinto artículo", "El sexto artículo", "El séptimo artículo", "El octavo artículo"],
+    ru: ["Первая статья", "Вторая статья", "Третья статья", "Четвёртая статья", "Пятая статья", "Шестая статья", "Седьмая статья", "Восьмая статья"],
+    it: ["Il primo articolo", "Il secondo articolo", "Il terzo articolo", "Il quarto articolo", "Il quinto articolo", "Il sesto articolo", "Il settimo articolo", "L'ottavo articolo"],
   };
   return words[lang][index] ?? (lang === "ja" ? `${index + 1}本目` : String(index + 1));
 }
@@ -130,13 +161,15 @@ function authorLine(lang, authors) {
   const first = list.slice(0, 3);
   const more = list.length > first.length;
   if (lang === "ja") return `著者は${first.join("、")}${more ? "ほか" : ""}です。`;
-  if (lang === "en") return `The authors are ${first.join(", ")}${more ? ", et al." : ""}.`;
   if (lang === "zh") return `作者是${first.join("、")}${more ? "等" : ""}。`;
-  return `저자: ${first.join(", ")}${more ? " 외" : ""}.`;
+  if (lang === "de") return `Die Autorinnen und Autoren sind ${first.join(", ")}${more ? " et al" : ""}.`;
+  if (lang === "es") return `Los autores son ${first.join(", ")}${more ? ", et al" : ""}.`;
+  if (lang === "ru") return `Авторы: ${first.join(", ")}${more ? " и др" : ""}.`;
+  return `Gli autori sono ${first.join(", ")}${more ? ", et al" : ""}.`;
 }
 
 function languageList(lang, labels) {
-  const values = ["ja", "en", "zh", "ko"].map((key) => labels[key] ?? DEFAULT_LANGUAGE_LABELS[key]);
+  const values = SUPPORTED.map((key) => labels[key] ?? DEFAULT_LANGUAGE_LABELS[key]);
   return values.join(JOINT[lang] === "" ? "・" : ", ");
 }
 
@@ -162,22 +195,34 @@ function introLine(lang, dateText, topicLabel, paperCount, curated) {
     const cue = curated ? "編集部の日本語要約から引用します。" : "原文の英語抄録から冒頭を引用します。";
     return `${base}論文を${countPhrase(lang, paperCount)}、ゆっくり紹介します。結果は断定せず、${cue}`;
   }
-  if (lang === "en") {
-    const base = `Hello, this is Phantomresearch Daily. It is ${dateText}. Today's topic is ${topicLabel}.`;
-    if (paperCount === 0) return `${base} No papers were available for today's brief.`;
-    const cue = curated ? "Quotes come from our edited Japanese summaries." : "Quotes are the opening of each original English abstract.";
-    return `${base} We will walk through ${countPhrase(lang, paperCount)} papers, without claims about results. ${cue}`;
-  }
   if (lang === "zh") {
     const base = `你好，这里是 Phantomresearch Daily。今天是${dateText}，主题是「${topicLabel}」。`;
     if (paperCount === 0) return `${base}今天没有找到可以介绍的论文。`;
     const cue = curated ? "引用编辑部日文摘要。" : "引用原文英文摘要开头。";
     return `${base}下面详细介绍${countPhrase(lang, paperCount)}论文，不对结果作断言。${cue}`;
   }
-  const base = `안녕하세요, Phantomresearch Daily입니다. ${dateText} 방송입니다. 오늘의 주제는 "${topicLabel}"입니다.`;
-  if (paperCount === 0) return `${base} 오늘은 소개할 논문을 찾지 못했습니다.`;
-  const cue = curated ? "편집부 일본어 요약에서 인용합니다." : "원문 초록 도입부를 인용합니다.";
-  return `${base} 논문 ${countPhrase(lang, paperCount)}편을 차례로 소개합니다. 결과를 단정하지 않고, ${cue}`;
+  if (lang === "de") {
+    const base = `Hallo, hier ist Phantomresearch Daily. Es ist der ${dateText}. Das heutige Thema ist ${topicLabel}.`;
+    if (paperCount === 0) return `${base} Für das heutige Briefing standen keine Papers zur Verfügung.`;
+    const cue = curated ? "Zitate stammen aus unseren redaktionellen japanischen Zusammenfassungen." : "Zitate sind die Anfänge der jeweiligen englischen Original-Abstracts.";
+    return `${base} Wir gehen ${countPhrase(lang, paperCount)} in Ruhe durch, ohne Aussagen über die Ergebnisse. ${cue}`;
+  }
+  if (lang === "es") {
+    const base = `Hola, esto es Phantomresearch Daily. Hoy es ${dateText}. El tema de hoy es ${topicLabel}.`;
+    if (paperCount === 0) return `${base} Hoy no hubo artículos disponibles para el resumen.`;
+    const cue = curated ? "Las citas provienen de nuestros resúmenes japoneses editados." : "Las citas son el inicio de cada resumen original en inglés.";
+    return `${base} Repasaremos ${countPhrase(lang, paperCount)} con calma, sin afirmar nada sobre los resultados. ${cue}`;
+  }
+  if (lang === "ru") {
+    const base = `Здравствуйте, это Phantomresearch Daily. Сегодня ${dateText}. Тема выпуска — «${topicLabel}».`;
+    if (paperCount === 0) return `${base} Сегодня статьи для краткого обзора не нашлись.`;
+    const cue = curated ? "Цитаты взяты из наших редакционных японских пересказов." : "Цитаты — это начало каждого оригинального английского абстракта.";
+    return `${base} Мы спокойно разберём ${countPhrase(lang, paperCount)}, не делая заявлений о результатах. ${cue}`;
+  }
+  const base = `Ciao, questo è Phantomresearch Daily. Oggi è ${dateText}. Il tema di oggi è ${topicLabel}.`;
+  if (paperCount === 0) return `${base} Oggi non ci sono articoli disponibili per il brief.`;
+  const cue = curated ? "Le citazioni provengono dalle nostre sintesi giapponesi a cura della redazione." : "Le citazioni sono l'inizio di ogni abstract originale in inglese.";
+  return `${base} Passeremo in rassegna ${countPhrase(lang, paperCount)} senza fretta, senza affermazioni sui risultati. ${cue}`;
 }
 
 // Fixed topic overview right after the intro: pure filler-free framing that
@@ -190,24 +235,38 @@ function topicOverviewLine(lang, topicLabel, parsed) {
       `「${topicLabel}」という切り口で、今日も論文を集めました。内容の評価はせず、紹介と資料の提示に絞った回です。`,
     ], parsed, 0);
   }
-  if (lang === "en") {
-    return templateFor([
-      `Research around ${topicLabel} covers a wide range, and today we go through the picks one by one. Listen for the overall picture, then follow the papers that catch your interest. The same brief goes out in four languages.`,
-      `The topic ${topicLabel} is chosen by our daily rotation rule. We will not grade the results; each paper is simply introduced and linked. Every day brings a new topic.`,
-      `Today's collection is framed by ${topicLabel}. Treat this episode as a starting point: the original papers remain the only source of claims.` ,
-    ], parsed, 0);
-  }
   if (lang === "zh") {
     return templateFor([
-      `围绕「${topicLabel}」的研究范围很广，今天按顺序逐篇介绍。建议先整体听一遍，再跟进感兴趣的论文。同样的内容也以四种语言发布。`,
+      `围绕「${topicLabel}」的研究范围很广，今天按顺序逐篇介绍。建议先整体听一遍，再跟进感兴趣的论文。同样的内容也以六种语言发布。`,
       `今天的主题「${topicLabel}」由每日轮换规则决定。我们不对结果下判断，只做介绍并给出资料链接。`,
       `今天以「${topicLabel}」为线索整理了几篇论文。本节目只负责介绍，具体结论请以原论文为准。`,
     ], parsed, 0);
   }
+  if (lang === "de") {
+    return templateFor([
+      `Die Forschung rund um ${topicLabel} ist breit gefächert; heute gehen wir die Auswahl der Reihe nach durch. Hören Sie zuerst grob mit und folgen Sie nur den Papers, die Sie interessieren. Derselbe Brief erscheint in sechs Sprachen.`,
+      `Das heutige Thema ${topicLabel} wird von der täglichen Rotationsregel bestimmt. Wir bewerten die Ergebnisse nicht; jedes Paper wird nur vorgestellt und verlinkt. Jeden Tag gibt es ein neues Thema.`,
+      `Heute haben wir unter dem Blickwinkel ${topicLabel} einige Papers versammelt. Diese Folge ist eine Einführung; konkrete Schlussfolgerungen stehen in den Originalpapern.`,
+    ], parsed, 0);
+  }
+  if (lang === "es") {
+    return templateFor([
+      `La investigación en torno a ${topicLabel} abarca un amplio espectro; hoy repasamos la selección en orden. Escuche primero la vista general y siga solo los artículos que le interesen. El mismo resumen se publica en seis idiomas.`,
+      `El tema de hoy, ${topicLabel}, lo decide la regla de rotación diaria. No juzgamos los resultados: solo presentamos cada artículo y damos su enlace. Cada día hay un tema nuevo.`,
+      `Hoy hemos reunido varios artículos bajo el enfoque de ${topicLabel}. Esta entrega es solo una presentación; las conclusiones están en los artículos originales.`,
+    ], parsed, 0);
+  }
+  if (lang === "ru") {
+    return templateFor([
+      `Исследования вокруг темы «${topicLabel}» очень широки; сегодня мы разбираем подборку по порядку. Сначала послушайте обзор, а затем вернитесь к статьям, которые вас заинтересовали. Тот же выпуск выходит на шести языках.`,
+      `Тема дня — «${topicLabel}» — определяется правилом ежедневной ротации. Мы не оцениваем результаты: только представляем статьи и даём ссылки. Каждый день — новая тема.`,
+      `Сегодня под углом «${topicLabel}» собраны несколько статей. Этот выпуск только знакомит; конкретные выводы — в оригинальных статьях.`,
+    ], parsed, 0);
+  }
   return templateFor([
-    `"${topicLabel}"을 둘러싼 연구는 폭이 넓어, 오늘은 고른 순서대로 하나씩 살펴봅니다. 전체를 먼저 들으시고, 마음에 드는 논문만 원문으로 따라가 보세요. 같은 내용은 네 언어로도 전달합니다.`,
-    `오늘의 주제 "${topicLabel}"는 매일 바뀌는 순환 규칙으로 정해졌습니다. 결과를 평가하지 않고 소개와 자료 링크만 다룹니다.`,
-    `"${topicLabel}"이라는 주제로 오늘도 논문을 모았습니다. 이 방송은 소개에 그치고, 구체적인 결론은 원문에서 확인하세요.`,
+    `La ricerca intorno a ${topicLabel} è molto ampia; oggi esaminiamo la selezione in ordine. Ascoltate prima il quadro generale e seguite solo gli articoli che vi interessano. Lo stesso brief esce in sei lingue.`,
+    `Il tema di oggi, ${topicLabel}, è scelto dalla regola di rotazione giornaliera. Non giudichiamo i risultati: presentiamo ogni articolo e forniamo il link. Ogni giorno un tema nuovo.`,
+    `Oggi, con il filo di ${topicLabel}, abbiamo raccolto alcuni articoli. Questa puntata serve solo a presentare; le conclusioni sono negli articoli originali.`,
   ], parsed, 0);
 }
 
@@ -222,14 +281,6 @@ function commentaryLine(lang, parsed, index) {
       "この論文の位置づけを断定するのは避けて、みなさんの目で原論文を確かめてもらえたら幸いです。引用に含まれていない部分にも情報があります。",
     ], parsed, index);
   }
-  if (lang === "en") {
-    return templateFor([
-      "The method details and the validity of its evaluation are worth checking in the original paper; we make no claims about the results here.",
-      "An abstract cannot tell you how strong the results are, so look at the evaluation setup and the limitations section directly.",
-      "Terms and scope are easier to verify in the paper's own words. If it interests you, open the preprint before moving on.",
-      "We deliberately avoid judging where this work sits in the field; the authors' own text and figures say it better.",
-    ], parsed, index);
-  }
   if (lang === "zh") {
     return templateFor([
       "这篇论文采用的新方法细节与评测是否可靠，需要到原论文中确认，本节目不做判断。",
@@ -238,31 +289,55 @@ function commentaryLine(lang, parsed, index) {
       "我们刻意不在节目里给这项研究定位，作者的原文和图示说得比摘要更清楚。",
     ], parsed, index);
   }
+  if (lang === "de") {
+    return templateFor([
+      "Details des Verfahrens und die Tragfähigkeit der Evaluierung prüfen Sie am besten im Originalpaper; hier treffen wir keine Aussagen über die Ergebnisse.",
+      "Ein Abstract verrät nicht, wie stark die Ergebnisse sind; sehen Sie sich direkt die Bewertungsgrundlagen und den Gültigkeitsbereich der Experimente an.",
+      "Begriffsdefinitionen und Grenzen der Methode liest man am zuverlässigsten in den Worten der Autoren selbst. Interessiert Sie das, öffnen Sie das Preprint, bevor es weitergeht.",
+      "Wir vermeiden es bewusst, die Einordnung dieser Arbeit zu beurteilen; der eigene Text und die Figuren der Autoren sagen es besser.",
+    ], parsed, index);
+  }
+  if (lang === "es") {
+    return templateFor([
+      "Los detalles del método y la validez de su evaluación conviene comprobarlos en el artículo original; aquí no afirmamos nada sobre los resultados.",
+      "Un resumen no permite medir la solidez de los resultados; revise directamente el diseño de evaluación y sus limitaciones.",
+      "Términos y alcance se comprueban mejor con las palabras de los autores. Si le interesa, abra la versión preprint antes de continuar.",
+      "Evitamos deliberadamente situar este trabajo en el campo; el texto y las figuras de los autores lo dicen mejor.",
+    ], parsed, index);
+  }
+  if (lang === "ru") {
+    return templateFor([
+      "Детали метода и корректность оценки лучше проверять в первоисточнике; здесь мы ничего не утверждаем о результатах.",
+      "По аннотации нельзя судить о силе результатов: посмотрите напрямую условия оценки и пределы экспериментов.",
+      "Определения терминов и ограничения метода надёжнее читать в словах самих авторов. Если интересно, откройте препринт, прежде чем идти дальше.",
+      "Мы сознательно не даём оценку месту этой работы в области; текст и рисунки авторов говорят об этом лучше.",
+    ], parsed, index);
+  }
   return templateFor([
-    "이 연구의 방법 세부사항과 평가의 신뢰성은 원문에서 확인하시고, 이 방송은 결과에 대해 판단하지 않습니다.",
-    "초록만으로 결과의 강도는 알 수 없습니다. 평가 전제와 실험 범위는 본문과 그림을 직접 보세요.",
-    "용어 정의와 방법의 한계는 저자의 표현 그대로 읽는 게 가장 정확합니다. 관심 있으면 원문을 열어 보세요.",
-    "이 연구의 위상을 단정하지는 않습니다. 저자의 원문과 그림이 요약보다 정확합니다.",
+    "I dettagli del metodo e la validità della sua valutazione vanno verificati nell'articolo originale; qui non affermiamo nulla sui risultati.",
+    "Da un abstract non si capisce quanto siano solidi i risultati: guardate direttamente le premesse della valutazione e l'ambito degli esperimenti.",
+    "Definizioni di termini e limiti del metodo si verificano meglio con le parole degli autori. Se vi interessa, aprite il preprint prima di proseguire.",
+    "Evitiamo di proposito di giudicare la posizione di questo lavoro nel campo; testo e figure degli autori lo dicono meglio.",
   ], parsed, index);
 }
 
 function paperTitleLine(lang, index, title) {
   const quote = TITLE_QUOTES[lang];
   if (lang === "ja") return `${orderPhrase(lang, index)}、「${title}」。`;
-  if (lang === "en") return `${orderPhrase(lang, index)} paper: ${quote[0]}${title}${quote[1]}.`;
   if (lang === "zh") return `第${orderPhrase(lang, index)}篇论文：「${title}」。`;
-  return `${orderPhrase(lang, index)} 논문: ${quote[0]}${title}${quote[1]}.`;
+  return `${orderPhrase(lang, index)}: ${quote[0]}${title}${quote[1]}.`;
 }
 
 // Fixed outro, now with a spoken recap of the paper titles and a teaser for
 // the next day's (different) topic. ids is the arXiv id list.
 function outroLines(lang, topicLabel, labels, ids, hasPapers, paperTitles, dateText) {
   const list = languageList(lang, labels);
-  const idList = ids.join(lang === "en" || lang === "ko" ? ", " : "、");
+  const recapJoin = JOINT[lang] === "" ? "、" : ", ";
+  const idList = ids.join(recapJoin);
   const idsLine = ids.length > 0;
   const quote = TITLE_QUOTES[lang];
   const titles = (paperTitles ?? []).map((title) => `${quote[0]}${title}${quote[1]}`);
-  const recap = titles.join(lang === "en" || lang === "ko" ? ", " : "、");
+  const recap = titles.join(recapJoin);
   if (lang === "ja") {
     return [
       `今日は「${topicLabel}」でした。`,
@@ -273,18 +348,6 @@ function outroLines(lang, topicLabel, labels, ids, hasPapers, paperTitles, dateT
       "出典はarXiv、各論文のライセンスに従います。音声はローカル生成です。",
       ...(idsLine ? [`論文IDは${idList}です。`] : []),
       `今日は${dateText}の回でした。それでは、また明日。`,
-    ];
-  }
-  if (lang === "en") {
-    return [
-      `That is today's topic, ${topicLabel}.`,
-      ...(hasPapers && titles.length > 0 ? [`Today's ${titles.length === 1 ? "paper was" : "papers were"} ${recap}.`] : []),
-      "Tomorrow's episode covers a different topic; tune in to see which field gets picked.",
-      `A new topic every day; the same brief is available in ${list}. Past episodes are on the site.`,
-      ...(hasPapers ? ["Please read the original papers for details."] : []),
-      "Sources: arXiv, used under each paper's license. This narration was generated locally.",
-      ...(idsLine ? [`Paper IDs: ${idList}.`] : []),
-      `This was the ${dateText} episode. Thanks for listening, and see you tomorrow.`,
     ];
   }
   if (lang === "zh") {
@@ -299,15 +362,51 @@ function outroLines(lang, topicLabel, labels, ids, hasPapers, paperTitles, dateT
       `以上就是${dateText}这一期，感谢收听，明天见。`,
     ];
   }
+  if (lang === "de") {
+    return [
+      `Das war das heutige Thema: ${topicLabel}.`,
+      ...(hasPapers && titles.length > 0 ? [`${titles.length === 1 ? "Das heutige Paper war" : "Die heutigen Papers waren"} ${recap}.`] : []),
+      "Die morgige Folge bringt wieder ein anderes Thema; hören Sie hinein, um zu sehen, welches Feld gewählt wird.",
+      `Jeden Tag ein neues Thema; derselbe Brief ist in ${list} verfügbar. Frühere Folgen stehen auf der Website.`,
+      ...(hasPapers ? ["Bitte lesen Sie die Originalpapers für Details."] : []),
+      "Quellen: arXiv, jeweils unter der Lizenz der Papers. Die Sprecherzählung wurde lokal erzeugt.",
+      ...(idsLine ? [`Paper-IDs: ${idList}.`] : []),
+      `Das war die Folge vom ${dateText}. Danke fürs Zuhören, bis morgen.`,
+    ];
+  }
+  if (lang === "es") {
+    return [
+      `Ese ha sido el tema de hoy: ${topicLabel}.`,
+      ...(hasPapers && titles.length > 0 ? [`${titles.length === 1 ? "El artículo de hoy fue" : "Los artículos de hoy fueron"} ${recap}.`] : []),
+      "La entrega de mañana cubre otro tema; sintonice para ver qué campo se elige.",
+      `Un tema nuevo cada día; el mismo resumen está disponible en ${list}. Los episodios anteriores están en el sitio.`,
+      ...(hasPapers ? ["Lea los artículos originales para más detalles."] : []),
+      "Fuentes: arXiv, según la licencia de cada artículo. Esta narración se generó localmente.",
+      ...(idsLine ? [`IDs de los artículos: ${idList}.`] : []),
+      `Este fue el episodio del ${dateText}. Gracias por escuchar; hasta mañana.`,
+    ];
+  }
+  if (lang === "ru") {
+    return [
+      `Сегодняшняя тема была такой: «${topicLabel}».`,
+      ...(hasPapers && titles.length > 0 ? [`${titles.length === 1 ? "Сегодняшней статьёй была" : "Сегодняшние статьи:"} ${recap}.`] : []),
+      "Завтрашний выпуск посвящён другой теме; загляните, какое поле выберут.",
+      `Каждый день новая тема; тот же обзор доступен на ${list}. Прошлые выпуски — на сайте.`,
+      ...(hasPapers ? ["Подробности читайте в оригинальных статьях."] : []),
+      "Источники: arXiv, на условиях лицензии каждой статьи. Озвучка создана локально.",
+      ...(idsLine ? [`ID статей: ${idList}.`] : []),
+      `Это был выпуск за ${dateText}. Спасибо, что слушали; до завтра.`,
+    ];
+  }
   return [
-    `오늘은 "${topicLabel}"이었습니다.`,
-    ...(hasPapers && titles.length > 0 ? [`오늘의 논문 ${countPhrase(lang, titles.length)}은 ${recap}였습니다.`] : []),
-    "내일 에피소드는 다른 주제를 준비했습니다. 어떤 분야가 선택될지 내일 확인해 보세요.",
-    `주제는 매일 바뀝니다. ${list} 버전도 있고, 지난 방송은 사이트에.`,
-    ...(hasPapers ? ["자세한 내용은 원문에서."] : []),
-    "출처: arXiv, 라이선스는 각 논문을 따릅니다. 로컬에서 생성했습니다.",
-    ...(idsLine ? [`논문 번호: ${idList}.`] : []),
-    `${dateText} 방송이었습니다. 감사합니다. 내일 만나요.`,
+    `Era questo il tema di oggi: ${topicLabel}.`,
+    ...(hasPapers && titles.length > 0 ? [`${titles.length === 1 ? "L'articolo di oggi era" : "Gli articoli di oggi erano"} ${recap}.`] : []),
+    "La puntata di domani riguarderà un altro tema; restate sintonizzati per vedere quale campo verrà scelto.",
+    `Ogni giorno un tema nuovo; lo stesso brief è disponibile in ${list}. Le puntate passate sono sul sito.`,
+    ...(hasPapers ? ["Per i dettagli, leggete gli articoli originali."] : []),
+    "Fonti: arXiv, secondo la licenza di ogni articolo. Questa narrazione è stata generata localmente.",
+    ...(idsLine ? [`ID degli articoli: ${idList}.`] : []),
+    `Questa era la puntata del ${dateText}. Grazie per l'ascolto, a domani.`,
   ];
 }
 

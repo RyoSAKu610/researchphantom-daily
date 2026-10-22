@@ -29,7 +29,7 @@ FFPROBE = os.environ.get("FFPROBE") or (
     "/opt/homebrew/bin/ffprobe" if Path("/opt/homebrew/bin/ffprobe").is_file() else shutil.which("ffprobe"))
 VOICES = Path(__file__).resolve().parent / "podcast/voices.json"
 EDGE_TTS_INSTALLED = importlib.util.find_spec("edge_tts") is not None
-TEXT_LONG = "Phantomresearch Daily covers a fresh research topic briefly in four languages. " * 14
+TEXT_LONG = "Phantomresearch Daily covers a fresh research topic briefly in six languages. " * 14
 
 
 def load_adapters():
@@ -123,12 +123,15 @@ class WithRetriesTests(unittest.TestCase):
 class EngineLanguageTests(unittest.TestCase):
     def test_reads_voice_config_and_rejects_unknown_language(self):
         voices = json.loads(VOICES.read_text(encoding="utf-8"))
-        for language, expected in (("ja", "ja-JP-NanamiNeural"), ("en", "en-US-AndrewNeural"),
-                                   ("zh", "zh-CN-XiaoxiaoNeural"), ("ko", "ko-KR-SunHiNeural")):
+        for language, expected in (("ja", "ja-JP-NanamiNeural"),
+                                   ("zh", "zh-CN-XiaoxiaoNeural"),
+                                   ("de", "de-DE-KatjaNeural"), ("es", "es-ES-ElviraNeural"),
+                                   ("ru", "ru-RU-SvetlanaNeural"), ("it", "it-IT-ElsaNeural")):
             self.assertEqual(edge.engine_language(voices, language)["voice"], expected)
             self.assertEqual(edge.edge_voice(voices, language), expected)
+        # en/ko left the lineup; their edge entries are gone.
         with self.assertRaises(ValueError):
-            edge.engine_language(voices, "de")
+            edge.engine_language(voices, "ko")
 
 
 class RunTests(unittest.TestCase):
@@ -149,7 +152,7 @@ class RunTests(unittest.TestCase):
             sys.modules.pop("edge_tts", None)
         FakeCommunicate.instances = []
 
-    def args(self, language="en"):
+    def args(self, language="de"):
         text = Path(self.directory.name) / "episode.txt"
         text.write_text(TEXT_LONG, encoding="utf-8")
         return argparse.Namespace(text=None, text_file=text, language=language,
@@ -161,16 +164,16 @@ class RunTests(unittest.TestCase):
         out = Path(self.directory.name) / "out"
         out.mkdir(exist_ok=True)
         arguments = self.args()
-        arguments.out = out / "en.mp3"
-        arguments.metrics = out / "en.metrics.json"
+        arguments.out = out / "de.mp3"
+        arguments.metrics = out / "de.metrics.json"
         edge.run(arguments, json.loads(VOICES.read_text(encoding="utf-8")), FFMPEG, FFPROBE)
         record = json.loads(arguments.metrics.read_text(encoding="utf-8"))
         self.assertEqual(record["provider"], "edge-tts")
-        self.assertEqual(record["voice"], "en-US-AndrewNeural")
-        self.assertEqual(record["language"], "en")
+        self.assertEqual(record["voice"], "de-DE-KatjaNeural")
+        self.assertEqual(record["language"], "de")
         self.assertGreaterEqual(record["durationSeconds"], 10.0)
         self.assertGreater(record["bytes"], edge.base.MIN_BYTES)
-        audio = out / "en.mp3"
+        audio = out / "de.mp3"
         self.assertEqual(record["sha256"], hashlib.sha256(audio.read_bytes()).hexdigest())
         self.assertEqual(record["bytes"], audio.stat().st_size)
         self.assertEqual(len(FakeCommunicate.instances), 1)
@@ -184,7 +187,7 @@ class RunTests(unittest.TestCase):
         FakeCommunicate.audio_chunks = []
         with self.assertRaises(RuntimeError):
             edge.run(self.args(), json.loads(VOICES.read_text(encoding="utf-8")), FFMPEG, FFPROBE)
-        self.assertFalse((Path(self.directory.name) / "en.mp3").exists())
+        self.assertFalse((Path(self.directory.name) / "de.mp3").exists())
 
     def test_tiny_audio_fails_before_encode(self):
         FakeCommunicate.audio_chunks = [b"RIFF"[:10]] * 10
@@ -221,7 +224,7 @@ class CliValidationTests(unittest.TestCase):
         self.assertIn("exactly one of --text or --text-file", result.stderr)
 
     def test_bad_language_fails_before_network(self):
-        result = self.run_cli("--text-file", str(self.text), "--language", "de",
+        result = self.run_cli("--text-file", str(self.text), "--language", "ko",
                               "--out", str(self.out), "--metrics", str(self.metrics))
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Unsupported language", result.stderr)

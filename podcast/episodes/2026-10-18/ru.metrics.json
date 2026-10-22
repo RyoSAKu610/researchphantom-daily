@@ -1,0 +1,20 @@
+{
+  "provider": "edge-tts",
+  "model": "ru-RU-SvetlanaNeural",
+  "model_commit": null,
+  "language": "ru",
+  "voice": "ru-RU-SvetlanaNeural",
+  "style_chars": 0,
+  "text_chars": 6813,
+  "durationSeconds": 508.08,
+  "bytes": 3048860,
+  "sha256": "f7478f0a12d4ea0f08b6a19bdf79a63f4581dcb093ee7b9fa5c24e5edf1ae080",
+  "peak": 0.81939,
+  "rms_dbfs": -18.74,
+  "clipped_fraction": 0.0,
+  "silent_fraction": 0.117,
+  "leading_silence_seconds": 0.25,
+  "trailing_silence_seconds": 1.0,
+  "longest_silence_seconds": 1.25,
+  "seconds_per_char": 0.075
+}

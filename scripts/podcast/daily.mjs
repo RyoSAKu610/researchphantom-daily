@@ -23,9 +23,9 @@ const moduleDir = fileURLToPath(new URL(".", import.meta.url));
 const projectRoot = fileURLToPath(new URL("../..", import.meta.url));
 const LOCK_STALE_MS = 30 * 60 * 1000;
 const TTS_TIMEOUT_MS = 1800000;  // 30 min: 5-20 minute episodes can be slow on CPU-only engines
-const DEFAULT_VOICES = { ja: "ono_anna", en: "aiden", zh: "serena", ko: "sohee" };
+const DEFAULT_VOICES = { ja: "ono_anna", en: "aiden", zh: "serena", ko: "sohee" };  // legacy qwen defaults (LP local engine)
 const DEFAULT_ENGINE_VOICES = {
-  edge: { ja: "ja-JP-NanamiNeural", en: "en-US-AndrewNeural", zh: "zh-CN-XiaoxiaoNeural", ko: "ko-KR-SunHiNeural" },
+  edge: { ja: "ja-JP-NanamiNeural", zh: "zh-CN-XiaoxiaoNeural", de: "de-DE-KatjaNeural", es: "es-ES-ElviraNeural", ru: "ru-RU-SvetlanaNeural", it: "it-IT-ElsaNeural" },
   irodori: {},
   voicestudio: {},
 };
@@ -36,10 +36,14 @@ const TTS_SCRIPTS = { qwen: "synthesize.py", edge: "synthesize_edge.py", irodori
 const ENGINE_VENV = { qwen: ".venv-tts", edge: ".venv-edge", irodori: null, voicestudio: null };
 const TTS_FAILURE = {
   ja: (reason) => `音声合成に失敗しました（${reason}）`,
-  en: (reason) => `Speech synthesis failed (${reason})`,
   zh: (reason) => `语音合成失败（${reason}）`,
-  ko: (reason) => `음성 합성 실패 (${reason})`,
+  de: (reason) => `Sprachsynthese fehlgeschlagen (${reason})`,
+  es: (reason) => `Fallo en la síntesis de voz (${reason})`,
+  ru: (reason) => `Ошибка синтеза речи (${reason})`,
+  it: (reason) => `Sintesi vocale non riuscita (${reason})`,
 };
+// Generic fallback message for languages outside the six-language lineup.
+const DEFAULT_TTS_FAILURE = (reason) => `Audio synthesis failed (${reason})`;
 
 export function parseCliArgs(argv = []) {
   const args = { date: null, catchup: null, force: false, offline: false, noTts: false, noSite: false, verbose: false, help: false };
@@ -144,7 +148,7 @@ export function resolvePython(env = process.env) {
 }
 
 // Parse PODCAST_TTS_ENGINE (global default, "qwen" when unset) plus the optional
-// PODCAST_TTS_MAP="ja:irodori,en:edge" per-language overrides. Invalid values
+// PODCAST_TTS_MAP="ja:irodori,de:edge" per-language overrides. Invalid values
 // throw so a typo in CI fails loudly instead of silently falling back to qwen.
 export function parseTtsEnv(env = process.env) {
   const raw = String(env.PODCAST_TTS_ENGINE ?? "").trim().toLowerCase();
@@ -205,7 +209,7 @@ function short(value, length = 90) {
 }
 
 function ttsError(lang, reason) {
-  const template = TTS_FAILURE[lang] ?? TTS_FAILURE.en;
+  const template = TTS_FAILURE[lang] ?? DEFAULT_TTS_FAILURE;
   return template(short(reason, 60) || "unknown");
 }
 
@@ -417,7 +421,7 @@ function curatedToPaper(entry) {
 
 function toEpisodePaper(paper, config, source) {
   const abstract = paper.abstract ?? paper.excerpt ?? "";
-  const limit = source === "curated" ? Number(config.maxExcerptChars?.ja) || 220 : Number(config.maxExcerptChars?.en) || 300;
+  const limit = source === "curated" ? Number(config.maxExcerptChars?.ja) || 220 : Number(config.maxExcerptChars?.de) || 1100;
   return {
     arxivId: paper.arxivId ?? "",
     title: paper.title ?? "",
