@@ -72,51 +72,37 @@ bash scripts/podcast/bot/doctor.sh
 
 判定内容: `node` ≥20 / `ffmpeg`+`ffprobe` / `.venv-edge` に edge-tts 7.3.1 /
 VoiceStudio container が up か・`curl -fsS http://127.0.0.1:3900/.well-known/
-voicestudio-speech` が 200 か / GET /v1/audio/voices に **`Phantom-ZH`,
-`Phantom-DE`, `Phantom-ES`, `Phantom-RU`, `Phantom-IT`** が含まれるか（未登録なら
-「web UI で clone profile を作れ」という案内を提示） / **Irodori :8088 は TCP
-connect のみの単純生死判定**。
+voicestudio-speech` が 200 か / GET /v1/audio/voices に **`Phantom-EN`,
+`Phantom-ZH`, `Phantom-KO`** が含まれるか（未登録なら「web UI で clone profile を作れ」
+という案内を提示） / **Irodori :8088 は TCP connect のみの単純生死判定**。
 
 全 pass なら `doctor: all checks passed`。Irodori が down でも **warning 扱い**で
 exit code には反映しない — `daily.mjs` は per-language の失敗を許容する設計で、Irodori
 が無くても ja はその日の音声 failure として記録されるだけ（他言語・site 構築は壊れない）。
 ※ bot VM では **edge への自動 fallback は既定動作**（欠落言語がある日を edge で再生成し、
-常に 6 言語completion を目指す）。`PODCAST_FALLBACK_EDGE=0` を明示した時だけ opt-out で、
+常に 4 言語completion を目指す）。`PODCAST_FALLBACK_EDGE=0` を明示した時だけ opt-out で、
 server 系 failure の報告を優先させる設計です。
 
-## 3. 音声プロファイル（Phantom-ZH / Phantom-DE / Phantom-ES / Phantom-RU / Phantom-IT）の作成
+## 3. 音声プロファイル（Phantom-EN / Phantom-ZH / Phantom-KO）の作成
 
 セットアップ直後に一回だけ、Mac 側のブラウザから行う（bot は UI クリック操作不可のため）。
-参照音声は `.venv-edge` の edge-tts でテンプレートとして生成する（ja は Irodori なので
-profile 不要）。 lineup は 2026-10 より **ja / zh / de / es / ru / it の 6 言語**
-（en・ko は外れた）。
+参照音声は `.venv-edge` の edge-tts でテンプレートとして生成する。
 
 ```bash
 # bot VM 上で once
 mkdir -p scripts/podcast/bot/refs          # .gitignore 済み、commit 対象外
+.venv-edge/bin/edge-tts --voice en-US-AndrewNeural \
+  --text "A different research topic every day, briefly, in four languages. \
+Today's topic: ..." \
+  --write-media scripts/podcast/bot/refs/en.mp3
+
 .venv-edge/bin/edge-tts --voice zh-CN-XiaoxiaoNeural \
-  --text "每天换一个研究主题，用六种语言，只占一小段。今天的主题：..." \
+  --text "每天换一个研究主题，用四种语言，只占一小段。今天的主题：..." \
   --write-media scripts/podcast/bot/refs/zh.mp3
 
-.venv-edge/bin/edge-tts --voice de-DE-KatjaNeural \
-  --text "Ein anderes Forschungsthema jeden Tag, in sechs Sprachen. \
-Das heutige Thema: ..." \
-  --write-media scripts/podcast/bot/refs/de.mp3
-
-.venv-edge/bin/edge-tts --voice es-ES-ElviraNeural \
-  --text "Un tema de investigación distinto cada día, en seis idiomas. \
-El tema de hoy: ..." \
-  --write-media scripts/podcast/bot/refs/es.mp3
-
-.venv-edge/bin/edge-tts --voice ru-RU-SvetlanaNeural \
-  --text "Новая исследовательская тема каждый день, на шести языках. \
-Тема выпуска: ..." \
-  --write-media scripts/podcast/bot/refs/ru.mp3
-
-.venv-edge/bin/edge-tts --voice it-IT-ElsaNeural \
-  --text "Un tema di ricerca diverso ogni giorno, in sei lingue. \
-Il tema di oggi: ..." \
-  --write-media scripts/podcast/bot/refs/it.mp3
+.venv-edge/bin/edge-tts --voice ko-KR-SunHiNeural \
+  --text "매일 바뀌는 연구 주제를, 네 언어로 조금씩. 오늘의 주제: ..." \
+  --write-media scripts/podcast/bot/refs/ko.mp3
 ```
 
 Mac 側（トンネル）:
@@ -130,9 +116,8 @@ ssh -L 3900:127.0.0.1:3900 <user>@<bot-host>
 1. API キー入力を聞かれたら、bot VM 上の `cat ~/.config/podcast-bot/omnivoice-api-key`
    の値を貼る。
 2. Voice clone（音声プロファイル）作成で先ほどの `.mp3` を参照 clip として
-   アップロードし、**プロファイル名は厳密に `Phantom-ZH` / `Phantom-DE` /
-   `Phantom-ES` / `Phantom-RU` / `Phantom-IT`**（voices.json と doctor がこの名前を
-   期待する）。Person 形式は
+   アップロードし、**プロファイル名は厳密に `Phantom-EN` / `Phantom-ZH` /
+   `Phantom-KO`**（voices.json と doctor がこの名前を期待する）。Person 形式は
    research brief の読み（落ち着いた明瞭なナレーション）。
 3. 登録後、bot VM で `bash scripts/podcast/bot/doctor.sh` して all checks passed を確認。
 
@@ -154,14 +139,13 @@ Grok Bot に貼る Skill / Routine は、「**`daily.sh` を実行 → exit code
 
 1. `flock` による二重起動防止（flock 無い環境は即 exit）。
 2. `git pull --ff-only`（失敗は warning のみ。手元を真実として reset --hard 等はしない）。
-3. `TZ=Asia/Tokyo PODCAST_TTS_MAP="ja:irodori,zh:voicestudio,de:voicestudio,
-   es:voicestudio,ru:voicestudio,it:voicestudio" node scripts/podcast/daily.mjs --catchup`。
-   **`--catchup` が常に
+3. `TZ=Asia/Tokyo PODCAST_TTS_MAP="ja:irodori,en:voicestudio,zh:voicestudio,
+   ko:voicestudio" node scripts/podcast/daily.mjs --catchup`。**`--catchup` が常に
    付く**（週末等に漏れた日付欠落は default backfillDays=3 で自動バックフィル）。
 4. **exit code に応じた fallback**: `0`=OK / `3`=episode は書けたが音声ゼロ（server 起因
    が多い）/ `1`=pipeline error / `2`=lock・環境欠け。**edge への自動 fallback は既定で
-   走る。** 音声が完全ゼロ・または一部言語だけ欠けた日付を edge まわり（全 6 言語 edge）
-   で `--force` 再生成し、**常に 6 言語がそろう**。`PODCAST_FALLBACK_EDGE=0` を付けた時
+   走る。** 音声が完全ゼロ・または一部言語だけ欠けた日付を edge まわり（全 4 言語 edge）
+   で `--force` 再生成し、**常に 4 言語がそろう**。`PODCAST_FALLBACK_EDGE=0` を付けた時
    だけ opt-out（server 系 failure の報告を優先、edge は GitHub Actions 側の main 保険と
    いう旧方針に戻す）。
 5. `git add -A` → `git commit -m "daily: <date> generated"` → `git push origin HEAD`。

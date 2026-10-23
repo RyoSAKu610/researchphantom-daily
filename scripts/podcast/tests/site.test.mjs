@@ -29,7 +29,7 @@ import {
   slugify,
 } from "../site.mjs";
 
-const TOPIC = { id: "diffusion-models", labels: { ja: "拡散モデル「&」", zh: "扩散模型", de: "Diffusionsmodelle", es: "Modelos de difusión", ru: "Диффузионные модели", it: "Modelli di diffusione" } };
+const TOPIC = { id: "diffusion-models", labels: { ja: "拡散モデル「&」", en: "Diffusion models", zh: "扩散模型", ko: "확산 모델" } };
 const PAPERS = [
   {
     arxivId: "2410.12345",
@@ -44,9 +44,9 @@ const PAPERS = [
 ];
 const CONFIG = {
   title: "Phantomresearch Daily",
-  subtitle: { ja: "毎日変わる研究テーマを、6言語で少しだけ。", de: "Ein anderes Forschungsthema jeden Tag, kurz, in sechs Sprachen." },
-  languages: ["ja", "zh", "de", "es", "ru", "it"],
-  languageLabels: { ja: "日本語", zh: "中文", de: "Deutsch", es: "Español", ru: "Русский", it: "Italiano" },
+  subtitle: { ja: "毎日変わる研究テーマを、4言語で少しだけ。", en: "A different research topic every day, briefly, in four languages." },
+  languages: ["ja", "en", "zh", "ko"],
+  languageLabels: { ja: "日本語", en: "English", zh: "中文", ko: "한국어" },
   episodeDir: "podcast/episodes",
   stateDir: "podcast/state",
 };
@@ -77,8 +77,8 @@ function makeEpisode(date, languages, papers = PAPERS) {
   };
 }
 
-// Fixture: ep1 = ja/de/es/it ok with files, zh failed (no audio), ru claims ok
-// but its mp3 is missing on disk; ep2 = ja ok only, others absent entirely.
+// Fixture: ep1 = ja/en ok with files, zh failed (no audio), ko claims ok but
+// its mp3 is missing on disk; ep2 = ja ok only, others absent entirely.
 async function makeFixture(root) {
   const episodeRoot = join(root, "episodes");
   const ep1 = join(episodeRoot, "2026-10-18");
@@ -87,18 +87,14 @@ async function makeFixture(root) {
   await mkdir(ep2, { recursive: true });
   await writeFile(join(ep1, "episode.json"), JSON.stringify(makeEpisode("2026-10-18", {
     ja: LANG_ENTRY("ja"),
+    en: LANG_ENTRY("en"),
     zh: { label: "中文", status: "failed", text: "script-zh.txt", audio: null, durationSeconds: null, bytes: null, sha256: null, voice: "serena", error: "synthesis failed" },
-    de: LANG_ENTRY("de"),
-    es: LANG_ENTRY("es"),
-    ru: LANG_ENTRY("ru"),
-    it: LANG_ENTRY("it"),
+    ko: LANG_ENTRY("ko"),
   })), "utf8");
   await writeFile(join(ep1, "ja.mp3"), Buffer.from("ja-audio-ep1"));
-  await writeFile(join(ep1, "de.mp3"), Buffer.from("de-audio-ep1"));
-  await writeFile(join(ep1, "es.mp3"), Buffer.from("es-audio-ep1"));
-  await writeFile(join(ep1, "it.mp3"), Buffer.from("it-audio-ep1"));
+  await writeFile(join(ep1, "en.mp3"), Buffer.from("en-audio-ep1"));
   await writeFile(join(ep1, "script-ja.txt"), "ja transcript");
-  // ru.mp3 intentionally absent; script-zh.txt intentionally absent.
+  // ko.mp3 intentionally absent; script-zh.txt intentionally absent.
   await writeFile(join(ep2, "episode.json"), JSON.stringify(makeEpisode("2026-10-17", { ja: { ...LANG_ENTRY("ja"), bytes: 4096 } })), "utf8");
   await writeFile(join(ep2, "ja.mp3"), Buffer.from("ja-audio-ep2"));
   // Not an episode at all: skipped silently.
@@ -153,8 +149,8 @@ test("escaping covers entities used in titles and XML attributes", () => {
   assert.equal(slugify(""), "phantomresearch-daily");
   assert.equal(audioFileName(CONFIG, "2026-10-18", "ja"), "phantomresearch-daily-2026-10-18-ja.mp3");
   assert.equal(channelTitle(CONFIG, "ja"), "Phantomresearch Daily（日本語）");
-  assert.equal(channelTitle(CONFIG, "de"), "Phantomresearch Daily (Deutsch)");
-  assert.equal(langLabel({}, "it"), "Italiano");
+  assert.equal(channelTitle(CONFIG, "en"), "Phantomresearch Daily (English)");
+  assert.equal(langLabel({}, "ko"), "한국어");
   assert.match(rfc822Date("2026-10-18"), /GMT$/);
   assert.match(rfc822Date("2026-10-18", "2026-10-17T09:00:00+09:00"), /^Sat, 17 Oct 2026 00:00:00 GMT$/);
 });
@@ -167,7 +163,7 @@ test("loadEpisodes sorts newest first and skips broken directories", async () =>
     assert.deepEqual(entries.map(({ episodeObject }) => episodeObject.date), ["2026-10-18", "2026-10-17"]);
     assert.deepEqual(await loadEpisodes(join(tmp, "missing")), []);
     const entry = entries[0];
-    assert.deepEqual(availableLanguages(entry.langEntries, CONFIG.languages), ["ja", "de", "es", "ru", "it"]);
+    assert.deepEqual(availableLanguages(entry.langEntries, CONFIG.languages), ["ja", "en", "ko"]);
     assert.deepEqual(availableLanguages({}, CONFIG.languages), []);
   } finally {
     await rm(tmp, { recursive: true, force: true });
@@ -179,7 +175,7 @@ test("buildFeedXml: absolute enclosures, guid, language tag, per-language item f
   try {
     const { episodeRoot } = await makeFixture(tmp);
     const entries = await loadEpisodes(episodeRoot);
-    // Same demotion phase buildSite runs: ru's claimed-but-missing mp3 fails.
+    // Same demotion phase buildSite runs: ko's claimed-but-missing mp3 fails.
     for (const entry of entries) await copyEpisodeAssets(entry, episodeRoot, CONFIG.languages, join(tmp, "copy0"), () => {});
     const jaFeed = buildFeedXml("ja", entries, CONFIG, BASE_URL);
     assert.ok(jaFeed.includes(`https://feed.example.com/pd/episodes/2026-10-18/ja.mp3`), jaFeed);
@@ -192,24 +188,19 @@ test("buildFeedXml: absolute enclosures, guid, language tag, per-language item f
     assert.ok(jaFeed.includes(`<atom:link rel="self" type="application/rss+xml" href="${BASE_URL}/feed-ja.xml"/>`));
     assert.ok(/<pubDate>(Sat|Sun|Mon|Tue|Wed|Thu|Fri), \d{2} ([A-Z][a-z]{2}) \d{4} \d{2}:\d{2}:\d{2} GMT<\/pubDate>/.test(jaFeed.replace(/\s+/g, " ")));
     assert.equal(jaFeed.match(/<item>/g).length, 2, "ja feed: both episodes have ja audio");
-    // Lineup languages map to their RSS channel language code (zh -> zh-CN).
-    const zhFeed = buildFeedXml("zh", entries, CONFIG, BASE_URL);
-    assert.ok(zhFeed.includes("<language>zh-CN</language>"), "zh channel tag is zh-CN");
-    const deFeed = buildFeedXml("de", entries, CONFIG, BASE_URL);
-    assert.ok(deFeed.includes("<language>de</language>"), "de channel tag");
-    // ru mp3 missing on disk is demoted before feeds see it -> 0 items.
-    const ruFeed = buildFeedXml("ru", entries, CONFIG, BASE_URL);
-    assert.equal(ruFeed.match(/<item>/g), null, "ru feed with no usable audio has no items");
-    assert.ok(ruFeed.includes("Phantomresearch Daily (Русский)"));
-    const deItems = deFeed.match(/<item>/g);
-    assert.equal(deItems && deItems.length, 1);
-    assert.ok(deFeed.includes("/2026-10-18/de.mp3"));
+    // ko mp3 missing on disk is demoted before feeds see it -> 0 items.
+    const koFeed = buildFeedXml("ko", entries, CONFIG, BASE_URL);
+    assert.equal(koFeed.match(/<item>/g), null, "ko feed with no usable audio has no items");
+    assert.ok(koFeed.includes("Phantomresearch Daily (한국어)"));
+    const enFeed = buildFeedXml("en", entries, CONFIG, BASE_URL);
+    assert.equal(enFeed.match(/<item>/g).length, 1);
+    assert.ok(enFeed.includes("/2026-10-18/en.mp3"));
     // xml escaping: topic label contains "&" and a quote.
     assert.ok(jaFeed.includes("拡散モデル「&amp;」"), "topic label escaped");
     // relative mode: guid isPermaLink=false with tag-like value, relative enclosure.
-    const relFeed = buildFeedXml("de", entries, CONFIG, "");
-    assert.ok(relFeed.includes('enclosure url="episodes/2026-10-18/de.mp3"'));
-    assert.ok(relFeed.includes('isPermaLink="false">phantomresearch-daily-2026-10-18-de'));
+    const relFeed = buildFeedXml("en", entries, CONFIG, "");
+    assert.ok(relFeed.includes('enclosure url="episodes/2026-10-18/en.mp3"'));
+    assert.ok(relFeed.includes('isPermaLink="false">phantomresearch-daily-2026-10-18-en'));
     assert.ok(!relFeed.includes("atom:link"), "no self atom:link without a base URL");
   } finally {
     await rm(tmp, { recursive: true, force: true });
@@ -227,26 +218,19 @@ test("buildEpisodesJson lists all episodes with per-language audio (nulls for mi
     assert.equal(json.episodeCount, 2);
     assert.equal(json.baseUrl, BASE_URL);
     assert.equal(json.generatedAt, "2026-10-18T09:00:00+09:00");
-    assert.deepEqual(json.feeds, {
-      ja: "feed-ja.xml",
-      zh: "feed-zh.xml",
-      de: "feed-de.xml",
-      es: "feed-es.xml",
-      ru: "feed-ru.xml",
-      it: "feed-it.xml",
-    });
+    assert.deepEqual(json.feeds, { ja: "feed-ja.xml", en: "feed-en.xml", zh: "feed-zh.xml", ko: "feed-ko.xml" });
     const [first, second] = json.episodes;
     assert.equal(first.date, "2026-10-18");
-    assert.deepEqual(first.topic.labels.de, "Diffusionsmodelle");
+    assert.deepEqual(first.topic.labels.en, "Diffusion models");
     assert.deepEqual(first.papers, PAPERS);
     assert.equal(first.languages.ja.audioUrl, `${BASE_URL}/episodes/2026-10-18/ja.mp3`);
     assert.equal(first.languages.ja.audioPath, "episodes/2026-10-18/ja.mp3");
     assert.equal(first.languages.ja.scriptPath, "episodes/2026-10-18/script-ja.txt");
     assert.equal(first.languages.ja.durationSeconds, 91.2);
     assert.equal(first.languages.zh, null, "failed language is null in JSON");
-    assert.equal(first.languages.ru, null, "ru.mp3 missing on disk is demoted to null");
+    assert.equal(first.languages.ko, null, "ko.mp3 missing on disk is demoted to null");
     assert.equal(second.languages.ja.audioUrl, `${BASE_URL}/episodes/2026-10-17/ja.mp3`);
-    assert.equal(second.languages.de, null);
+    assert.equal(second.languages.en, null);
   } finally {
     await rm(tmp, { recursive: true, force: true });
   }
@@ -264,13 +248,13 @@ test("index.html: play + download per available language, unavailable languages 
     assert.ok(html.includes('href="episodes/2026-10-18/ja.mp3" download="phantomresearch-daily-2026-10-18-ja.mp3"'));
     assert.ok(html.includes('href="episodes/2026-10-18/script-ja.txt"'));
     assert.ok(html.includes("<div class=\"lang-block\" data-lang=\"ja\">"));
-    assert.ok(html.includes(`<div class="lang-block" data-lang="de">`) || html.includes("data-lang=\"de\""), "de block present");
+    assert.ok(html.includes(`<div class="lang-block" data-lang="en">`) || html.includes("data-lang=\"en\""), "en block present");
     // zh (no audio anywhere): no lang-block and no tab.
     assert.ok(!html.includes('<div class="lang-block" data-lang="zh"'), "zh block absent");
     assert.ok(!html.includes('data-lang-tab="zh"'), "zh tab absent");
-    // ru claimed but file missing: hidden everywhere.
-    assert.ok(!html.includes('<div class="lang-block" data-lang="ru"'), "ru block absent");
-    assert.ok(!html.includes('data-lang-tab="ru"'), "ru tab absent");
+    // ko claimed but file missing: hidden everywhere.
+    assert.ok(!html.includes('<div class="lang-block" data-lang="ko"'), "ko block absent");
+    assert.ok(!html.includes('data-lang-tab="ko"'), "ko tab absent");
     // Paper attribution: escaped title + arXiv source link.
     assert.ok(html.includes("A Study &amp; &lt;Review&gt;"), "paper title escaped");
     assert.ok(html.includes('href="https://arxiv.org/abs/2410.12345"'), "paper link present");
@@ -285,7 +269,7 @@ test("index.html: play + download per available language, unavailable languages 
   }
 });
 
-test("buildSite: full output set, asset copies, metadata lands in all six feeds", async () => {
+test("buildSite: full output set, asset copies, metadata lands in all four feeds", async () => {
   const tmp = await mkdtemp(join(tmpdir(), "podcast-site-build-"));
   try {
     const { episodeRoot } = await makeFixture(tmp);
@@ -295,18 +279,17 @@ test("buildSite: full output set, asset copies, metadata lands in all six feeds"
       outDir,
       baseUrl: BASE_URL,
       episodeCount: 2,
-      languages: ["ja", "zh", "de", "es", "ru", "it"],
-      feeds: ["feed-ja.xml", "feed-zh.xml", "feed-de.xml", "feed-es.xml", "feed-ru.xml", "feed-it.xml"],
+      languages: ["ja", "en", "zh", "ko"],
+      feeds: ["feed-ja.xml", "feed-en.xml", "feed-zh.xml", "feed-ko.xml"],
     });
     const files = (await readdir(outDir)).sort();
-    assert.deepEqual(files, ["episodes", "episodes.json", "feed-de.xml", "feed-es.xml", "feed-it.xml", "feed-ja.xml", "feed-ru.xml", "feed-zh.xml", "index.html"]);
+    assert.deepEqual(files, ["episodes", "episodes.json", "feed-en.xml", "feed-ja.xml", "feed-ko.xml", "feed-zh.xml", "index.html"]);
     // Audio is copied verbatim; transcripts too; nothing for absent files.
     assert.equal(await readFile(join(outDir, "episodes/2026-10-18/ja.mp3"), "utf8"), "ja-audio-ep1");
-    assert.equal(await readFile(join(outDir, "episodes/2026-10-18/de.mp3"), "utf8"), "de-audio-ep1");
-    assert.equal(await readFile(join(outDir, "episodes/2026-10-18/es.mp3"), "utf8"), "es-audio-ep1");
+    assert.equal(await readFile(join(outDir, "episodes/2026-10-18/en.mp3"), "utf8"), "en-audio-ep1");
     assert.equal(await readFile(join(outDir, "episodes/2026-10-18/script-ja.txt"), "utf8"), "ja transcript");
     assert.equal(await readFile(join(outDir, "episodes/2026-10-17/ja.mp3"), "utf8"), "ja-audio-ep2");
-    assert.deepEqual((await readdir(join(outDir, "episodes", "2026-10-18"))).sort(), ["de.mp3", "es.mp3", "it.mp3", "ja.mp3", "script-ja.txt"], "no zh transcript / no ru.mp3 (missing sources)");
+    assert.deepEqual((await readdir(join(outDir, "episodes", "2026-10-18"))).sort(), ["en.mp3", "ja.mp3", "script-ja.txt"], "no zh transcript / no ko.mp3 (missing sources)");
     assert.deepEqual(await readdir(join(outDir, "episodes", "2026-10-17")), ["ja.mp3"]);
   } finally {
     await rm(tmp, { recursive: true, force: true });
@@ -356,7 +339,7 @@ test("buildSite with empty/missing episodes dir still emits valid shells", async
       baseUrl: BASE_URL,
     });
     assert.equal(result.episodeCount, 0);
-    for (const file of ["index.html", "episodes.json", "feed-ja.xml", "feed-zh.xml", "feed-de.xml", "feed-es.xml", "feed-ru.xml", "feed-it.xml"]) {
+    for (const file of ["index.html", "episodes.json", "feed-ja.xml", "feed-en.xml", "feed-zh.xml", "feed-ko.xml"]) {
       const content = await readFile(join(outDir, file), "utf8");
       assert.ok(content.trim().length > 0, `${file} exists and is non-empty`);
     }

@@ -20,24 +20,18 @@ import { loadConfig } from "./daily.mjs";
 import { isValidISODate, readJson, writeJsonAtomic } from "./select.mjs";
 
 const LANG_DEFAULTS = {
-  labels: { ja: "日本語", zh: "中文", de: "Deutsch", es: "Español", ru: "Русский", it: "Italiano" },
-  download: { ja: "ダウンロード（MP3）", zh: "下载（MP3）", de: "Download (MP3)", es: "Descarga (MP3)", ru: "Загрузка (MP3)", it: "Download (MP3)" },
-  transcript: { ja: "スクリプト", zh: "文稿", de: "Skript", es: "Guion", ru: "Сценарий", it: "Trascrizione" },
-  rss: { ja: "RSS（日本語）", zh: "RSS（中文）", de: "RSS (Deutsch)", es: "RSS (Español)", ru: "RSS (Русский)", it: "RSS (Italiano)" },
+  labels: { ja: "日本語", en: "English", zh: "中文", ko: "한국어" },
+  download: { ja: "ダウンロード（MP3）", en: "Download (MP3)", zh: "下载（MP3）", ko: "다운로드 (MP3)" },
+  transcript: { ja: "スクリプト", en: "Transcript", zh: "文稿", ko: "대본" },
+  rss: { ja: "RSS（日本語）", en: "RSS (English)", zh: "RSS（中文）", ko: "RSS (한국어)" },
   itemDescription: {
     ja: (label, count) => `テーマ「${label}」。論文${count}件。`,
+    en: (label, count) => `Topic: ${label}. ${count} papers.`,
     zh: (label, count) => `主题「${label}」·论文${count}篇。`,
-    de: (label, count) => `Thema: ${label}. ${count} Papers.`,
-    es: (label, count) => `Tema: ${label}. ${count} artículos.`,
-    ru: (label, count) => `Тема: ${label}. Статей: ${count}.`,
-    it: (label, count) => `Tema: ${label}. ${count} articoli.`,
+    ko: (label, count) => `주제 "${label}" · 논문 ${count}편.`,
   },
-  channelSuffix: { ja: "（{label}）", zh: "（{label}）", de: " ({label})", es: " ({label})", ru: " ({label})", it: " ({label})" },
+  channelSuffix: { ja: "（{label}）", en: " ({label})", zh: "（{label}）", ko: " ({label})" },
 };
-
-// RSS <language> channel tag: BCP-47-ish code per lineup language (zh gets the
-// region suffix like the old feed-XML contract).
-const XML_LANG = { ja: "ja", zh: "zh-CN", de: "de", es: "es", ru: "ru", it: "it" };
 
 // ---- small helpers ------------------------------------------------------------
 
@@ -209,7 +203,7 @@ function rssItem(view, lang, baseUrl, position) {
   const audioInfo = view.audio[lang];
   const url = joinUrl(baseUrl, audioInfo.path);
   const topicLabel = view.topicLabels[lang] ?? view.date;
-  const describer = LANG_DEFAULTS.itemDescription[lang] ?? LANG_DEFAULTS.itemDescription.ja;
+  const describer = LANG_DEFAULTS.itemDescription[lang] ?? LANG_DEFAULTS.itemDescription.en;
   // Without a base URL there is no permalink; a stable urn-ish tag still
   // keeps the guid unique and deterministic.
   const guid = baseUrl ? url : `phantomresearch-daily-${view.date}-${lang}`;
@@ -229,7 +223,7 @@ function rssItem(view, lang, baseUrl, position) {
 }
 
 export function buildFeedXml(lang, episodeEntries, config, baseUrl) {
-  const subtitle = config?.subtitle?.[lang] ?? config?.subtitle?.ja ?? config?.title ?? "";
+  const subtitle = config?.subtitle?.[lang] ?? config?.subtitle?.en ?? config?.title ?? "";
   const link = baseUrl ? `${baseUrl}/` : "index.html";
   const selfLink = baseUrl ? joinUrl(baseUrl, `feed-${lang}.xml`) : null;
   const views = episodeEntries.map((entry) => episodeView(entry, config, [lang]));
@@ -247,7 +241,7 @@ export function buildFeedXml(lang, episodeEntries, config, baseUrl) {
     "  <channel>",
     `    <title>${escapeXml(channelTitle(config, lang))}</title>`,
     `    <link>${escapeXml(link)}</link>`,
-    `    <language>${escapeXml(XML_LANG[lang] ?? lang)}</language>`,
+    `    <language>${escapeXml(lang)}</language>`,
     `    <description>${escapeXml(subtitle)}</description>`,
     selfLink ? `    <atom:link rel="self" type="application/rss+xml" href="${escapeXml(selfLink)}"/>` : null,
     "    <itunes:author>Phantomresearch</itunes:author>",
@@ -365,9 +359,7 @@ export function buildIndexHtml(episodeEntries, config, languages) {
   languages = (languages ?? (config?.languages ?? [])).filter(Boolean);
   const title = escapeHtml(config?.title ?? "Phantomresearch Daily");
   const subtitleJa = escapeHtml(config?.subtitle?.ja ?? "");
-  // Secondary hero line: prefer German (first European lineup language), then
-  // any remaining subtitle entry, so removed-lineup keys (en) are not required.
-  const subtitleSecond = escapeHtml(config?.subtitle?.de ?? config?.subtitle?.es ?? config?.subtitle?.zh ?? "");
+  const subtitleEn = escapeHtml(config?.subtitle?.en ?? "");
   const views = episodeEntries.map((entry) => episodeView(entry, config, languages));
 
   // A language tab exists only when at least one episode ships that language.
@@ -454,8 +446,8 @@ footer a{color:var(--muted)}
   <header class="hero">
     <h1>${title}</h1>
     <p class="sub">${subtitleJa}</p>
-    <p class="sub-en">${subtitleSecond}</p>
-    <div class="chips"><span class="chip">毎日テーマが変わる</span><span class="chip">${languages.length} languages</span><span class="chip">ローカル生成音声</span></div>
+    <p class="sub-en">${subtitleEn}</p>
+    <div class="chips"><span class="chip">毎日テーマが変わる</span><span class="chip">4 languages</span><span class="chip">ローカル生成音声</span></div>
     ${navigation}<nav class="feeds" aria-label="RSS feeds">${feedRows}</nav>
   </header>
   <h2 class="section">エピソード / Episodes</h2>

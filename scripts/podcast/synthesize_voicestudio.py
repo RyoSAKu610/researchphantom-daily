@@ -7,7 +7,7 @@ The daily podcast pipeline calls this adapter once per episode language:
 The server must already be running (default: http://127.0.0.1:3900/v1/audio/speech,
 override with VOICESTUDIO_URL or --url). One JSON POST per invocation requests the
 whole script with model "omnivoice-gguf" and the voice profile name from the
-voices.json "voicestudio" section (e.g. "Phantom-DE") as the OpenAI-compatible
+voices.json "voicestudio" section (e.g. "Phantom-EN") as the OpenAI-compatible
 ``voice`` field, response_format "wav". Returned WAV bytes are transcoded by
 ffmpeg into a 48kbps mono libmp3lame MP3 through the language filter chain,
 verified exactly like scripts/podcast/synthesize.py and published with a

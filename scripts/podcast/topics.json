@@ -2,407 +2,146 @@
   {
     "id": "diffusion-models",
     "keyword": "diffusion models",
-    "labels": {
-      "ja": "拡散モデル",
-      "en": "Diffusion models",
-      "zh": "扩散模型",
-      "ko": "확산 모델",
-      "de": "Diffusionsmodelle",
-      "es": "Modelos de difusión",
-      "ru": "Диффузионные модели",
-      "it": "Modelli di diffusione"
-    }
+    "labels": { "ja": "拡散モデル", "en": "Diffusion models", "zh": "扩散模型", "ko": "확산 모델" }
   },
   {
     "id": "language-model-agents",
     "keyword": "language model agents",
-    "labels": {
-      "ja": "言語モデルエージェント",
-      "en": "Language-model agents",
-      "zh": "语言模型智能体",
-      "ko": "언어 모델 에이전트",
-      "de": "Sprachmodell-Agenten",
-      "es": "Agentes de modelos de lenguaje",
-      "ru": "Агенты на языковых моделях",
-      "it": "Agenti basati su modelli linguistici"
-    }
+    "labels": { "ja": "言語モデルエージェント", "en": "Language-model agents", "zh": "语言模型智能体", "ko": "언어 모델 에이전트" }
   },
   {
     "id": "retrieval-augmented-generation",
     "keyword": "retrieval-augmented generation",
-    "labels": {
-      "ja": "検索拡張生成（RAG）",
-      "en": "Retrieval-augmented generation",
-      "zh": "检索增强生成",
-      "ko": "검색 증강 생성",
-      "de": "Retrieval-Augmented Generation",
-      "es": "Generación aumentada por recuperación",
-      "ru": "Генерация с дополнением поиском (RAG)",
-      "it": "Generazione aumentata dal recupero (RAG)"
-    }
+    "labels": { "ja": "検索拡張生成（RAG）", "en": "Retrieval-augmented generation", "zh": "检索增强生成", "ko": "검색 증강 생성" }
   },
   {
     "id": "vision-language-models",
     "keyword": "vision-language models",
-    "labels": {
-      "ja": "視覚言語モデル",
-      "en": "Vision-language models",
-      "zh": "视觉语言模型",
-      "ko": "비전-언어 모델",
-      "de": "Vision-Language-Modelle",
-      "es": "Modelos de visión y lenguaje",
-      "ru": "Визуально-языковые модели",
-      "it": "Modelli visione-linguaggio"
-    }
+    "labels": { "ja": "視覚言語モデル", "en": "Vision-language models", "zh": "视觉语言模型", "ko": "비전-언어 모델" }
   },
   {
     "id": "reinforcement-learning",
     "keyword": "reinforcement learning",
-    "labels": {
-      "ja": "強化学習",
-      "en": "Reinforcement learning",
-      "zh": "强化学习",
-      "ko": "강화 학습",
-      "de": "Bestärkungslernen",
-      "es": "Aprendizaje por refuerzo",
-      "ru": "Обучение с подкреплением",
-      "it": "Apprendimento per rinforzo"
-    }
+    "labels": { "ja": "強化学習", "en": "Reinforcement learning", "zh": "强化学习", "ko": "강화 학습" }
   },
   {
     "id": "speech-synthesis",
     "keyword": "speech synthesis",
-    "labels": {
-      "ja": "音声合成",
-      "en": "Speech synthesis",
-      "zh": "语音合成",
-      "ko": "음성 합성",
-      "de": "Sprachsynthese",
-      "es": "Síntesis de voz",
-      "ru": "Синтез речи",
-      "it": "Sintesi vocale"
-    }
+    "labels": { "ja": "音声合成", "en": "Speech synthesis", "zh": "语音合成", "ko": "음성 합성" }
   },
   {
     "id": "machine-translation",
     "keyword": "machine translation",
-    "labels": {
-      "ja": "機械翻訳",
-      "en": "Machine translation",
-      "zh": "机器翻译",
-      "ko": "기계 번역",
-      "de": "Maschinelle Übersetzung",
-      "es": "Traducción automática",
-      "ru": "Машинный перевод",
-      "it": "Traduzione automatica"
-    }
+    "labels": { "ja": "機械翻訳", "en": "Machine translation", "zh": "机器翻译", "ko": "기계 번역" }
   },
   {
     "id": "interpretability",
     "keyword": "mechanistic interpretability",
-    "labels": {
-      "ja": "機械的解釈可能性",
-      "en": "Mechanistic interpretability",
-      "zh": "机制可解释性",
-      "ko": "기계적 해석 가능성",
-      "de": "Mechanistische Interpretierbarkeit",
-      "es": "Interpretabilidad mecanicista",
-      "ru": "Механистическая интерпретируемость",
-      "it": "Interpretabilità meccanicistica"
-    }
+    "labels": { "ja": "機械的解釈可能性", "en": "Mechanistic interpretability", "zh": "机制可解释性", "ko": "기계적 해석 가능성" }
   },
   {
     "id": "llm-safety",
     "keyword": "large language model safety",
-    "labels": {
-      "ja": "大規模言語モデルの安全性",
-      "en": "LLM safety",
-      "zh": "大语言模型安全",
-      "ko": "대규모 언어 모델 안전성",
-      "de": "Sicherheit großer Sprachmodelle",
-      "es": "Seguridad de los grandes modelos de lenguaje",
-      "ru": "Безопасность больших языковых моделей",
-      "it": "Sicurezza dei grandi modelli linguistici"
-    }
+    "labels": { "ja": "大規模言語モデルの安全性", "en": "LLM safety", "zh": "大语言模型安全", "ko": "대규모 언어 모델 안전성" }
   },
   {
     "id": "code-generation",
     "keyword": "code generation",
-    "labels": {
-      "ja": "コード生成",
-      "en": "Code generation",
-      "zh": "代码生成",
-      "ko": "코드 생성",
-      "de": "Codegenerierung",
-      "es": "Generación de código",
-      "ru": "Генерация кода",
-      "it": "Generazione di codice"
-    }
+    "labels": { "ja": "コード生成", "en": "Code generation", "zh": "代码生成", "ko": "코드 생성" }
   },
   {
     "id": "graph-neural-networks",
     "keyword": "graph neural networks",
-    "labels": {
-      "ja": "グラフニューラルネットワーク",
-      "en": "Graph neural networks",
-      "zh": "图神经网络",
-      "ko": "그래프 신경망",
-      "de": "Graph-neuronale Netze",
-      "es": "Redes neuronales de grafos",
-      "ru": "Графовые нейронные сети",
-      "it": "Reti neurali a grafo"
-    }
+    "labels": { "ja": "グラフニューラルネットワーク", "en": "Graph neural networks", "zh": "图神经网络", "ko": "그래프 신경망" }
   },
   {
     "id": "federated-learning",
     "keyword": "federated learning",
-    "labels": {
-      "ja": "連合学習",
-      "en": "Federated learning",
-      "zh": "联邦学习",
-      "ko": "연합 학습",
-      "de": "Föderiertes Lernen",
-      "es": "Aprendizaje federado",
-      "ru": "Федеративное обучение",
-      "it": "Apprendimento federato"
-    }
+    "labels": { "ja": "連合学習", "en": "Federated learning", "zh": "联邦学习", "ko": "연합 학습" }
   },
   {
     "id": "protein-structure-prediction",
     "keyword": "protein structure prediction",
-    "labels": {
-      "ja": "タンパク質構造予測",
-      "en": "Protein structure prediction",
-      "zh": "蛋白质结构预测",
-      "ko": "단백질 구조 예측",
-      "de": "Vorhersage von Proteinstrukturen",
-      "es": "Predicción de la estructura de proteínas",
-      "ru": "Предсказание структуры белков",
-      "it": "Predizione della struttura delle proteine"
-    }
+    "labels": { "ja": "タンパク質構造予測", "en": "Protein structure prediction", "zh": "蛋白质结构预测", "ko": "단백질 구조 예측" }
   },
   {
     "id": "single-cell-analysis",
     "keyword": "single-cell transcriptomics",
-    "labels": {
-      "ja": "単一細胞トランスクリプトーム",
-      "en": "Single-cell transcriptomics",
-      "zh": "单细胞转录组",
-      "ko": "단일 세포 전사체",
-      "de": "Einzelzell-Transkriptomik",
-      "es": "Transcriptómica de célula única",
-      "ru": "Одноклеточная транскриптомика",
-      "it": "Trascrittomica a cellula singola"
-    }
+    "labels": { "ja": "単一細胞トランスクリプトーム", "en": "Single-cell transcriptomics", "zh": "单细胞转录组", "ko": "단일 세포 전사체" }
   },
   {
     "id": "materials-discovery",
     "keyword": "materials discovery",
-    "labels": {
-      "ja": "新素材の探索",
-      "en": "Materials discovery",
-      "zh": "材料发现",
-      "ko": "신소재 탐색",
-      "de": "Entdeckung neuer Materialien",
-      "es": "Descubrimiento de materiales",
-      "ru": "Поиск новых материалов",
-      "it": "Scoperta di nuovi materiali"
-    }
+    "labels": { "ja": "新素材の探索", "en": "Materials discovery", "zh": "材料发现", "ko": "신소재 탐색" }
   },
   {
     "id": "climate-modeling",
     "keyword": "climate modeling",
-    "labels": {
-      "ja": "気候モデリング",
-      "en": "Climate modeling",
-      "zh": "气候建模",
-      "ko": "기후 모델링",
-      "de": "Klimamodellierung",
-      "es": "Modelización climática",
-      "ru": "Климатическое моделирование",
-      "it": "Modellizzazione climatica"
-    }
+    "labels": { "ja": "気候モデリング", "en": "Climate modeling", "zh": "气候建模", "ko": "기후 모델링" }
   },
   {
     "id": "neural-decoding",
     "keyword": "neural decoding",
-    "labels": {
-      "ja": "神経活動のデコーディング",
-      "en": "Neural decoding",
-      "zh": "神经解码",
-      "ko": "신경 해독",
-      "de": "Neurales Decoding",
-      "es": "Decodificación neural",
-      "ru": "Декодирование нейронной активности",
-      "it": "Decodificazione neurale"
-    }
+    "labels": { "ja": "神経活動のデコーディング", "en": "Neural decoding", "zh": "神经解码", "ko": "신경 해독" }
   },
   {
     "id": "quantum-computing",
     "keyword": "quantum computing",
-    "labels": {
-      "ja": "量子計算",
-      "en": "Quantum computing",
-      "zh": "量子计算",
-      "ko": "양자 컴퓨팅",
-      "de": "Quantencomputing",
-      "es": "Computación cuántica",
-      "ru": "Квантовые вычисления",
-      "it": "Calcolo quantistico"
-    }
+    "labels": { "ja": "量子計算", "en": "Quantum computing", "zh": "量子计算", "ko": "양자 컴퓨팅" }
   },
   {
     "id": "automated-theorem-proving",
     "keyword": "theorem proving",
-    "labels": {
-      "ja": "定理の自動証明",
-      "en": "Automated theorem proving",
-      "zh": "自动定理证明",
-      "ko": "자동 정리 증명",
-      "de": "Automatisches Theorembeweisen",
-      "es": "Demostración automática de teoremas",
-      "ru": "Автоматическое доказательство теорем",
-      "it": "Dimostrazione automatica di teoremi"
-    }
+    "labels": { "ja": "定理の自動証明", "en": "Automated theorem proving", "zh": "自动定理证明", "ko": "자동 정리 증명" }
   },
   {
     "id": "causal-inference",
     "keyword": "causal inference",
-    "labels": {
-      "ja": "因果推論",
-      "en": "Causal inference",
-      "zh": "因果推断",
-      "ko": "인과 추론",
-      "de": "Kausalinferenz",
-      "es": "Inferencia causal",
-      "ru": "Причинно-следственный вывод",
-      "it": "Inferenza causale"
-    }
+    "labels": { "ja": "因果推論", "en": "Causal inference", "zh": "因果推断", "ko": "인과 추론" }
   },
   {
     "id": "human-computer-interaction",
     "keyword": "human-computer interaction",
-    "labels": {
-      "ja": "ヒューマン・コンピュータ・インタラクション",
-      "en": "Human-computer interaction",
-      "zh": "人机交互",
-      "ko": "인간-컴퓨터 상호작용",
-      "de": "Mensch-Computer-Interaktion",
-      "es": "Interacción humano-computadora",
-      "ru": "Взаимодействие человека и компьютера",
-      "it": "Interazione uomo-computer"
-    }
+    "labels": { "ja": "ヒューマン・コンピュータ・インタラクション", "en": "Human-computer interaction", "zh": "人机交互", "ko": "인간-컴퓨터 상호작용" }
   },
   {
     "id": "vulnerability-detection",
     "keyword": "vulnerability detection",
-    "labels": {
-      "ja": "脆弱性の検出",
-      "en": "Vulnerability detection",
-      "zh": "漏洞检测",
-      "ko": "취약점 탐지",
-      "de": "Erkennung von Schwachstellen",
-      "es": "Detección de vulnerabilidades",
-      "ru": "Обнаружение уязвимостей",
-      "it": "Rilevamento delle vulnerabilità"
-    }
+    "labels": { "ja": "脆弱性の検出", "en": "Vulnerability detection", "zh": "漏洞检测", "ko": "취약점 탐지" }
   },
   {
     "id": "fairness-in-ml",
     "keyword": "fairness machine learning",
-    "labels": {
-      "ja": "機械学習の公平性",
-      "en": "Fairness in machine learning",
-      "zh": "机器学习的公平性",
-      "ko": "머신러닝 공정성",
-      "de": "Fairness im maschinellen Lernen",
-      "es": "Equidad en el aprendizaje automático",
-      "ru": "Справедливость в машинном обучении",
-      "it": "Equità nell'apprendimento automatico"
-    }
+    "labels": { "ja": "機械学習の公平性", "en": "Fairness in machine learning", "zh": "机器学习的公平性", "ko": "머신러닝 공정성" }
   },
   {
     "id": "convex-optimization",
     "keyword": "convex optimization",
-    "labels": {
-      "ja": "凸最適化",
-      "en": "Convex optimization",
-      "zh": "凸优化",
-      "ko": "볼록 최적화",
-      "de": "Konvexe Optimierung",
-      "es": "Optimización convexa",
-      "ru": "Выпуклая оптимизация",
-      "it": "Ottimizzazione convessa"
-    }
+    "labels": { "ja": "凸最適化", "en": "Convex optimization", "zh": "凸优化", "ko": "볼록 최적화" }
   },
   {
     "id": "multimodal-learning",
     "keyword": "multimodal learning",
-    "labels": {
-      "ja": "マルチモーダル学習",
-      "en": "Multimodal learning",
-      "zh": "多模态学习",
-      "ko": "멀티모달 학습",
-      "de": "Multimodales Lernen",
-      "es": "Aprendizaje multimodal",
-      "ru": "Мультимодальное обучение",
-      "it": "Apprendimento multimodale"
-    }
+    "labels": { "ja": "マルチモーダル学習", "en": "Multimodal learning", "zh": "多模态学习", "ko": "멀티모달 학습" }
   },
   {
     "id": "robot-manipulation",
     "keyword": "robot manipulation",
-    "labels": {
-      "ja": "ロボットによる物体操作",
-      "en": "Robot manipulation",
-      "zh": "机器人操作",
-      "ko": "로봇 조작",
-      "de": "Roboterische Objektmanipulation",
-      "es": "Manipulación de objetos con robots",
-      "ru": "Манипуляция объектами роботом",
-      "it": "Manipolazione di oggetti mediante robot"
-    }
+    "labels": { "ja": "ロボットによる物体操作", "en": "Robot manipulation", "zh": "机器人操作", "ko": "로봇 조작" }
   },
   {
     "id": "object-detection",
     "keyword": "object detection",
-    "labels": {
-      "ja": "物体検出",
-      "en": "Object detection",
-      "zh": "目标检测",
-      "ko": "객체 탐지",
-      "de": "Objekterkennung",
-      "es": "Detección de objetos",
-      "ru": "Обнаружение объектов",
-      "it": "Rilevamento di oggetti"
-    }
+    "labels": { "ja": "物体検出", "en": "Object detection", "zh": "目标检测", "ko": "객체 탐지" }
   },
   {
     "id": "time-series-forecasting",
     "keyword": "time series forecasting",
-    "labels": {
-      "ja": "時系列予測",
-      "en": "Time-series forecasting",
-      "zh": "时间序列预测",
-      "ko": "시계열 예측",
-      "de": "Zeitreihenprognosen",
-      "es": "Predicción de series temporales",
-      "ru": "Прогнозирование временных рядов",
-      "it": "Previsione di serie temporali"
-    }
+    "labels": { "ja": "時系列予測", "en": "Time-series forecasting", "zh": "时间序列预测", "ko": "시계열 예측" }
   },
   {
     "id": "music-generation",
     "keyword": "music generation",
-    "labels": {
-      "ja": "音楽生成",
-      "en": "Music generation",
-      "zh": "音乐生成",
-      "ko": "음악 생성",
-      "de": "Musikgenerierung",
-      "es": "Generación de música",
-      "ru": "Генерация музыки",
-      "it": "Generazione musicale"
-    }
+    "labels": { "ja": "音楽生成", "en": "Music generation", "zh": "音乐生成", "ko": "음악 생성" }
   }
 ]

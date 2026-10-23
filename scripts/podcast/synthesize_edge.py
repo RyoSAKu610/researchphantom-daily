@@ -189,7 +189,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--text", help="Episode script as a string (alternative to --text-file)")
     parser.add_argument("--text-file", type=Path, help="UTF-8 file with the episode script")
-    parser.add_argument("--language", required=True, help="Language key from voices.json, e.g. ja, zh, de, es, ru, it")
+    parser.add_argument("--language", required=True, help="Language key from voices.json, e.g. ja, en, zh, ko")
     parser.add_argument("--out", type=Path, required=True, help="Destination MP3 path")
     parser.add_argument("--metrics", type=Path, required=True, help="Destination metrics JSON path")
     parser.add_argument("--voices", type=Path, default=VOICES_PATH, help="Voice configuration JSON (default: %(default)s)")

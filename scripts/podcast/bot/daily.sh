@@ -8,14 +8,13 @@
 #   2. git pull --ff-only for updates from the remote (warning only on failure;
 #      the working tree here is the source of truth, never reset --hard)
 #   3. run node scripts/podcast/daily.mjs --catchup with TZ=Asia/Tokyo and
-#      PODCAST_TTS_MAP="ja:irodori,zh:voicestudio,
-#      de:voicestudio,es:voicestudio,ru:voicestudio,it:voicestudio"
+#      PODCAST_TTS_MAP="ja:irodori,en:voicestudio,zh:voicestudio,ko:voicestudio"
 #      (daily.mjs is idempotent: existing episode dates are skipped; missed
 #      dates back within config.backfillDays=3 are refilled by --catchup)
 #   4. BY DEFAULT (opt-out with PODCAST_FALLBACK_EDGE=0): dates whose audio
 #      ended up missing (fully or in some languages) are regenerated once with
-#      the pure edge-TTS map (ja/zh/de/es/ru/it all edge; daily.mjs --force per
-#      date) so every episode always ships all six languages. The old opt-in
+#      the pure edge-TTS map (ja/en/zh/ko all edge; daily.mjs --force per date)
+#      so every episode always ships all four languages. The old opt-in
 #      behaviour is preserved via PODCAST_FALLBACK_EDGE=0 when you want to
 #      report server-type failures instead of re-synthesizing with edge.
 #   5. commit episodes/state (and the rebuilt podcast-site/, if present) and
@@ -78,8 +77,8 @@ fi
 export TZ=Asia/Tokyo
 # Per-language servers on this VM. PODCAST_TTS_ENGINE stays unset, so any
 # language missing from the map would fall back to the historical qwen default
-# (that can never happen while config.languages is exactly ja/zh/de/es/ru/it).
-export PODCAST_TTS_MAP="${PODCAST_TTS_MAP:-ja:irodori,zh:voicestudio,de:voicestudio,es:voicestudio,ru:voicestudio,it:voicestudio}"
+# (that can never happen while config.languages is exactly ja/en/zh/ko).
+export PODCAST_TTS_MAP="${PODCAST_TTS_MAP:-ja:irodori,en:voicestudio,zh:voicestudio,ko:voicestudio}"
 unset PODCAST_TTS_ENGINE || true
 # All engines route through the local tts-hub (127.0.0.1:3901) unless overridden.
 export VOICESTUDIO_URL="${VOICESTUDIO_URL:-http://127.0.0.1:3901/v1/audio/speech}"
@@ -96,12 +95,11 @@ fi
 
 # ------------------------------------------------------ default edge fallback -
 FINAL_RC="${RC}"
-# Default behaviour: for a completed run (0 or 3), dates that ended with
-# missing audio (fully or in some languages) are regenerated once with the
-# pure edge map so the six-language requirement always holds. Set
-# PODCAST_FALLBACK_EDGE=0 to opt out (report server failures instead).
+# Opt-in only (PODCAST_FALLBACK_EDGE=1): for a completed run (0 or 3), dates
+# that ended with missing audio are regenerated once with the pure edge map.
+# Default is 0: edge-tts is not used; server failures are reported instead.
 # Mirrors the "edge is the main safety net" policy from the bot README.
-if [ "${PODCAST_FALLBACK_EDGE:-1}" != "0" ] && { [ "${RC}" -eq 0 ] || [ "${RC}" -eq 3 ]; }; then
+if [ "${PODCAST_FALLBACK_EDGE:-0}" != "0" ] && { [ "${RC}" -eq 0 ] || [ "${RC}" -eq 3 ]; }; then
   EDGE_ENABLED=true
 else
   EDGE_ENABLED=false
@@ -129,7 +127,7 @@ if [ "${EDGE_ENABLED}" = "true" ]; then
       echo "daily.sh: edge fallback (default on) -> regenerating ${d} with edge TTS"
       set +e
       PODCAST_TTS_ENGINE=edge \
-      PODCAST_TTS_MAP="ja:edge,zh:edge,de:edge,es:edge,ru:edge,it:edge" \
+      PODCAST_TTS_MAP="ja:edge,en:edge,zh:edge,ko:edge" \
         node scripts/podcast/daily.mjs --date "${d}" --force
       RC2=$?
       set -e
