@@ -5,62 +5,14 @@
     "id": "automated-theorem-proving",
     "labels": {
       "ja": "定理の自動証明",
+      "en": "Automated theorem proving",
       "zh": "自动定理证明",
-      "de": "Automatisches Theorembeweisen",
-      "es": "Demostración automática de teoremas",
-      "ru": "Автоматическое доказательство теорем",
-      "it": "Dimostrazione automatica di teoremi"
+      "ko": "자동 정리 증명"
     }
   },
   "source": "arxiv",
-  "generatedAt": "2026-10-21T22:32:19+09:00",
+  "generatedAt": "2026-10-19T02:17:56+09:00",
   "papers": [
-    {
-      "arxivId": "2610.25341",
-      "title": "Formally Verified Autoresearch for Analyzing the Expressivity of Multi-Head Attention",
-      "authors": [
-        "Karthik Viswanathan",
-        "Plamen Dimitrov",
-        "Stefano Rocca",
-        "Sarayu Sirikonda"
-      ],
-      "primaryCategory": "cs.CC",
-      "published": "2026-10-18",
-      "url": "https://arxiv.org/abs/2610.25341",
-      "pdfUrl": "https://arxiv.org/pdf/2610.25341",
-      "excerpt": "Multi-head attention is a central component of the transformer architecture, yet how its expressivity depends on the number of heads remains poorly understood. We study a one-layer, attention-only transformer with additive positional embeddings and define the head complexity of a Boolean function as the minimum number of attention heads required to represent it. We derive an exact linear-fractional normal form for head complexity, prove a general threshold-degree lower bound, and give an explicit ten-bit function for which this bound is strict. For symmetric Boolean functions, we independently show that head complexity equals the number of times the function changes value between consecutive Hamming-weight levels, even when positional embeddings are allowed. This agrees with the concurrent characterization of Hsu and Xu (arXiv:2608.04243) in a model without positional embeddings. The symmetric lower bound combines our general threshold-degree bound with the classical result of Aspnes et al. (1994)."
-    },
-    {
-      "arxivId": "2610.22698",
-      "title": "Repair, Retry, and the Cost of Hindsight: Verifier Feedback in Formal Theorem Proving",
-      "authors": [
-        "Jack Li",
-        "Sophia Li"
-      ],
-      "primaryCategory": "cs.AI",
-      "published": "2026-10-15",
-      "url": "https://arxiv.org/abs/2610.22698",
-      "pdfUrl": "https://arxiv.org/pdf/2610.22698",
-      "excerpt": "Verifier-guided self-repair conditions a model on feedback from failed attempts before it tries again, without weight updates. Yet two findings in prior work are in tension: verifier feedback can improve repair of failures, but self-repair itself can provide little-to-no advantage over independent resampling. We reconcile these findings in Lean theorem proving through controlled one-step experiments that hold the preceding failure fixed while varying whether the failed proof is shown, whether the compiler error corresponds to that failure, and the retry instruction. We test frozen Qwen3.6-27B, a general-purpose model, and DeepSeek-Prover-V2-7B, a specialized prover, on difficult MiniF2F problems. We find two opposing effects. Showing the model its failed predecessor reduces success and sharply increases copying of it, while on Qwen adding that attempt's compiler error recovers the loss, to the level of the diagnostic alone."
-    },
-    {
-      "arxivId": "2610.22603",
-      "title": "At the Limits of Computability: Steps Towards Autonomous AI Discovery on the Busy Beaver Frontier",
-      "authors": [
-        "Marco Dos Santos",
-        "Vivek Veeriah",
-        "Alex Havrilla",
-        "Andrew Bolt",
-        "Goran Zuzic",
-        "Satinder Singh",
-        "Tom Zahavy"
-      ],
-      "primaryCategory": "cs.AI",
-      "published": "2026-10-15",
-      "url": "https://arxiv.org/abs/2610.22603",
-      "pdfUrl": "https://arxiv.org/pdf/2610.22603",
-      "excerpt": "Recent breakthroughs in AI for mathematics---ranging from Olympiad medal performances to resolving long-standing open conjectures---have rapidly expanded what automated systems can achieve. Yet these successes primarily concern predefined, human-formulated problems, leaving open how AI systems can autonomously uncover mathematical structure and formulate new questions. To push beyond static challenges, we explore the Busy Beaver (BB) domain, an uncomputable frontier that is fundamentally open-ended. Because no algorithm can compute the Busy Beaver number for every , this domain provides a natural setting for sustained exploration through mathematical conjecture and proof. In this paper, we introduce a Gemini-based agentic pipeline that automatically discovers accelerations of Turing machines, expressed as compact mathematical rules summarizing many execution steps. Our system integrates pattern recognition, automated conjecturing, informal mathematical reasoning, and formal theorem proving in Lean."
-    },
     {
       "arxivId": "2610.22339",
       "title": "Lean Graph Search for Formal Theorem Proving",
@@ -139,6 +91,46 @@
       "url": "https://arxiv.org/abs/2610.14923",
       "pdfUrl": "https://arxiv.org/pdf/2610.14923",
       "excerpt": "The TLA+ (temporal logic of actions) formal specification toolkit has seen widespread adoption in modeling modern distributed software systems including databases, storage systems, ledgers and coordination protocols. This popularity is despite its two significant limitations for software verification: Firstly, TLA+ offers no way to detect drift between software implementation and mathematical specification; secondly, TLC and TLAPS cannot provide satisfactory proofs of arbitrary temporal logic properties. We address the second limitation and take a first step towards the first by translating TLA+ specifications into Verus, an auto-active verifier built for Rust, via both a deterministic transpiler and an agentic translator. We demonstrate that our LLM-based pipeline is able to generate proof obligations from TLA+ specifications at scale, and to produce fully machine checkable proofs of both safety and liveness properties."
+    },
+    {
+      "arxivId": "2610.14164",
+      "title": "Intrinsic Contraction Theory and Stabilization of Probability Measures on the Wasserstein Space",
+      "authors": [
+        "Min Kim",
+        "Joshua D. Ibrahim",
+        "Soon-Jo Chung"
+      ],
+      "primaryCategory": "math.OC",
+      "published": "2026-10-09",
+      "url": "https://arxiv.org/abs/2610.14164",
+      "pdfUrl": "https://arxiv.org/pdf/2610.14164",
+      "excerpt": "Deterministic flows can contract Wasserstein distances between probability laws without being contractive in point-state space. We develop a differential contraction theory for pushforward flows on forward-invariant subsets of the 2-Wasserstein space that quotients out the gauge freedom of the continuity equation. Weighted Helmholtz-Hodge decomposition and the Wasserstein contingent cone define the weighted horizontal tangent cone (whtc). Requiring the contraction quadratic form to be nonpositive only on the whtc yields the Intrinsic Wasserstein Contraction Condition (IWCC), which generalizes the classical contraction LMI and recovers it on Dirac measures. An almost-everywhere Euler approximation based on the superposition principle and Banach-valued Lebesgue differentiation theorem proves that IWCC is sufficient for intrinsic Wasserstein contraction. Law contraction without point-state contraction is illustrated by a rotationally symmetric shear example."
+    },
+    {
+      "arxivId": "2610.13091",
+      "title": "A Lipschitz refinement of the Bebutov-Kakutani dynamical embedding theorem for connected Lie group actions",
+      "authors": [
+        "Yonatan Gutman",
+        "Qiang Huo",
+        "Kangbo Ouyang"
+      ],
+      "primaryCategory": "math.DS",
+      "published": "2026-10-09",
+      "url": "https://arxiv.org/abs/2610.13091",
+      "pdfUrl": "https://arxiv.org/pdf/2610.13091",
+      "excerpt": "Let be a connected Lie group equipped with a compatible right-invariant metric and let act continuously on a compact metrizable space . We prove that admits a -equivariant embedding into the right argument shift action on the space of one-Lipschitz maps from to if and only if the set of fixed points topologically embeds into . This generalizes a theorem proved by Gutman, Huo and Tsukamoto for -flows."
+    },
+    {
+      "arxivId": "2610.12622",
+      "title": "Removing Boundary Smoothness from the Hot-Spots Conclusion in the Simple-Eigenvalue Case",
+      "authors": [
+        "Krzysztof Burdzy"
+      ],
+      "primaryCategory": "math.AP",
+      "published": "2026-10-08",
+      "url": "https://arxiv.org/abs/2610.12622",
+      "pdfUrl": "https://arxiv.org/pdf/2610.12622",
+      "excerpt": "We give a reduction from a smooth-domain theorem excluding interior critical points of first positive Neumann eigenfunctions to a non-strict hot-spots conclusion on arbitrary bounded simply connected planar domains with compact Neumann resolvent and simple first positive eigenvalue. The main analytic step is spectral convergence under exhaustion by conformal images of concentric disks. A reflection extension, conformal invariance of Dirichlet energy, and compactness of the Sobolev embedding give a direct proof. A truncation argument justifies square integrability of the transferred extensions without any boundary regularity. The smooth-domain theorem proved by OpenAI is an external input; the approximation argument is proved here in full. The paper was generated by ChatGPT with prompts from the listed author."
     }
   ],
   "languages": {
@@ -147,10 +139,21 @@
       "status": "ok",
       "text": "script-ja.txt",
       "audio": "ja.mp3",
-      "durationSeconds": 432.24,
-      "bytes": 2593820,
-      "sha256": "cffee687f2a1b2b24aae05e70899b2da9bbf308a7d2ddf1915ff032d325d0b9e",
+      "durationSeconds": 478.272,
+      "bytes": 2870012,
+      "sha256": "87be886d95e0eb5f4a6637b63259d72f2f92ee4b0080e44eb179d7520c6365fb",
       "voice": "ja-JP-NanamiNeural",
+      "error": null
+    },
+    "en": {
+      "label": "English",
+      "status": "ok",
+      "text": "script-en.txt",
+      "audio": "en.mp3",
+      "durationSeconds": 546.648,
+      "bytes": 3280268,
+      "sha256": "cf311ac05de061024acf5d39e5f09da7967577850b716176c7052bc4f290445b",
+      "voice": "en-US-AndrewNeural",
       "error": null
     },
     "zh": {
@@ -158,60 +161,27 @@
       "status": "ok",
       "text": "script-zh.txt",
       "audio": "zh.mp3",
-      "durationSeconds": 449.088,
-      "bytes": 2694908,
-      "sha256": "3a6d140e74c00f4c0f589e167bef5339154455703784454c2f78ec8c0deda0fe",
+      "durationSeconds": 443.208,
+      "bytes": 2659628,
+      "sha256": "43511e66f015408a6e4730a2cb1e1e38f607eda4ea1c1cd0dbac4f5073f5aeab",
       "voice": "zh-CN-XiaoxiaoNeural",
       "error": null
     },
-    "de": {
-      "label": "Deutsch",
+    "ko": {
+      "label": "한국어",
       "status": "ok",
-      "text": "script-de.txt",
-      "audio": "de.mp3",
-      "durationSeconds": 473.88,
-      "bytes": 2843660,
-      "sha256": "08d5772fd37640f5379e2a13e31c27b8bac0bde1e5127874f4bb3ce4b8aee7e9",
-      "voice": "de-DE-KatjaNeural",
-      "error": null
-    },
-    "es": {
-      "label": "Español",
-      "status": "ok",
-      "text": "script-es.txt",
-      "audio": "es.mp3",
-      "durationSeconds": 415.632,
-      "bytes": 2494172,
-      "sha256": "29cba94a31d2f79cbf460cee9a251f635f2d556193762b02ec64209b455bdaae",
-      "voice": "es-ES-ElviraNeural",
-      "error": null
-    },
-    "ru": {
-      "label": "Русский",
-      "status": "ok",
-      "text": "script-ru.txt",
-      "audio": "ru.mp3",
-      "durationSeconds": 509.136,
-      "bytes": 3055196,
-      "sha256": "d3fe6a78aa5d2132f3bc0563acd0cbceb4e36107d30d727d5b405841d45a5102",
-      "voice": "ru-RU-SvetlanaNeural",
-      "error": null
-    },
-    "it": {
-      "label": "Italiano",
-      "status": "ok",
-      "text": "script-it.txt",
-      "audio": "it.mp3",
-      "durationSeconds": 434.184,
-      "bytes": 2605484,
-      "sha256": "34e5e05ae2258430ef6fdb1685682c53d122df02a8425e8cfd960759aa63593d",
-      "voice": "it-IT-ElsaNeural",
+      "text": "script-ko.txt",
+      "audio": "ko.mp3",
+      "durationSeconds": 379.2,
+      "bytes": 2275580,
+      "sha256": "edcf847432064b7406be68a793f6570551c4608090db89771903e15c6f4ee7ab",
+      "voice": "ko-KR-SunHiNeural",
       "error": null
     }
   },
   "notes": [
     "papers fetched from the arXiv export API for keyword \"theorem proving\"",
-    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, de, es, ru, it (full paper links and abstracts remain in this episode data)",
-    "TTS engines: ja=edge, zh=edge, de=edge, es=edge, ru=edge, it=edge"
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: en (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=edge, en=edge, zh=edge, ko=edge"
   ]
 }
