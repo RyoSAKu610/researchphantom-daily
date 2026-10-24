@@ -141,20 +141,13 @@ if ! git -C "${REPO_ROOT}" config user.email >/dev/null 2>&1; then
   record "repo-local git identity set (podcast-bot)"
 fi
 
-# ------------------------------------------------------------- edge-tts venv --
-step "preparing .venv-edge (edge-tts 7.3.1 pinned)"
-if [ ! -x "${REPO_ROOT}/.venv-edge/bin/python" ]; then
-  python3 -m venv "${REPO_ROOT}/.venv-edge"
-  record "venv created"
+# ------------------------------------------------- edge-tts venv (removed) ----
+step "cleaning up .venv-edge (edge-tts removed from the pipeline)"
+if [ -e "${REPO_ROOT}/.venv-edge" ]; then
+  rm -rf "${REPO_ROOT}/.venv-edge"
+  record "removed .venv-edge (edge-tts no longer used)"
 else
-  record "venv already present"
-fi
-EDGE_VERSION="$("${REPO_ROOT}/.venv-edge/bin/pip" show edge-tts 2>/dev/null | awk '/^Version:/{print $2}' || true)"
-if [ "${EDGE_VERSION}" != "7.3.1" ]; then
-  "${REPO_ROOT}/.venv-edge/bin/pip" install "edge-tts==7.3.1"
-  record "edge-tts installed (${EDGE_VERSION:-none} -> 7.3.1)"
-else
-  record "edge-tts 7.3.1 already installed"
+  record "already clean"
 fi
 
 # ----------------------------------------------------- Docker + VoiceStudio ---

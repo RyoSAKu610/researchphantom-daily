@@ -6,9 +6,9 @@
 # Exit code: 0 when every REQUIRED check passes, 1 otherwise.
 # The Irodori :8088 check is advisory only: daily.mjs records per-language
 # failures, so an unreachable Irodori simply leaves that day's JA without
-# audio instead of crashing the run (by default `podcast/state` dates with
-# missing audio are re-synthesized with edge-tts via daily.sh — set
-# `PODCAST_FALLBACK_EDGE=0` to opt out of that, see scripts/podcast/bot/daily.sh).
+# audio instead of crashing the run (missing audio is reported, never
+# re-synthesized by a third-party service — edge-tts is banned from this
+# pipeline; see scripts/podcast/bot/daily.sh).
 #
 # Env knobs:
 #   QUIET=1            print failures only (still prints the final line)
@@ -70,18 +70,11 @@ for tool in ffmpeg ffprobe; do
   fi
 done
 
-# ------------------------------------------------------------ .venv-edge ------
-if [ -x "${REPO_ROOT}/.venv-edge/bin/python" ]; then
-  EDGE_VERSION="$("${REPO_ROOT}/.venv-edge/bin/pip" show edge-tts 2>/dev/null | awk '/^Version:/{print $2}')"
-  if [ "${EDGE_VERSION}" = "7.3.1" ]; then
-    check_pass ".venv-edge has edge-tts 7.3.1"
-  else
-    check_fail ".venv-edge has edge-tts 7.3.1" "version is '${EDGE_VERSION:-none}'" \
-      "${REPO_ROOT}/.venv-edge/bin/pip install edge-tts==7.3.1"
-  fi
-else
-  check_fail ".venv-edge has edge-tts 7.3.1" ".venv-edge venv missing" \
-    "python3 -m venv .venv-edge && .venv-edge/bin/pip install edge-tts==7.3.1"
+# ------------------------------------------------- .venv-edge (removed) -------
+# edge-tts was removed from the pipeline; do not create .venv-edge. If one
+# still exists it is leftover cruft — warn instead of fail.
+if [ -d "${REPO_ROOT}/.venv-edge" ]; then
+  say "  [warn] ${REPO_ROOT}/.venv-edge exists but edge-tts is no longer used; delete it: rm -rf .venv-edge"
 fi
 
 # --------------------------------------------------------- VoiceStudio (VS) ---

@@ -25,15 +25,14 @@ const LOCK_STALE_MS = 30 * 60 * 1000;
 const TTS_TIMEOUT_MS = 1800000;  // 30 min: 5-20 minute episodes can be slow on CPU-only engines
 const DEFAULT_VOICES = { ja: "ono_anna", en: "aiden", zh: "serena", ko: "sohee" };
 const DEFAULT_ENGINE_VOICES = {
-  edge: { ja: "ja-JP-NanamiNeural", en: "en-US-AndrewNeural", zh: "zh-CN-XiaoxiaoNeural", ko: "ko-KR-SunHiNeural" },
   irodori: {},
   voicestudio: {},
 };
 // Adapter script + fallback venv per engine. qwen keeps the historical defaults so
 // the original path (synthesize.py + .venv-tts) is byte-for-byte unchanged.
-export const TTS_ENGINES = ["qwen", "edge", "irodori", "voicestudio"];
-const TTS_SCRIPTS = { qwen: "synthesize.py", edge: "synthesize_edge.py", irodori: "synthesize_irodori.py", voicestudio: "synthesize_voicestudio.py" };
-const ENGINE_VENV = { qwen: ".venv-tts", edge: ".venv-edge", irodori: null, voicestudio: null };
+export const TTS_ENGINES = ["qwen", "irodori", "voicestudio"];
+const TTS_SCRIPTS = { qwen: "synthesize.py", irodori: "synthesize_irodori.py", voicestudio: "synthesize_voicestudio.py" };
+const ENGINE_VENV = { qwen: ".venv-tts", irodori: null, voicestudio: null };
 const TTS_FAILURE = {
   ja: (reason) => `音声合成に失敗しました（${reason}）`,
   en: (reason) => `Speech synthesis failed (${reason})`,
@@ -144,7 +143,7 @@ export function resolvePython(env = process.env) {
 }
 
 // Parse PODCAST_TTS_ENGINE (global default, "qwen" when unset) plus the optional
-// PODCAST_TTS_MAP="ja:irodori,en:edge" per-language overrides. Invalid values
+// PODCAST_TTS_MAP="ja:irodori,en:voicestudio" per-language overrides. Invalid values
 // throw so a typo in CI fails loudly instead of silently falling back to qwen.
 export function parseTtsEnv(env = process.env) {
   const raw = String(env.PODCAST_TTS_ENGINE ?? "").trim().toLowerCase();
@@ -185,10 +184,6 @@ export function resolveTtsPython(engine, env = process.env) {
 
 // Voice (or irodori caption) recorded in episode.json for one engine+language.
 export function engineVoiceFor(voices, engine, lang) {
-  if (engine === "edge") {
-    const value = voices?.edge?.languages?.[lang]?.voice ?? voices?.engines?.edge?.languages?.[lang]?.voice;
-    return typeof value === "string" && value.trim() ? value.trim() : DEFAULT_ENGINE_VOICES.edge[lang] ?? "none";
-  }
   if (engine === "irodori") {
     const value = voices?.irodori?.languages?.[lang]?.caption ?? voices?.engines?.irodori?.languages?.[lang]?.caption;
     return typeof value === "string" && value.trim() ? value.trim() : DEFAULT_ENGINE_VOICES.irodori[lang] ?? "none";

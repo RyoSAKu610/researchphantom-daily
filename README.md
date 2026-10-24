@@ -19,9 +19,12 @@ RSS: [ja](https://ryosaku610.github.io/researchphantom-daily/feed-ja.xml) · [en
 |---|---|---|
 | ja | Irodori-TTS-Server（OpenAI 互換ローカル API） | v4.1-Small（MeanFlow） |
 | en / zh / ko | VoiceStudio — OmniVoice GGUF | 固定 voice profile（clone）で毎回同一ナレーター |
-| fallback | edge-tts 7.3.1 | GitHub Actions 内と保険用 |
 
-さらに毎日 06:30 / 06:37 JST の GitHub Actions（`daily-catchup.yml`）が、bot 側が作れていない日期を edge-tts のみで補完します（idempotent なので bot 生成済みは上書きしません）。
+**edge-tts 等の第三者クラウド音声は使用しません**（パイプラインから完全摘出済み）。
+音声は全て self-hosted エンジン（Irodori / VoiceStudio・bot VM のローカル tts-hub 経由）で
+生成する。
+
+さらに毎日 06:30 / 06:37 JST の GitHub Actions（`daily-catchup.yml`）が、bot 側が生成できていない日期・言語を**監査（report のみ）**します。GitHub のランナーでは音声合成ができないため、欠落の検知と通知に徹します（idempotent・音声の書き換えはしません）。
 
 ## Repo layout
 

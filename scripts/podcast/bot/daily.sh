@@ -11,12 +11,12 @@
 #      PODCAST_TTS_MAP="ja:irodori,en:voicestudio,zh:voicestudio,ko:voicestudio"
 #      (daily.mjs is idempotent: existing episode dates are skipped; missed
 #      dates back within config.backfillDays=3 are refilled by --catchup)
-#   4. BY DEFAULT (opt-out with PODCAST_FALLBACK_EDGE=0): dates whose audio
-#      ended up missing (fully or in some languages) are regenerated once with
-#      the pure edge-TTS map (ja/en/zh/ko all edge; daily.mjs --force per date)
-#      so every episode always ships all four languages. The old opt-in
-#      behaviour is preserved via PODCAST_FALLBACK_EDGE=0 when you want to
-#      report server-type failures instead of re-synthesizing with edge.
+#   4. dates whose audio ended up missing (fully or in some languages) are
+#      re-run ONCE with the SAME primary engines (never edge-tts — it is
+#      banned from this pipeline). If the server is genuinely down the second
+#      attempt fails too and stays reported in the run log / status.json; the
+#      real fix is repairing the engine server (tts-hub / VoiceStudio) and
+#      re-running daily.sh.
 #   5. commit episodes/state (and the rebuilt podcast-site/, if present) and
 #      push to origin; the push triggers the GitHub Pages deploy workflow.
 #
@@ -93,18 +93,14 @@ if [ "${RC}" -gt 0 ]; then
   echo "daily.sh: daily.mjs exited ${RC}"
 fi
 
-# ------------------------------------------------------ default edge fallback -
+# ----------------------------------------------- self-repair (primary engines) -
+# Dates whose audio ended up missing (fully or in some languages) are re-run
+# ONCE with the SAME primary engines (same PODCAST_TTS_MAP; careful: never
+# edge-tts, it is banned). If the engine server is genuinely down, the second
+# attempt fails identically and stays reported in the log / status.json. To
+# fix it for real, repair the server (tts-hub / VoiceStudio) and re-run.
 FINAL_RC="${RC}"
-# Opt-in only (PODCAST_FALLBACK_EDGE=1): for a completed run (0 or 3), dates
-# that ended with missing audio are regenerated once with the pure edge map.
-# Default is 0: edge-tts is not used; server failures are reported instead.
-# Mirrors the "edge is the main safety net" policy from the bot README.
-if [ "${PODCAST_FALLBACK_EDGE:-0}" != "0" ] && { [ "${RC}" -eq 0 ] || [ "${RC}" -eq 3 ]; }; then
-  EDGE_ENABLED=true
-else
-  EDGE_ENABLED=false
-fi
-if [ "${EDGE_ENABLED}" = "true" ]; then
+if [ "${RC}" -eq 0 ] || [ "${RC}" -eq 3 ]; then
   DATES="$(node -e '
     const fs = require("fs");
     try {
@@ -113,25 +109,24 @@ if [ "${EDGE_ENABLED}" = "true" ]; then
       const s = JSON.parse(fs.readFileSync("podcast/state/status.json", "utf8"));
       const dates = (s.results || [])
         .filter(r => {
-          if (!r || !r.ok || !Array.isArray(r.audioLanguages)) return false;
-          return r.audioLanguages.filter(l => langs.includes(l)).length < langs.length;
+          if (!r || !r.date || !Array.isArray(r.audioLanguages)) return false;
+          const okLangs = r.audioLanguages.filter(l => langs.includes(l)).length;
+          return !r.ok || okLangs < langs.length;
         })
         .map(r => r.date);
-      process.stdout.write(dates.join(" "));
+      process.stdout.write([...new Set(dates)].join(" "));
     } catch (err) {
       process.stdout.write("");
     }
   ')"
   if [ "${DATES}" != "" ]; then
     for d in ${DATES}; do
-      echo "daily.sh: edge fallback (default on) -> regenerating ${d} with edge TTS"
+      echo "daily.sh: self-repair -> re-running ${d} with the primary engines (some audio missing)"
       set +e
-      PODCAST_TTS_ENGINE=edge \
-      PODCAST_TTS_MAP="ja:edge,en:edge,zh:edge,ko:edge" \
-        node scripts/podcast/daily.mjs --date "${d}" --force
+      node scripts/podcast/daily.mjs --date "${d}" --force
       RC2=$?
       set -e
-      record "edge fallback ${d} exit ${RC2}"
+      record "self-repair ${d} exit ${RC2}"
       if [ "${RC2}" -eq 0 ]; then
         FINAL_RC=0
       fi

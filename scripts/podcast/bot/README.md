@@ -5,7 +5,7 @@ Grok Bot 提供の常時稼働クラウド PC（Debian 系 VM・CPU-only・16GB 
 
 | スクリプト | 役割 | 実行回数 |
 |---|---|---|
-| `bot/setup.sh` | 依存インストール・VoiceStudio Docker デプロイ・edge venv・Irodori systemd unit | 一度だけ（冪等・再実行可） |
+| `bot/setup.sh` | 依存インストール・VoiceStudio Docker デプロイ・Irodori systemd unit | 一度だけ（冪等・再実行可） |
 | `bot/doctor.sh` | 全コンポーネントの生死確認 | setup 直後／障害調査時／Routine 冒頭 |
 | `bot/daily.sh` | 生成（--catchup）＋ commit/push を 1 コマンドに | 毎日（Routine から） |
 
@@ -31,7 +31,8 @@ IRODORI_SERVER_DIR=/opt/irodori IRODORI_SERVER_BIN=run.sh bash scripts/podcast/b
    util-linux(flock) / docker.io を導入（インストール済みならスキップ。閉じたネット
    向けに `APT_PROXY=http://proxy:port` env を考慮）。
 2. Node.js 20+ が無ければ NodeSource から 22.x を導入。
-3. `.venv-edge` を作成し、`edge-tts==7.3.1` を固定バージョンでインストール。
+3. `.venv-edge`（edge-tts）は**作らない**。edge-tts はパイプラインから完全撤去済み
+   （setup.sh が残余 `.venv-edge` を確認して削除する）。
 4. **VoiceStudio を Docker で常駐化**（`docs/install/docker.md` 準拠・2026-10-18 確認済み）:
 
    ```
@@ -70,39 +71,31 @@ IRODORI_SERVER_DIR=/opt/irodori IRODORI_SERVER_BIN=run.sh bash scripts/podcast/b
 bash scripts/podcast/bot/doctor.sh
 ```
 
-判定内容: `node` ≥20 / `ffmpeg`+`ffprobe` / `.venv-edge` に edge-tts 7.3.1 /
-VoiceStudio container が up か・`curl -fsS http://127.0.0.1:3900/.well-known/
-voicestudio-speech` が 200 か / GET /v1/audio/voices に **`Phantom-EN`,
-`Phantom-ZH`, `Phantom-KO`** が含まれるか（未登録なら「web UI で clone profile を作れ」
-という案内を提示） / **Irodori :8088 は TCP connect のみの単純生死判定**。
+判定内容: `node` ≥20 / `ffmpeg`+`ffprobe` / VoiceStudio container が up か・
+`curl -fsS http://127.0.0.1:3900/.well-known/voicestudio-speech` が 200 か / GET
+/v1/audio/voices に **`Phantom-EN`, `Phantom-ZH`, `Phantom-KO`** が含まれるか（未登録なら
+「web UI で clone profile を作れ」という案内を提示） / **Irodori :8088 は TCP connect
+のみの単純生死判定**。残余 `.venv-edge` があれば削除を促す warning のみ。
 
 全 pass なら `doctor: all checks passed`。Irodori が down でも **warning 扱い**で
 exit code には反映しない — `daily.mjs` は per-language の失敗を許容する設計で、Irodori
 が無くても ja はその日の音声 failure として記録されるだけ（他言語・site 構築は壊れない）。
-※ bot VM では **edge への自動 fallback は既定動作**（欠落言語がある日を edge で再生成し、
-常に 4 言語completion を目指す）。`PODCAST_FALLBACK_EDGE=0` を明示した時だけ opt-out で、
-server 系 failure の報告を優先させる設計です。
+※ **edge への fallback は存在しない**（第三者クラウドで音声は作らない）。ただし
+daily.sh は、欠落言語のある日を**同じ self-hosted エンジンで 1 回だけ自動再試行**
+（self-repair）する。server が本当に止まっている場合はそれも失敗して報告されるので、
+tts-hub / VoiceStudio を修復して再実行する。
 
 ## 3. 音声プロファイル（Phantom-EN / Phantom-ZH / Phantom-KO）の作成
 
 セットアップ直後に一回だけ、Mac 側のブラウザから行う（bot は UI クリック操作不可のため）。
-参照音声は `.venv-edge` の edge-tts でテンプレートとして生成する。
+**参照音声は edge-tts 等の外部サービスで作らない**（edge は禁止）。operator が用意する
+自前の音声素材（録音 or repo 外で準備した明瞭なナレーション clip）を参照 clip として
+使う。bot VM 上:
 
 ```bash
-# bot VM 上で once
 mkdir -p scripts/podcast/bot/refs          # .gitignore 済み、commit 対象外
-.venv-edge/bin/edge-tts --voice en-US-AndrewNeural \
-  --text "A different research topic every day, briefly, in four languages. \
-Today's topic: ..." \
-  --write-media scripts/podcast/bot/refs/en.mp3
-
-.venv-edge/bin/edge-tts --voice zh-CN-XiaoxiaoNeural \
-  --text "每天换一个研究主题，用四种语言，只占一小段。今天的主题：..." \
-  --write-media scripts/podcast/bot/refs/zh.mp3
-
-.venv-edge/bin/edge-tts --voice ko-KR-SunHiNeural \
-  --text "매일 바뀌는 연구 주제를, 네 언어로 조금씩. 오늘의 주제: ..." \
-  --write-media scripts/podcast/bot/refs/ko.mp3
+# 各言語の参照 clip（ja/en/zh/ko…）を refs/ に置く
+#   例: scripts/podcast/bot/refs/en.mp3, refs/zh.mp3, refs/ko.mp3
 ```
 
 Mac 側（トンネル）:
@@ -128,8 +121,6 @@ ssh -L 3900:127.0.0.1:3900 <user>@<bot-host>
 
 ```bash
 bash scripts/podcast/bot/daily.sh
-# 明示的に edge への自動 fallback を止めたい場合のみ（通常は不要）:
-PODCAST_FALLBACK_EDGE=0 bash scripts/podcast/bot/daily.sh
 ```
 
 Grok Bot に貼る Skill / Routine は、「**`daily.sh` を実行 → exit code と
@@ -142,12 +133,11 @@ Grok Bot に貼る Skill / Routine は、「**`daily.sh` を実行 → exit code
 3. `TZ=Asia/Tokyo PODCAST_TTS_MAP="ja:irodori,en:voicestudio,zh:voicestudio,
    ko:voicestudio" node scripts/podcast/daily.mjs --catchup`。**`--catchup` が常に
    付く**（週末等に漏れた日付欠落は default backfillDays=3 で自動バックフィル）。
-4. **exit code に応じた fallback**: `0`=OK / `3`=episode は書けたが音声ゼロ（server 起因
-   が多い）/ `1`=pipeline error / `2`=lock・環境欠け。**edge への自動 fallback は既定で
-   走る。** 音声が完全ゼロ・または一部言語だけ欠けた日付を edge まわり（全 4 言語 edge）
-   で `--force` 再生成し、**常に 4 言語がそろう**。`PODCAST_FALLBACK_EDGE=0` を付けた時
-   だけ opt-out（server 系 failure の報告を優先、edge は GitHub Actions 側の main 保険と
-   いう旧方針に戻す）。
+4. **exit code の意味**: `0`=OK / `3`=episode は書けたが音声が一部ゼロ（server 起因
+   が多い）/ `1`=pipeline error / `2`=lock・環境欠け。**edge への自動 fallback は
+   すでに廃止**。代わりに欠落言語のある日付を**同じ self-hosted エンジンで 1 回だけ
+   `--force` 再実行（self-repair）**する。server が止まっていればそれも失敗して記録
+   に残るので、tts-hub / VoiceStudio を修復して daily.sh をもう一度実行する。
 5. `git add -A` → `git commit -m "daily: <date> generated"` → `git push origin HEAD`。
    push 失敗は非 fatal（差分は手元に残り、次回 catchup で re-try）。push 成功で
    `.github/workflows/deploy.yml`（GitHub Pages deploy）が走る。
@@ -173,8 +163,8 @@ Grok Bot に貼る Skill / Routine は、「**`daily.sh` を実行 → exit code
   し、ここを更新すること。
 - VoiceStudio 本体の license と model weights の license は別物。engine バイナリ
   まわりは upstream の license 条項に従う。
-- edge-tts は Microsoft 音声サービスの非公式 wrapper。**1日 1〜数回**程度の微弱な
-  負荷に留めること（bot・GitHub Actions とも）。
+- edge-tts（Microsoft 音声サービスの非公式 wrapper）は**このパイプラインから完全に
+  廃止済み**。第三者クラウド経由の音声は生成・利用しない。
 
 ## 7. repo 名を固定したら
 

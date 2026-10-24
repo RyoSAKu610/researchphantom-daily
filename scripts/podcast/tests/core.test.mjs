@@ -12,6 +12,7 @@ import { poolOrder, pickTopic, pickFallback, planCatchupDates, loadHistory, save
 import { buildQueryUrl, fetchPapers, parseAtom } from "../arxiv.mjs";
 import { buildScript, cleanAbstract, DURATION_MAX_SECONDS, DURATION_MIN_SECONDS, DURATION_TARGET_SECONDS, estimateSpokenSeconds, trimExcerpt } from "../script.mjs";
 import { buildTtsEnv, engineForLang, engineVoiceFor, exitCodeFor, localIso, parseCliArgs, parseTtsEnv, resolvePython, resolveTtsPython, runTts, shouldSkip, verifyAudio, voiceFor } from "../daily.mjs";
+import { auditEpisode, recentDates } from "../audit.mjs";
 
 const moduleDir = fileURLToPath(new URL("../", import.meta.url));
 const readModuleJson = async (name) => JSON.parse(await readFile(join(moduleDir, name), "utf8"));
@@ -488,45 +489,44 @@ test("buildTtsEnv forces offline unless PODCAST_TTS_ONLINE=1", () => {
 test("parseTtsEnv defaults to qwen and validates engine names", () => {
   assert.deepEqual(parseTtsEnv({}), { engine: "qwen", map: {} });
   assert.deepEqual(parseTtsEnv({}), parseTtsEnv({ PODCAST_TTS_ENGINE: "" }));
-  assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "EDGE " }), { engine: "edge", map: {} });
+  assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "IRODORI " }), { engine: "irodori", map: {} });
   assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "irodori" }), { engine: "irodori", map: {} });
   assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "voicestudio" }), { engine: "voicestudio", map: {} });
   assert.throws(() => parseTtsEnv({ PODCAST_TTS_ENGINE: "qwen2" }), /PODCAST_TTS_ENGINE/);
-  assert.throws(() => parseTtsEnv({ PODCAST_TTS_ENGINE: "Edge Lewd" }), /PODCAST_TTS_ENGINE/);
+  assert.throws(() => parseTtsEnv({ PODCAST_TTS_ENGINE: "edge" }), /PODCAST_TTS_ENGINE/);
   assert.throws(
     () => parseTtsEnv({ PODCAST_TTS_ENGINE: "qwen2" }),
-    /expected: qwen, edge, irodori, voicestudio/,
+    /expected: qwen, irodori, voicestudio/,
   );
 });
 
 test("parseTtsEnv parses per-language maps and rejects malformed ones", () => {
   assert.deepEqual(
-    parseTtsEnv({ PODCAST_TTS_MAP: " ja:irodori , en:edge ,, zh: edge " }),
-    { engine: "qwen", map: { ja: "irodori", en: "edge", zh: "edge" } });
+    parseTtsEnv({ PODCAST_TTS_MAP: " ja:irodori , en:voicestudio ,, zh: voicestudio " }),
+    { engine: "qwen", map: { ja: "irodori", en: "voicestudio", zh: "voicestudio" } });
   assert.deepEqual(
     parseTtsEnv({ PODCAST_TTS_MAP: "ja:irodori,en:voicestudio,zh:voicestudio,ko:voicestudio" }),
     { engine: "qwen", map: { ja: "irodori", en: "voicestudio", zh: "voicestudio", ko: "voicestudio" } });
-  assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "edge", PODCAST_TTS_MAP: "ko:qwen" }),
-    { engine: "edge", map: { ko: "qwen" } });
+  assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "irodori", PODCAST_TTS_MAP: "ko:qwen" }),
+    { engine: "irodori", map: { ko: "qwen" } });
   assert.throws(() => parseTtsEnv({ PODCAST_TTS_MAP: "ja" }), /PODCAST_TTS_MAP/);
   assert.throws(() => parseTtsEnv({ PODCAST_TTS_MAP: "ja:edge,en:bogus" }), /PODCAST_TTS_MAP/);
   assert.throws(() => parseTtsEnv({ PODCAST_TTS_MAP: ":edge" }), /PODCAST_TTS_MAP/);
 });
 
 test("engineForLang lets PODCAST_TTS_MAP override PODCAST_TTS_ENGINE per language", () => {
-  const tts = parseTtsEnv({ PODCAST_TTS_ENGINE: "edge", PODCAST_TTS_MAP: "ja:irodori" });
+  const tts = parseTtsEnv({ PODCAST_TTS_ENGINE: "voicestudio", PODCAST_TTS_MAP: "ja:irodori" });
   assert.equal(engineForLang(tts, "ja"), "irodori");
-  assert.equal(engineForLang(tts, "en"), "edge");
+  assert.equal(engineForLang(tts, "en"), "voicestudio");
   assert.equal(engineForLang(parseTtsEnv({}), "ko"), "qwen");
   assert.equal(engineForLang(null, "ja"), "qwen");
 });
 
 test("resolveTtsPython picks the engine venv and honors PODCAST_PYTHON", () => {
   assert.equal(resolveTtsPython("qwen", {}), resolvePython({}));  // .venv-tts must win for qwen
-  assert.match(resolveTtsPython("edge", {}), /\.venv-edge\/bin\/python$/);
   assert.equal(resolveTtsPython("irodori", {}), "python3");  // stdlib-only engine
   assert.equal(resolveTtsPython("voicestudio", {}), "python3");  // stdlib-only engine
-  for (const engine of ["qwen", "edge", "irodori", "voicestudio"]) {
+  for (const engine of ["qwen", "irodori", "voicestudio"]) {
     assert.equal(resolveTtsPython(engine, { PODCAST_PYTHON: "/custom/python" }), "/custom/python");
   }
 });
@@ -534,9 +534,6 @@ test("resolveTtsPython picks the engine venv and honors PODCAST_PYTHON", () => {
 test("engineVoiceFor maps voices.json engine sections with safe fallbacks", async () => {
   const voices = await readModuleJson("voices.json");
   assert.equal(engineVoiceFor(voices, "qwen", "ja"), "ono_anna");
-  assert.equal(engineVoiceFor(voices, "edge", "ja"), "ja-JP-NanamiNeural");
-  assert.equal(engineVoiceFor(voices, "edge", "ko"), "ko-KR-SunHiNeural");
-  assert.equal(engineVoiceFor(voices, "edge", "de"), "none");
   assert.ok(String(engineVoiceFor(voices, "irodori", "ja")).length > 0);
   assert.equal(engineVoiceFor(voices, "irodori", "en"), "none");
   assert.equal(engineVoiceFor(voices, "voicestudio", "en"), "Phantom-EN");
@@ -544,7 +541,6 @@ test("engineVoiceFor maps voices.json engine sections with safe fallbacks", asyn
   assert.equal(engineVoiceFor(voices, "voicestudio", "ko"), "Phantom-KO");
   assert.equal(engineVoiceFor(voices, "voicestudio", "ja"), "none");  // ja stays on irodori
   assert.equal(engineVoiceFor(voices, "voicestudio", "de"), "none");
-  assert.equal(engineVoiceFor(null, "edge", "en"), "en-US-AndrewNeural");
   assert.equal(engineVoiceFor(null, "voicestudio", "en"), "none");
 });
 
@@ -633,7 +629,6 @@ test("runTts selects the adapter script and interpreter per engine", async () =>
     const sha256 = createHash("sha256").update(payload).digest("hex");
 
     const cases = [
-      { engine: "edge", lang: "en", adapter: "synthesize_edge.py", voice: "en-US-AndrewNeural" },
       { engine: "irodori", lang: "ja", adapter: "synthesize_irodori.py", voice: "kanade" },
       { engine: "voicestudio", lang: "en", adapter: "synthesize_voicestudio.py", voice: "Phantom-EN" },
     ];
@@ -706,6 +701,62 @@ test("runTts records spawn failure, non-zero exit and timeout per language", asy
     });
     assert.equal(syncThrow.status, "failed");
     assert.ok(syncThrow.error.includes("launch"), syncThrow.error);
+  } finally {
+    await rm(tmp, { recursive: true, force: true });
+  }
+});
+
+test("recentDates returns the inclusive window oldest-first", () => {
+  assert.deepEqual(recentDates("2026-10-24", 4), ["2026-10-21", "2026-10-22", "2026-10-23", "2026-10-24"]);
+  assert.deepEqual(recentDates("2026-11-01", 3), ["2026-10-30", "2026-10-31", "2026-11-01"]);  // month rollover
+  assert.throws(() => recentDates("2026-10-2x", 3), /invalid date/);
+});
+
+test("auditEpisode reports every config language and duration-bound problems", async () => {
+  const config = {
+    languages: ["ja", "en"],
+    duration: { minSeconds: 300, maxSeconds: 1200, targetSeconds: 660 },
+  };
+  const tmp = await mkdtemp(join(tmpdir(), "podcast-audit-"));
+  try {
+    // missing date
+    assert.deepEqual((await auditEpisode("2026-10-23", tmp, config)).problems, ["episode.json missing"]);
+
+    // complete episode
+    const goodDir = join(tmp, "2026-10-24");
+    await mkdir(goodDir, { recursive: true });
+    await writeFile(
+      join(goodDir, "episode.json"),
+      JSON.stringify({
+        date: "2026-10-24",
+        languages: {
+          ja: { status: "ok", audio: "ja.mp3", durationSeconds: 440 },
+          en: { status: "ok", audio: "en.mp3", durationSeconds: 1199.5 },
+        },
+      }),
+      "utf8",
+    );
+    await writeFile(join(goodDir, "ja.mp3"), "x");
+    await writeFile(join(goodDir, "en.mp3"), "x");
+    assert.deepEqual((await auditEpisode("2026-10-24", tmp, config)).problems, []);
+
+    // partial + out-of-range + missing audio file
+    const badDir = join(tmp, "2026-10-25");
+    await mkdir(badDir, { recursive: true });
+    await writeFile(
+      join(badDir, "episode.json"),
+      JSON.stringify({
+        date: "2026-10-25",
+        languages: {
+          ja: { status: "ok", audio: "ja.mp3", durationSeconds: 299 },
+          en: { status: "failed", error: "server down" },
+        },
+      }),
+      "utf8",
+    );
+    const { problems } = await auditEpisode("2026-10-25", tmp, config);
+    assert.ok(problems.some((p) => p.includes("ja: duration 299s outside [300,1200)")), problems.join(" | "));
+    assert.ok(problems.some((p) => p.includes(`en: status="failed" (server down)`)), problems.join(" | "));
   } finally {
     await rm(tmp, { recursive: true, force: true });
   }

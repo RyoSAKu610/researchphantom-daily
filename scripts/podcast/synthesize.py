@@ -117,7 +117,7 @@ def metrics_failures(metrics):
     if values["longest_silence_seconds"] > LONGEST_SILENCE_MAX:
         problems.append("longest silence %.2fs > %.1fs" % (values["longest_silence_seconds"], LONGEST_SILENCE_MAX))
     if max(values["leading_silence_seconds"], values["trailing_silence_seconds"]) > EDGE_SILENCE_MAX:
-        problems.append("edge silence %.2fs > %.1fs" % (
+        problems.append("lead/tail silence %.2fs > %.1fs" % (
             max(values["leading_silence_seconds"], values["trailing_silence_seconds"]), EDGE_SILENCE_MAX))
     return problems
 
