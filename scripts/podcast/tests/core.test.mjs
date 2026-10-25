@@ -55,22 +55,34 @@ test("config.json matches the frozen contract", async () => {
   assert.deepEqual(config, {
     title: "Phantomresearch Daily",
     subtitle: {
-      ja: "毎日変わる研究テーマを、4言語で。",
-      en: "A different research topic every day, in four languages.",
-      zh: "每天不同的研究主题，用四种语言。",
-      ko: "매일 바뀌는 연구 주제를, 네 언어로.",
+      ja: "毎日変わる研究テーマを、6言語で。",
+      zh: "每天不同的研究主题，用六种语言。",
+      de: "Ein anderes Forschungsthema jeden Tag, in sechs Sprachen.",
+      es: "Un tema de investigación distinto cada día, en seis idiomas.",
+      ru: "Новая исследовательская тема каждый день, на шести языках.",
+      it: "Un tema di ricerca diverso ogni giorno, in sei lingue.",
     },
     siteBaseUrl: "http://127.0.0.1:4173/podcast",
     site: { baseUrl: "https://ryosaku610.github.io/researchphantom-daily" },
-    languages: ["ja", "en", "zh", "ko"],
-    languageLabels: { ja: "日本語", en: "English", zh: "中文", ko: "한국어" },
+    languages: ["ja", "zh", "de", "es", "ru", "it"],
+    languageLabels: { ja: "日本語", zh: "中文", de: "Deutsch", es: "Español", ru: "Русский", it: "Italiano" },
     maxPapers: 8,
-    maxExcerptChars: { ja: 700, en: 1100, zh: 700, ko: 700 },
+    maxExcerptChars: { ja: 700, zh: 700, de: 1100, es: 1100, ru: 1100, it: 1100 },
     duration: { minSeconds: 300, maxSeconds: 1200, targetSeconds: 660 },
     backfillDays: 3,
     episodeDir: "podcast/episodes",
     stateDir: "podcast/state",
   });
+});
+
+test("config lineup only contains the six supported languages", async () => {
+  const config = await readModuleJson("config.json");
+  for (const lang of config.languages) {
+    assert.ok(config.languageLabels[lang], `missing label for ${lang}`);
+    assert.ok(config.maxExcerptChars[lang], `missing maxExcerptChars for ${lang}`);
+  }
+  assert.ok(!config.languages.includes("en"), "en left the lineup");
+  assert.ok(!config.languages.includes("ko"), "ko left the lineup");
 });
 
 test("episode-length contract is frozen at 5..20 minutes with an 11-minute target", async () => {
@@ -79,7 +91,9 @@ test("episode-length contract is frozen at 5..20 minutes with an 11-minute targe
   assert.equal(DURATION_TARGET_SECONDS, 660);
 });
 
-test("topics.json has >=21 valid, unique topics with four labels each", async () => {
+const LINEUP_LANGS = ["ja", "zh", "de", "es", "ru", "it"];
+
+test("topics.json has >=21 valid, unique topics with all six lineup labels", async () => {
   const topics = await readModuleJson("topics.json");
   assert.ok(Array.isArray(topics));
   assert.ok(topics.length >= 21, `expected >=21 topics, got ${topics.length}`);
@@ -90,8 +104,7 @@ test("topics.json has >=21 valid, unique topics with four labels each", async ()
     ids.add(topic.id);
     assert.ok(topic.keyword.trim().length > 0, `empty keyword for ${topic.id}`);
     assert.match(topic.keyword, /^[\x20-\x7e]+$/, `keyword must be ASCII: ${topic.keyword}`);
-    assert.deepEqual(Object.keys(topic.labels).sort(), ["en", "ja", "ko", "zh"], `bad labels for ${topic.id}`);
-    for (const lang of ["ja", "en", "zh", "ko"]) {
+    for (const lang of LINEUP_LANGS) {
       assert.equal(typeof topic.labels[lang], "string");
       assert.ok(topic.labels[lang].trim().length > 0, `empty ${lang} label for ${topic.id}`);
     }
@@ -221,8 +234,9 @@ test("fetchPapers retries once on failure and returns [] (no network here)", asy
   assert.deepEqual(await fetchPapers("   ", { fetchImpl: async () => ({ ok: true, text: async () => FIXTURE_XML }) }), []);
 });
 
-const TOPIC = { id: "diffusion-models", labels: { ja: "拡散モデル", en: "Diffusion models", zh: "扩散模型", ko: "확산 모델" } };
-const LIMITS = { ja: 220, en: 300, zh: 180, ko: 200 };
+const TOPIC = { id: "diffusion-models", labels: { ja: "拡散モデル", zh: "扩散模型", de: "Diffusionsmodelle", es: "Modelos de difusión", ru: "Диффузионные модели", it: "Modelli di diffusione" } };
+const LANGUAGE_LABELS = { ja: "日本語", zh: "中文", de: "Deutsch", es: "Español", ru: "Русский", it: "Italiano" };
+const LIMITS = { ja: 220, zh: 180, de: 300, es: 300, ru: 300, it: 300 };
 const LONG_ABSTRACT = "We introduce a method that does one thing. It **works** on $x^2$ data with `code` spans. " +
   "Second sentence with a lot of extra detail that keeps going for a while so the sample exceeds every limit. ".repeat(8);
 const SAMPLE_PAPERS = [
@@ -236,12 +250,12 @@ const SAMPLE_PAPERS = [
 ];
 
 test("buildScript quotes titles, trims excerpts and keeps http out (all languages)", () => {
-  for (const lang of ["ja", "en", "zh", "ko"]) {
+  for (const lang of LINEUP_LANGS) {
     const { text, segments, estimatedSeconds, papersUsed } = buildScript(lang, {
       date: "2026-10-18",
       topic: TOPIC,
       papers: SAMPLE_PAPERS,
-      languageLabels: { ja: "日本語", en: "English", zh: "中文", ko: "한국어" },
+      languageLabels: LANGUAGE_LABELS,
       source: "arxiv",
       maxExcerptChars: LIMITS[lang],
     });
@@ -254,11 +268,13 @@ test("buildScript quotes titles, trims excerpts and keeps http out (all language
     assert.ok(!text.includes("**") && !text.includes("$") && !text.includes("`"), `${lang}: markdown/math leaked`);
     assert.ok(estimatedSeconds > 0 && estimatedSeconds <= DURATION_MAX_SECONDS, `${lang}: estimated ${estimatedSeconds}s outside target`);
     assert.ok(text.includes("Alice Example") && !text.includes("Dan Example"), `${lang}: author line`);
-    assert.ok(text.includes("et al.") || text.includes("ほか") || text.includes("等") || text.includes("외"), `${lang}: et al. marker`);
+    assert.ok(text.includes("et al.") || text.includes("ほか") || text.includes("等") || text.includes("и др"), `${lang}: et al. marker`);
     assert.deepEqual(
       segments.map((segment) => segment.label),
       ["intro", "topic-overview", "paper-1", "commentary-paper1", "paper-2", "commentary-paper2", "outro"],
     );
+    if (lang === "de") assert.ok(text.includes("„"), "german opening quote");
+    if (["es", "ru", "it"].includes(lang)) assert.ok(text.includes("«"), `${lang} guillemets`);
   }
 });
 
@@ -268,7 +284,7 @@ test("buildScript grows or shrinks toward the 5-20 minute target and reports met
     { arxivId: "2610.22222", title: "A Second Very Long Research Paper Title About Models", authors: ["E Five", "F Six", "G Seven", "H Eight"], abstract: LONG_ABSTRACT },
     { arxivId: "2610.33333", title: "A Third Very Long Research Paper Title About Agents", authors: ["I Nine", "J Ten", "K Eleven", "L Twelve"], abstract: LONG_ABSTRACT },
   ];
-  for (const lang of ["ja", "en", "zh", "ko"]) {
+  for (const lang of LINEUP_LANGS) {
     const result = buildScript(lang, { date: "2026-10-18", topic: TOPIC, papers: longPapers, maxExcerptChars: LIMITS[lang] });
     assert.equal(result.met, true, `${lang}: met flag`);
     assert.ok(result.estimatedSeconds >= DURATION_MIN_SECONDS && result.estimatedSeconds < DURATION_MAX_SECONDS, `${lang}: estimated ${result.estimatedSeconds}s`);
@@ -306,10 +322,13 @@ test("buildScript uses a different quote cue for curated entries and handles emp
   assert.ok(jaCurated.text.includes("編集部"));
   const jaArxiv = buildScript("ja", { date: "2026-10-18", topic: TOPIC, papers: [curatedPaper], source: "arxiv" });
   assert.ok(jaArxiv.text.includes("原文"));
-  const empty = buildScript("en", { date: "2026-10-18", topic: TOPIC, papers: [] });
-  assert.ok(empty.text.includes("No papers"));
+  const empty = buildScript("de", { date: "2026-10-18", topic: TOPIC, papers: [] });
+  assert.ok(empty.text.includes("keine Papers"), empty.text);
   assert.equal(empty.segments.length, 3);  // intro + topic-overview + outro
   assert.throws(() => buildScript("fr", { date: "2026-10-18", topic: TOPIC, papers: [] }));
+  // removed lineup languages must fail loudly instead of rendering English/Korean
+  assert.throws(() => buildScript("en", { date: "2026-10-18", topic: TOPIC, papers: [] }), /unsupported language: en/);
+  assert.throws(() => buildScript("ko", { date: "2026-10-18", topic: TOPIC, papers: [] }), /unsupported language: ko/);
   assert.throws(() => buildScript("ja", { date: "not-a-date", topic: TOPIC, papers: [] }));
 });
 
@@ -325,13 +344,16 @@ test("buildScript countPhrase/orderPhrase extend to eight papers", () => {
   assert.ok(ja.text.includes("八本"));
   assert.ok(ja.text.includes("八本目") && ja.text.includes("七本目") && ja.text.includes("五本目"), ja.text);
   assert.ok(!ja.text.includes("8本"));
-  const en = buildScript("en", { date: "2026-10-18", topic: TOPIC, papers: eighth });
-  assert.ok(en.text.includes("eight papers"), en.text);
-  assert.ok(en.text.includes("Eighth paper:"));
+  const de = buildScript("de", { date: "2026-10-18", topic: TOPIC, papers: eighth });
+  assert.ok(de.text.includes("acht Paper"), de.text);
+  assert.ok(de.text.includes("Der achte Beitrag:"), de.text);
+  const ru = buildScript("ru", { date: "2026-10-18", topic: TOPIC, papers: eighth });
+  assert.ok(ru.text.includes("восемь статей"), ru.text);
+  assert.ok(ru.text.includes("Восьмая статья:"), ru.text);
 });
 
 test("buildScript never deadlocks on tiny input: short day with met=false", () => {
-  for (const lang of ["ja", "en", "zh", "ko"]) {
+  for (const lang of LINEUP_LANGS) {
     const result = buildScript(lang, {
       date: "2026-10-18",
       topic: TOPIC,
@@ -348,15 +370,15 @@ test("buildScript never deadlocks on tiny input: short day with met=false", () =
 test("estimate boundaries: min/max and growth beyond min via full-abstract plan", () => {
   const rate = 0.1685;
   assert.ok(Math.abs(estimateSpokenSeconds("ja", "あ".repeat(Math.round(DURATION_MIN_SECONDS / rate))) - DURATION_MIN_SECONDS) < 1);
-  const enRate = 0.082;
-  assert.ok(estimateSpokenSeconds("en", "a".repeat(Math.round(DURATION_MIN_SECONDS / enRate))) >= DURATION_MIN_SECONDS);
+  const itRate = 0.098;
+  assert.ok(estimateSpokenSeconds("it", "a".repeat(Math.ceil(DURATION_MIN_SECONDS / itRate))) >= DURATION_MIN_SECONDS);
   // Enough long abstracts must reach past min for a single-paper day too.
   const longSingleAbstract = "A long abstract sentence detailing methods and experiments that keeps going for many pages in the preprint. ".repeat(40);
-  const single = buildScript("en", {
+  const single = buildScript("de", {
     date: "2026-10-18",
     topic: TOPIC,
     papers: [{ arxivId: "2610.00002", title: "One Long Paper", authors: ["A", "B", "C", "D"], abstract: longSingleAbstract }],
-    maxExcerptChars: LIMITS.en,
+    maxExcerptChars: LIMITS.de,
   });
   assert.equal(single.met, true);
   assert.ok(single.estimatedSeconds >= DURATION_MIN_SECONDS, `${single.estimatedSeconds}s`);
@@ -493,7 +515,7 @@ test("parseTtsEnv defaults to qwen and validates engine names", () => {
   assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "irodori" }), { engine: "irodori", map: {} });
   assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "voicestudio" }), { engine: "voicestudio", map: {} });
   assert.throws(() => parseTtsEnv({ PODCAST_TTS_ENGINE: "qwen2" }), /PODCAST_TTS_ENGINE/);
-  assert.throws(() => parseTtsEnv({ PODCAST_TTS_ENGINE: "edge" }), /PODCAST_TTS_ENGINE/);
+  assert.throws(() => parseTtsEnv({ PODCAST_TTS_ENGINE: "edge" }), /PODCAST_TTS_ENGINE/);  // banned engine
   assert.throws(
     () => parseTtsEnv({ PODCAST_TTS_ENGINE: "qwen2" }),
     /expected: qwen, irodori, voicestudio/,
@@ -502,23 +524,23 @@ test("parseTtsEnv defaults to qwen and validates engine names", () => {
 
 test("parseTtsEnv parses per-language maps and rejects malformed ones", () => {
   assert.deepEqual(
-    parseTtsEnv({ PODCAST_TTS_MAP: " ja:irodori , en:voicestudio ,, zh: voicestudio " }),
-    { engine: "qwen", map: { ja: "irodori", en: "voicestudio", zh: "voicestudio" } });
+    parseTtsEnv({ PODCAST_TTS_MAP: " ja:irodori , de:voicestudio ,, zh: voicestudio " }),
+    { engine: "qwen", map: { ja: "irodori", de: "voicestudio", zh: "voicestudio" } });
   assert.deepEqual(
-    parseTtsEnv({ PODCAST_TTS_MAP: "ja:irodori,en:voicestudio,zh:voicestudio,ko:voicestudio" }),
-    { engine: "qwen", map: { ja: "irodori", en: "voicestudio", zh: "voicestudio", ko: "voicestudio" } });
-  assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "irodori", PODCAST_TTS_MAP: "ko:qwen" }),
-    { engine: "irodori", map: { ko: "qwen" } });
+    parseTtsEnv({ PODCAST_TTS_MAP: "ja:irodori,zh:voicestudio,de:voicestudio,es:voicestudio,ru:voicestudio,it:voicestudio" }),
+    { engine: "qwen", map: { ja: "irodori", zh: "voicestudio", de: "voicestudio", es: "voicestudio", ru: "voicestudio", it: "voicestudio" } });
+  assert.deepEqual(parseTtsEnv({ PODCAST_TTS_ENGINE: "irodori", PODCAST_TTS_MAP: "ru:qwen" }),
+    { engine: "irodori", map: { ru: "qwen" } });
   assert.throws(() => parseTtsEnv({ PODCAST_TTS_MAP: "ja" }), /PODCAST_TTS_MAP/);
-  assert.throws(() => parseTtsEnv({ PODCAST_TTS_MAP: "ja:edge,en:bogus" }), /PODCAST_TTS_MAP/);
+  assert.throws(() => parseTtsEnv({ PODCAST_TTS_MAP: "ja:edge,de:bogus" }), /PODCAST_TTS_MAP/);  // "edge" must be rejected
   assert.throws(() => parseTtsEnv({ PODCAST_TTS_MAP: ":edge" }), /PODCAST_TTS_MAP/);
 });
 
 test("engineForLang lets PODCAST_TTS_MAP override PODCAST_TTS_ENGINE per language", () => {
   const tts = parseTtsEnv({ PODCAST_TTS_ENGINE: "voicestudio", PODCAST_TTS_MAP: "ja:irodori" });
   assert.equal(engineForLang(tts, "ja"), "irodori");
-  assert.equal(engineForLang(tts, "en"), "voicestudio");
-  assert.equal(engineForLang(parseTtsEnv({}), "ko"), "qwen");
+  assert.equal(engineForLang(tts, "de"), "voicestudio");
+  assert.equal(engineForLang(parseTtsEnv({}), "it"), "qwen");
   assert.equal(engineForLang(null, "ja"), "qwen");
 });
 
@@ -535,13 +557,15 @@ test("engineVoiceFor maps voices.json engine sections with safe fallbacks", asyn
   const voices = await readModuleJson("voices.json");
   assert.equal(engineVoiceFor(voices, "qwen", "ja"), "ono_anna");
   assert.ok(String(engineVoiceFor(voices, "irodori", "ja")).length > 0);
-  assert.equal(engineVoiceFor(voices, "irodori", "en"), "none");
-  assert.equal(engineVoiceFor(voices, "voicestudio", "en"), "Phantom-EN");
+  assert.equal(engineVoiceFor(voices, "irodori", "de"), "none");
   assert.equal(engineVoiceFor(voices, "voicestudio", "zh"), "Phantom-ZH");
-  assert.equal(engineVoiceFor(voices, "voicestudio", "ko"), "Phantom-KO");
+  assert.equal(engineVoiceFor(voices, "voicestudio", "de"), "Phantom-DE");
+  assert.equal(engineVoiceFor(voices, "voicestudio", "es"), "Phantom-ES");
+  assert.equal(engineVoiceFor(voices, "voicestudio", "ru"), "Phantom-RU");
+  assert.equal(engineVoiceFor(voices, "voicestudio", "it"), "Phantom-IT");
   assert.equal(engineVoiceFor(voices, "voicestudio", "ja"), "none");  // ja stays on irodori
-  assert.equal(engineVoiceFor(voices, "voicestudio", "de"), "none");
-  assert.equal(engineVoiceFor(null, "voicestudio", "en"), "none");
+  assert.equal(engineVoiceFor(voices, "voicestudio", "en"), "none");  // en left the lineup
+  assert.equal(engineVoiceFor(null, "voicestudio", "it"), "none");
 });
 
 test("parseCliArgs validates flags and rejects unknown ones", () => {
@@ -630,7 +654,7 @@ test("runTts selects the adapter script and interpreter per engine", async () =>
 
     const cases = [
       { engine: "irodori", lang: "ja", adapter: "synthesize_irodori.py", voice: "kanade" },
-      { engine: "voicestudio", lang: "en", adapter: "synthesize_voicestudio.py", voice: "Phantom-EN" },
+      { engine: "voicestudio", lang: "it", adapter: "synthesize_voicestudio.py", voice: "Phantom-IT" },
     ];
     for (const { engine, lang, adapter, voice } of cases) {
       for (const name of [`${lang}.mp3`, `${lang}.metrics.json`]) await rm(join(episodeDir, name), { force: true });
@@ -667,23 +691,23 @@ test("runTts records spawn failure, non-zero exit and timeout per language", asy
   try {
     const episodeDir = join(tmp, "2026-10-18");
     await mkdir(episodeDir, { recursive: true });
-    const spawnError = await runTts("en", {
+    const spawnError = await runTts("de", {
       episodeDir,
       env: {},
       spawnImpl: () => fakeChild({ run: (child) => child.emit("error", new Error("boom")) }),
     });
     assert.equal(spawnError.status, "failed");
-    assert.ok(spawnError.error.includes("boom") && spawnError.error.includes("Speech synthesis"), spawnError.error);
+    assert.ok(spawnError.error.includes("boom") && spawnError.error.includes("Sprachsynthese"), spawnError.error);
 
-    const exitFailure = await runTts("zh", {
+    const exitFailure = await runTts("es", {
       episodeDir,
       env: {},
       spawnImpl: () => fakeChild({ run: (child) => child.emit("close", 3, null) }),
     });
     assert.equal(exitFailure.status, "failed");
-    assert.ok(exitFailure.error.includes("语音合成"), exitFailure.error);
+    assert.ok(exitFailure.error.includes("Fallo en la síntesis"), exitFailure.error);
 
-    const timeoutFailure = await runTts("ko", {
+    const timeoutFailure = await runTts("ru", {
       episodeDir,
       env: {},
       timeoutMs: 30,
@@ -692,7 +716,7 @@ test("runTts records spawn failure, non-zero exit and timeout per language", asy
     assert.equal(timeoutFailure.status, "failed");
     assert.ok(timeoutFailure.error.includes("timeout"), timeoutFailure.error);
 
-    const syncThrow = await runTts("ja", {
+    const syncThrow = await runTts("zh", {
       episodeDir,
       env: {},
       spawnImpl: () => {
@@ -714,7 +738,7 @@ test("recentDates returns the inclusive window oldest-first", () => {
 
 test("auditEpisode reports every config language and duration-bound problems", async () => {
   const config = {
-    languages: ["ja", "en"],
+    languages: ["ja", "de"],
     duration: { minSeconds: 300, maxSeconds: 1200, targetSeconds: 660 },
   };
   const tmp = await mkdtemp(join(tmpdir(), "podcast-audit-"));
@@ -731,13 +755,13 @@ test("auditEpisode reports every config language and duration-bound problems", a
         date: "2026-10-24",
         languages: {
           ja: { status: "ok", audio: "ja.mp3", durationSeconds: 440 },
-          en: { status: "ok", audio: "en.mp3", durationSeconds: 1199.5 },
+          de: { status: "ok", audio: "de.mp3", durationSeconds: 1199.5 },
         },
       }),
       "utf8",
     );
     await writeFile(join(goodDir, "ja.mp3"), "x");
-    await writeFile(join(goodDir, "en.mp3"), "x");
+    await writeFile(join(goodDir, "de.mp3"), "x");
     assert.deepEqual((await auditEpisode("2026-10-24", tmp, config)).problems, []);
 
     // partial + out-of-range + missing audio file
@@ -749,14 +773,14 @@ test("auditEpisode reports every config language and duration-bound problems", a
         date: "2026-10-25",
         languages: {
           ja: { status: "ok", audio: "ja.mp3", durationSeconds: 299 },
-          en: { status: "failed", error: "server down" },
+          de: { status: "failed", error: "Sprachsynthese fehlgeschlagen (server down)" },
         },
       }),
       "utf8",
     );
     const { problems } = await auditEpisode("2026-10-25", tmp, config);
     assert.ok(problems.some((p) => p.includes("ja: duration 299s outside [300,1200)")), problems.join(" | "));
-    assert.ok(problems.some((p) => p.includes(`en: status="failed" (server down)`)), problems.join(" | "));
+    assert.ok(problems.some((p) => p.includes(`de: status="failed"`)), problems.join(" | "));
   } finally {
     await rm(tmp, { recursive: true, force: true });
   }

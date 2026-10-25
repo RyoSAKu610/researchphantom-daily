@@ -74,16 +74,8 @@
     "url": "http://127.0.0.1:3900/v1/audio/speech",
     "bitrate": "48k",
     "channels": 1,
+    "note": "charsPerSecond for de/es/ru/it are provisional [2.5..20.0] style bounds (not yet measured from real runs); recalibrate against actual synthesize_voicestudio.py output before trusting the pacing gate.",
     "languages": {
-      "en": {
-        "label": "English",
-        "voice": "Phantom-EN",
-        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
-        "charsPerSecond": [
-          3.0,
-          20.0
-        ]
-      },
       "zh": {
         "label": "中文",
         "voice": "Phantom-ZH",
@@ -93,13 +85,40 @@
           12.0
         ]
       },
-      "ko": {
-        "label": "한국어",
-        "voice": "Phantom-KO",
+      "de": {
+        "label": "Deutsch",
+        "voice": "Phantom-DE",
         "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
         "charsPerSecond": [
-          1.5,
-          12.0
+          3.0,
+          20.0
+        ]
+      },
+      "es": {
+        "label": "Español",
+        "voice": "Phantom-ES",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [
+          2.5,
+          20.0
+        ]
+      },
+      "ru": {
+        "label": "Русский",
+        "voice": "Phantom-RU",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [
+          3.0,
+          20.0
+        ]
+      },
+      "it": {
+        "label": "Italiano",
+        "voice": "Phantom-IT",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [
+          3.0,
+          20.0
         ]
       }
     }

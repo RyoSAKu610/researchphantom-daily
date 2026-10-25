@@ -8,15 +8,16 @@
 #   2. git pull --ff-only for updates from the remote (warning only on failure;
 #      the working tree here is the source of truth, never reset --hard)
 #   3. run node scripts/podcast/daily.mjs --catchup with TZ=Asia/Tokyo and
-#      PODCAST_TTS_MAP="ja:irodori,en:voicestudio,zh:voicestudio,ko:voicestudio"
+#      PODCAST_TTS_MAP="ja:irodori,zh:voicestudio,
+#      de:voicestudio,es:voicestudio,ru:voicestudio,it:voicestudio"
 #      (daily.mjs is idempotent: existing episode dates are skipped; missed
 #      dates back within config.backfillDays=3 are refilled by --catchup)
 #   4. dates whose audio ended up missing (fully or in some languages) are
 #      re-run ONCE with the SAME primary engines (never edge-tts — it is
-#      banned from this pipeline). If the server is genuinely down the second
-#      attempt fails too and stays reported in the run log / status.json; the
-#      real fix is repairing the engine server (tts-hub / VoiceStudio) and
-#      re-running daily.sh.
+#      banned from this pipeline). If the engine server is genuinely down the
+#      second attempt fails too and stays reported in the run log /
+#      status.json; the real fix is repairing the engine server (tts-hub /
+#      VoiceStudio / Irodori) and re-running daily.sh.
 #   5. commit episodes/state (and the rebuilt podcast-site/, if present) and
 #      push to origin; the push triggers the GitHub Pages deploy workflow.
 #
@@ -77,8 +78,8 @@ fi
 export TZ=Asia/Tokyo
 # Per-language servers on this VM. PODCAST_TTS_ENGINE stays unset, so any
 # language missing from the map would fall back to the historical qwen default
-# (that can never happen while config.languages is exactly ja/en/zh/ko).
-export PODCAST_TTS_MAP="${PODCAST_TTS_MAP:-ja:irodori,en:voicestudio,zh:voicestudio,ko:voicestudio}"
+# (that can never happen while config.languages is exactly ja/zh/de/es/ru/it).
+export PODCAST_TTS_MAP="${PODCAST_TTS_MAP:-ja:irodori,zh:voicestudio,de:voicestudio,es:voicestudio,ru:voicestudio,it:voicestudio}"
 unset PODCAST_TTS_ENGINE || true
 # All engines route through the local tts-hub (127.0.0.1:3901) unless overridden.
 export VOICESTUDIO_URL="${VOICESTUDIO_URL:-http://127.0.0.1:3901/v1/audio/speech}"
@@ -98,7 +99,8 @@ fi
 # ONCE with the SAME primary engines (same PODCAST_TTS_MAP; careful: never
 # edge-tts, it is banned). If the engine server is genuinely down, the second
 # attempt fails identically and stays reported in the log / status.json. To
-# fix it for real, repair the server (tts-hub / VoiceStudio) and re-run.
+# fix it for real, repair the server (tts-hub / VoiceStudio / Irodori) and
+# re-run.
 FINAL_RC="${RC}"
 if [ "${RC}" -eq 0 ] || [ "${RC}" -eq 3 ]; then
   DATES="$(node -e '

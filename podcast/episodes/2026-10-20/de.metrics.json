@@ -1,0 +1,20 @@
+{
+  "provider": "edge-tts",
+  "model": "de-DE-KatjaNeural",
+  "model_commit": null,
+  "language": "de",
+  "voice": "de-DE-KatjaNeural",
+  "style_chars": 0,
+  "text_chars": 7100,
+  "durationSeconds": 514.944,
+  "bytes": 3090044,
+  "sha256": "7d2e92f0b1cebe8974c7736ae0dad663e1dcd8a5a43c7dcac1c118b84891a767",
+  "peak": 0.8282,
+  "rms_dbfs": -18.73,
+  "clipped_fraction": 0.0,
+  "silent_fraction": 0.095,
+  "leading_silence_seconds": 0.0,
+  "trailing_silence_seconds": 1.0,
+  "longest_silence_seconds": 1.0,
+  "seconds_per_char": 0.073
+}

@@ -6,9 +6,9 @@
 # Exit code: 0 when every REQUIRED check passes, 1 otherwise.
 # The Irodori :8088 check is advisory only: daily.mjs records per-language
 # failures, so an unreachable Irodori simply leaves that day's JA without
-# audio instead of crashing the run (missing audio is reported, never
-# re-synthesized by a third-party service — edge-tts is banned from this
-# pipeline; see scripts/podcast/bot/daily.sh).
+# audio instead of crashing the run (missing audio is reported and re-tried
+# once with the primary engines by daily.sh self-repair — edge-tts is banned
+# from this pipeline; see scripts/podcast/bot/daily.sh).
 #
 # Env knobs:
 #   QUIET=1            print failures only (still prints the final line)
@@ -70,7 +70,7 @@ for tool in ffmpeg ffprobe; do
   fi
 done
 
-# ------------------------------------------------- .venv-edge (removed) -------
+# ----------------------------------------------- .venv-edge (removed) ---------
 # edge-tts was removed from the pipeline; do not create .venv-edge. If one
 # still exists it is leftover cruft — warn instead of fail.
 if [ -d "${REPO_ROOT}/.venv-edge" ]; then
@@ -78,7 +78,7 @@ if [ -d "${REPO_ROOT}/.venv-edge" ]; then
 fi
 
 # --------------------------------------------------------- VoiceStudio (VS) ---
-# OpenAI-compatible service root on :3900. Auth model (docs/api-auth.md):
+# OpenAI-compatible service root on :3901 (local tts-hub). Auth model (docs/api-auth.md):
 # loopback is never gated, but through the Docker port mapping the peer looks
 # non-loopback inside the container, so we fall back to the stored admin API
 # key if an unauthenticated request is refused.
@@ -136,7 +136,7 @@ if [ "${speech_code}" = "200" ]; then
   else
     # A missing profile is REQUIRED-fail: without it that language permanently
     # records "failed" audio every day.
-    for want in Phantom-EN Phantom-ZH Phantom-KO; do
+    for want in Phantom-ZH Phantom-DE Phantom-ES Phantom-RU Phantom-IT; do
       if printf '%s' "${voices}" | grep -q "${want}"; then
         check_pass "VoiceStudio voice profile ${want} registered"
       else

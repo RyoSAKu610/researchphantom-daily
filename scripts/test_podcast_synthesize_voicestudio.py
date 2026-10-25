@@ -59,9 +59,9 @@ def make_wav(seconds=12.0, amplitude="0.2"):
 
 class RequestPayloadTests(unittest.TestCase):
     def test_payload_matches_voicestudio_contract(self):
-        payload = voicestudio.request_payload("Hello there.", model=None, voice="Phantom-EN")
+        payload = voicestudio.request_payload("Hello there.", model=None, voice="Phantom-DE")
         self.assertEqual(payload["model"], "omnivoice-gguf")
-        self.assertEqual(payload["voice"], "Phantom-EN")
+        self.assertEqual(payload["voice"], "Phantom-DE")
         self.assertEqual(payload["response_format"], "wav")
         self.assertEqual(payload["input"], "Hello there.")
         self.assertEqual(sorted(payload), ["input", "model", "response_format", "voice"])
@@ -73,14 +73,16 @@ class RequestPayloadTests(unittest.TestCase):
 
     def test_engine_language_reads_voicestudio_section(self):
         voices = json.loads(VOICES.read_text(encoding="utf-8"))
-        entry = voicestudio.engine_language(voices, "en")
-        self.assertEqual(entry["voice"], voices["voicestudio"]["languages"]["en"]["voice"])
+        entry = voicestudio.engine_language(voices, "de")
+        self.assertEqual(entry["voice"], voices["voicestudio"]["languages"]["de"]["voice"])
         self.assertEqual(voicestudio.engine_language(voices, "zh")["voice"], "Phantom-ZH")
-        self.assertEqual(voicestudio.engine_language(voices, "ko")["voice"], "Phantom-KO")
+        self.assertEqual(voicestudio.engine_language(voices, "es")["voice"], "Phantom-ES")
+        self.assertEqual(voicestudio.engine_language(voices, "ru")["voice"], "Phantom-RU")
+        self.assertEqual(voicestudio.engine_language(voices, "it")["voice"], "Phantom-IT")
         with self.assertRaises(ValueError):
             voicestudio.engine_language(voices, "ja")  # ja stays on irodori
         with self.assertRaises(ValueError):
-            voicestudio.engine_language(voices, "de")
+            voicestudio.engine_language(voices, "en")  # en left the lineup
 
     def test_engine_language_missing_field_raises(self):
         voices = {"voicestudio": {"languages": {"de": {"voice": "x", "filters": "none"}}}}
@@ -239,10 +241,10 @@ class RunTests(unittest.TestCase):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
         # 310 s: the 300..1200 s container gate needs episode-length audio;
-        # TEXT_LONG (en, ~3070 chars at 310 s) also satisfies the en pacing bounds.
+        # TEXT_LONG (~1040 chars at 310 s) also satisfies the de pacing bounds.
         self.wav = make_wav(310.0, amplitude="0.4")
 
-    def cli_args(self, url, text_source=None, language="en"):
+    def cli_args(self, url, text_source=None, language="de"):
         text = Path(self.directory.name) / "episode.txt"
         text.write_text(text_source or TEXT_LONG, encoding="utf-8")
         import argparse
@@ -260,16 +262,16 @@ class RunTests(unittest.TestCase):
         record = json.loads(args.metrics.read_text(encoding="utf-8"))
         self.assertEqual(record["provider"], "voicestudio-omnivoice")
         self.assertEqual(record["model"], "omnivoice-gguf")
-        self.assertEqual(record["voice"], "Phantom-EN")
-        self.assertEqual(record["language"], "en")
+        self.assertEqual(record["voice"], "Phantom-DE")
+        self.assertEqual(record["language"], "de")
         self.assertGreaterEqual(record["durationSeconds"], 10.0)
-        audio = Path(self.directory.name) / "en.mp3"
+        audio = Path(self.directory.name) / "de.mp3"
         self.assertGreater(audio.stat().st_size, voicestudio.base.MIN_BYTES)
         import hashlib
 
         self.assertEqual(record["sha256"], hashlib.sha256(audio.read_bytes()).hexdigest())
         self.assertEqual(record["bytes"], audio.stat().st_size)
-        self.assertEqual(record["style_chars"], len("Phantom-EN"))
+        self.assertEqual(record["style_chars"], len("Phantom-DE"))
 
     def test_run_records_endpoint_and_payload(self):
         with FakeServer([(200, {"Content-Type": "audio/wav"}, self.wav)]) as server:
@@ -279,7 +281,7 @@ class RunTests(unittest.TestCase):
         self.assertEqual(record["endpoint"], server.url())
         payload = json.loads(server.requests[0].decode("utf-8"))
         self.assertEqual(payload["model"], "omnivoice-gguf")
-        self.assertEqual(payload["voice"], "Phantom-EN")
+        self.assertEqual(payload["voice"], "Phantom-DE")
         self.assertEqual(payload["response_format"], "wav")
         self.assertGreater(len(payload["input"]), 50)
 
@@ -305,9 +307,9 @@ class CliTests(unittest.TestCase):
         self.text.write_text(TEXT_LONG, encoding="utf-8")
 
     def base(self, url):
-        return ["--text-file", str(self.text), "--language", "en",
-                "--out", str(Path(self.directory.name) / "en.mp3"),
-                "--metrics", str(Path(self.directory.name) / "en.metrics.json"),
+        return ["--text-file", str(self.text), "--language", "de",
+                "--out", str(Path(self.directory.name) / "de.mp3"),
+                "--metrics", str(Path(self.directory.name) / "de.metrics.json"),
                 "--url", url]
 
     def test_end_to_end_with_mock_server(self):
@@ -316,11 +318,11 @@ class CliTests(unittest.TestCase):
                                     capture_output=True, text=True, cwd=str(ROOT), timeout=180)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("Wrote", result.stdout)
-        metrics = json.loads((Path(self.directory.name) / "en.metrics.json").read_text(encoding="utf-8"))
-        self.assertEqual(metrics["voice"], "Phantom-EN")
+        metrics = json.loads((Path(self.directory.name) / "de.metrics.json").read_text(encoding="utf-8"))
+        self.assertEqual(metrics["voice"], "Phantom-DE")
         payload = json.loads(server.requests[0].decode("utf-8"))
         self.assertEqual(payload["model"], "omnivoice-gguf")
-        self.assertEqual(payload["voice"], "Phantom-EN")
+        self.assertEqual(payload["voice"], "Phantom-DE")
         self.assertEqual(payload["response_format"], "wav")
         self.assertGreater(len(payload["input"]), 50)
 
@@ -330,7 +332,7 @@ class CliTests(unittest.TestCase):
                                     capture_output=True, text=True, cwd=str(ROOT), timeout=180)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("HTTP 500", result.stderr)
-        self.assertFalse((Path(self.directory.name) / "en.mp3").exists())
+        self.assertFalse((Path(self.directory.name) / "de.mp3").exists())
 
     def test_server_unreachable_exits_nonzero(self):
         # Nothing is listening: the connection is refused deterministically.
@@ -339,7 +341,7 @@ class CliTests(unittest.TestCase):
                                 capture_output=True, text=True, cwd=str(ROOT), timeout=60)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("error:", result.stderr)
-        self.assertFalse((Path(self.directory.name) / "en.mp3").exists())
+        self.assertFalse((Path(self.directory.name) / "de.mp3").exists())
 
     def test_unsupported_language_fails_without_requests(self):
         with FakeServer([]) as server:

@@ -141,7 +141,7 @@ if ! git -C "${REPO_ROOT}" config user.email >/dev/null 2>&1; then
   record "repo-local git identity set (podcast-bot)"
 fi
 
-# ------------------------------------------------- edge-tts venv (removed) ----
+# ----------------------------------------------- edge-tts venv (removed) ------
 step "cleaning up .venv-edge (edge-tts removed from the pipeline)"
 if [ -e "${REPO_ROOT}/.venv-edge" ]; then
   rm -rf "${REPO_ROOT}/.venv-edge"

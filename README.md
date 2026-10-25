@@ -1,10 +1,10 @@
 # ResearchPhantom Daily 🎙️
 
-毎日 06:30 (JST) に arXiv の最新論文から 4 言語（日本語 / English / 中文 / 한국어）のリサーチ・ブリーフ・ポッドキャストを自動生成するパイプラインです。
+毎日 06:30 (JST) に arXiv の最新論文から 6 言語（日本語 / 中文 / Deutsch / Español / Русский / Italiano）のリサーチ・ブリーフ・ポッドキャストを自動生成するパイプラインです。
 
 **ライブサイト**: https://ryosaku610.github.io/researchphantom-daily/
 
-RSS: [ja](https://ryosaku610.github.io/researchphantom-daily/feed-ja.xml) · [en](https://ryosaku610.github.io/researchphantom-daily/feed-en.xml) · [zh](https://ryosaku610.github.io/researchphantom-daily/feed-zh.xml) · [ko](https://ryosaku610.github.io/researchphantom-daily/feed-ko.xml)
+RSS: [ja](https://ryosaku610.github.io/researchphantom-daily/feed-ja.xml) · [zh](https://ryosaku610.github.io/researchphantom-daily/feed-zh.xml) · [de](https://ryosaku610.github.io/researchphantom-daily/feed-de.xml) · [es](https://ryosaku610.github.io/researchphantom-daily/feed-es.xml) · [ru](https://ryosaku610.github.io/researchphantom-daily/feed-ru.xml) · [it](https://ryosaku610.github.io/researchphantom-daily/feed-it.xml)
 
 ## How it works
 
@@ -18,13 +18,14 @@ RSS: [ja](https://ryosaku610.github.io/researchphantom-daily/feed-ja.xml) · [en
 | language | engine | note |
 |---|---|---|
 | ja | Irodori-TTS-Server（OpenAI 互換ローカル API） | v4.1-Small（MeanFlow） |
-| en / zh / ko | VoiceStudio — OmniVoice GGUF | 固定 voice profile（clone）で毎回同一ナレーター |
+| zh / de / es / ru / it | VoiceStudio — OmniVoice GGUF | 固定 voice profile（clone）で毎回同一ナレーター |
 
 **edge-tts 等の第三者クラウド音声は使用しません**（パイプラインから完全摘出済み）。
 音声は全て self-hosted エンジン（Irodori / VoiceStudio・bot VM のローカル tts-hub 経由）で
-生成する。
+生成する。音声が欠けた日付は bot が同じ self-hosted エンジンで 1 回だけ自動再試行
+（self-repair）します。
 
-さらに毎日 06:30 / 06:37 JST の GitHub Actions（`daily-catchup.yml`）が、bot 側が生成できていない日期・言語を**監査（report のみ）**します。GitHub のランナーでは音声合成ができないため、欠落の検知と通知に徹します（idempotent・音声の書き換えはしません）。
+さらに毎日 06:30 / 06:37 JST の GitHub Actions（`daily-catchup.yml`）が、直近日付の**監査（report のみ・音声生成なし）**を行い、欠日・欠言語・尺異常があれば red X で知らせます（idempotent・bot 生成物には触れません）。
 
 ## Repo layout
 
@@ -38,5 +39,5 @@ podcast/episodes/      生成済みエピソード（script-*.txt + *.mp3 + epis
 ## License notes
 
 - 同梱スクリプトは自由に参照・再利用できます。
-- en/zh/ko の音声は OmniVoice（重みは CC-BY-NC・非商用利用）で生成しています。
+- zh/de/es/ru/it の音声は OmniVoice（重みは CC-BY-NC・非商用利用）で生成しています。
 - 音声／台本は非商用の研究発信として公開しています。

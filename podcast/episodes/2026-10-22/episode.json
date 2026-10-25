@@ -5,13 +5,15 @@
     "id": "machine-translation",
     "labels": {
       "ja": "機械翻訳",
-      "en": "Machine translation",
       "zh": "机器翻译",
-      "ko": "기계 번역"
+      "de": "Maschinelle Übersetzung",
+      "es": "Traducción automática",
+      "ru": "Машинный перевод",
+      "it": "Traduzione automatica"
     }
   },
   "source": "arxiv",
-  "generatedAt": "2026-10-22T16:36:17+09:00",
+  "generatedAt": "2026-10-22T18:21:40+09:00",
   "papers": [
     {
       "arxivId": "2610.29943",
@@ -147,21 +149,10 @@
       "status": "ok",
       "text": "script-ja.txt",
       "audio": "ja.mp3",
-      "durationSeconds": 373.248,
-      "bytes": 2239724,
-      "sha256": "8970c2843481786a272aff5b91ec9785051e63be3f06766d3f9bfd2d2c6c8b6c",
-      "voice": "kanade",
-      "error": null
-    },
-    "en": {
-      "label": "English",
-      "status": "ok",
-      "text": "script-en.txt",
-      "audio": "en.mp3",
-      "durationSeconds": 516.552,
-      "bytes": 3099548,
-      "sha256": "2ac96cc0a55a9b9fdeea1f45f2a1cb08ba885a3919ff11c04ed8d00883e8f72a",
-      "voice": "Phantom-EN",
+      "durationSeconds": 451.464,
+      "bytes": 2709164,
+      "sha256": "e9489066401e398173c75f1892561fb06de9b18a3df182e9d07177631dc9a8b9",
+      "voice": "ja-JP-NanamiNeural",
       "error": null
     },
     "zh": {
@@ -169,27 +160,60 @@
       "status": "ok",
       "text": "script-zh.txt",
       "audio": "zh.mp3",
-      "durationSeconds": 396.744,
-      "bytes": 2380700,
-      "sha256": "e215d5810ceb441bc893ff92aa27d6bd7124f6b1db1b84ba72510220430cb6ac",
-      "voice": "Phantom-ZH",
+      "durationSeconds": 441.192,
+      "bytes": 2647532,
+      "sha256": "2374efb887f5d9f4def4477c5416db29fb99f7c65941e67829c3eb7fad8fa108",
+      "voice": "zh-CN-XiaoxiaoNeural",
       "error": null
     },
-    "ko": {
-      "label": "한국어",
+    "de": {
+      "label": "Deutsch",
       "status": "ok",
-      "text": "script-ko.txt",
-      "audio": "ko.mp3",
-      "durationSeconds": 343.8,
-      "bytes": 2063036,
-      "sha256": "cda662b93abf14de893ae48caddc37991692e9915a271ce7ac1a6430b7b4a793",
-      "voice": "Phantom-KO",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 519.576,
+      "bytes": 3117836,
+      "sha256": "4c4f729f21a99a13d909ba125777394e09476c939e3d3b0b5e00051c0dc90f86",
+      "voice": "de-DE-KatjaNeural",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 419.16,
+      "bytes": 2515340,
+      "sha256": "6c349bf089197f08f55c1641e5fdb0d86978ba91b06354b7591b4be69a33b0bf",
+      "voice": "es-ES-ElviraNeural",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 526.416,
+      "bytes": 3158876,
+      "sha256": "f5bbdf61e141642012d5358e1b8245fc58a963d1665ef0e544223a668211bab8",
+      "voice": "ru-RU-SvetlanaNeural",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 471.312,
+      "bytes": 2828252,
+      "sha256": "a73d0d286e2abf8b19cd864e8b39d85d3af0dac937a8f398a3a936eff0f40be7",
+      "voice": "it-IT-ElsaNeural",
       "error": null
     }
   },
   "notes": [
     "papers fetched from the arXiv export API for keyword \"machine translation\"",
-    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, en, zh (full paper links and abstracts remain in this episode data)",
-    "TTS engines: ja=irodori, en=voicestudio, zh=voicestudio, ko=voicestudio"
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, zh, es, ru (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=edge, zh=edge, de=edge, es=edge, ru=edge, it=edge"
   ]
 }
