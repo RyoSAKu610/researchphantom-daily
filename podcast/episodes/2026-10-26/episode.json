@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "date": "2026-10-26",
+  "topic": {
+    "id": "vulnerability-detection",
+    "labels": {
+      "ja": "脆弱性の検出",
+      "zh": "漏洞检测",
+      "de": "Erkennung von Schwachstellen",
+      "es": "Detección de vulnerabilidades",
+      "ru": "Обнаружение уязвимостей",
+      "it": "Rilevamento delle vulnerabilità"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-26T06:41:05+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.27828",
+      "title": "Raise or Check? Predicting the Necessity of Additional Fuzzing for Continuous Fuzzing",
+      "authors": [
+        "Riku Kato",
+        "Tatsuya Shirai",
+        "Olivier Nourry",
+        "Yutaro Kashiwa",
+        "Kenji Fujiwara",
+        "Yasutaka Kamei",
+        "Hajimu Iida"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.27828",
+      "pdfUrl": "https://arxiv.org/pdf/2610.27828",
+      "excerpt": "Continuous fuzzing is used for vulnerability detection in Open Source Software (OSS). Large-scale services such as Google's OSS-Fuzz fuzz over 1,300 projects and have revealed more than 10,000 vulnerabilities. Despite this, a considerable time lag often exists between when a vulnerability is introduced and when it is detected (i.e., the window of exposure). Given the computational cost of additional fuzzing, we aim to allocate fuzzing resources efficiently using vulnerability-risk estimates. We propose RAISE (Risk-Aware Intensive Supplemental Execution Framework), a Just-In-Time (JIT) framework that prioritizes additional fuzzing for high-risk project-days. RAISE performs binary classification at the project-day granularity to estimate whether a vulnerability is introduced on a given day. We construct a dataset combining vulnerability-introducing commits from the OSV database with daily coverage and change metrics from OSS-Fuzz, covering 15 C/C++ projects and 15,210 project-days, of which 347 (2.28%) are vulnerability-introducing."
+    },
+    {
+      "arxivId": "2610.26698",
+      "title": "Towards Robust Model Organisms for Eliciting Latent Knowledge",
+      "authors": [
+        "Lennart Finke",
+        "Hardik Bhatnagar",
+        "Euodia Dodd",
+        "Francis Rhys Ward",
+        "Yves-Alexandre de Montjoye",
+        "Matthias Bethge",
+        "Mary Phuong"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26698",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26698",
+      "excerpt": "A key problem in AI safety is eliciting latent knowledge (ELK), extracting information from a model that is misaligned and more knowledgeable than its overseer. For example, a misaligned model used to scan code for vulnerabilities may want to withhold its findings, i.e., sandbag, in order to exploit them later. To study ELK empirically, we need model organisms that mirror this setting. Existing model organisms fall short in several respects. In this work, we train model organisms to withhold solutions in a vulnerability detection task. We combine transcript distillation with counter-prompting and tamper-resistance training to instill three properties that we argue are critical for a useful ELK testbed: 1) Selectivity, the model sandbags when it thinks the overseer doesn't know the answer and complies otherwise, 2) Robustness, the model resists elicitation, and 3) Retention, the model retains a knowledge advantage over the overseer, as opposed to losing the relevant capability."
+    },
+    {
+      "arxivId": "2610.25705",
+      "title": "How Effectively Do Security Skills Guide Coding Agents in Vulnerability Detection in Linux Kernel?",
+      "authors": [
+        "Haoran Xue",
+        "Nikta Akbarpour",
+        "Gias Uddin",
+        "Song Wang"
+      ],
+      "primaryCategory": "cs.CR",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.25705",
+      "pdfUrl": "https://arxiv.org/pdf/2610.25705",
+      "excerpt": "Large language model (LLM) coding agents, such as Claude Code, are increasingly used for security auditing, with task-specific skills providing reusable vulnerability-analysis procedures. However, their effectiveness in detecting real vulnerabilities and the reasons for their failures remain unclear. We conduct the first large-scale empirical study of 37 security skills using Claude Code with four underlying LLMs on 100 real Linux kernel vulnerabilities across ten classes, totaling 14800 runs. We evaluate vulnerability detection at the function, statement, and vulnerability-class levels. Results show that 24.4 percent of runs locate the correct function, 18.3 percent identify both the function and responsible statement, and 15.7 percent correctly classify the vulnerability. Our failure analysis reveals limitations in evidence acquisition, state-relation reasoning, code interpretation, candidate verification, investigation coverage, and reporting."
+    },
+    {
+      "arxivId": "2610.24873",
+      "title": "The One-Pixel of Reasoning: One Truthful Relation Is Enough to Mislead LLM Agents",
+      "authors": [
+        "Jinwei Hu",
+        "Youcheng Sun",
+        "Yi Dong",
+        "Xiaowei Huang"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-17",
+      "url": "https://arxiv.org/abs/2610.24873",
+      "pdfUrl": "https://arxiv.org/pdf/2610.24873",
+      "excerpt": "Can one sentence manipulate an agent's belief by targeting a single implicit warrant linking evidence to a conclusion? In this paper, we introduce the one-relation attack (ORA), a novel cognitive attack on this inferential relation. ORA localizes a critical implicit warrant and performs a one-relation intervention using a single source-grounded sentence that qualifies this warrant and steers the agent toward an incorrect belief. Across eighteen models on biomedical inference and vulnerability detection, best-of-$10 attacks overturn initially correct answers at mean rates of 54.9% for proprietary and 80.0% for open-weight models. Attacks also transfer without victim feedback, and paired controls support the roles of targeting and qualification. Moreover, successful sentences can pass source-support checks and evade identification, and multi-agent debate raises team error from 50.0% to 59.5% in our balanced stress test. These findings establish implicit warrants as a cognitive attack surface for manipulating agents' beliefs."
+    },
+    {
+      "arxivId": "2610.21248",
+      "title": "Beyond Confidence: Rethinking Uncertainty Calibration in Deep Code Models",
+      "authors": [
+        "Ravishka Rathnasuriya",
+        "Wei Yang"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.21248",
+      "pdfUrl": "https://arxiv.org/pdf/2610.21248",
+      "excerpt": "Deep learning models have shown significant promise in code-related tasks. While confidence calibration techniques have been proposed to improve model reliability, their effectiveness in real-world tasks with strict accuracy requirements remains uncertain. In this paper, we investigate two key questions: first, whether existing measurement metrics, including confidence scores and uncertainty metrics, are effective for guiding selective prediction; and second, whether existing calibration techniques can improve these metrics to better identify cases where model predictions are likely to succeed or fail. We conduct a systematic study on defect prediction and vulnerability detection using seven code models, evaluating thirteen uncertainty signals and three widely used post-hoc calibration methods."
+    },
+    {
+      "arxivId": "2610.15729",
+      "title": "LLM-based Code Auditing by Inferring and Evaluating Developer Assumptions",
+      "authors": [
+        "Junming Liu",
+        "Marcel Böhme"
+      ],
+      "primaryCategory": "cs.CR",
+      "published": "2026-10-11",
+      "url": "https://arxiv.org/abs/2610.15729",
+      "pdfUrl": "https://arxiv.org/pdf/2610.15729",
+      "excerpt": "When we see a null pointer check, we know that the developer believes that the pointer may not be initialized. If the same pointer is later used without a null pointer check, we may consider this a violation of the developer's belief and ultimately a bug. We develop such a belief-guided program analysis for vulnerability detection (VD). For example, when an authentication function returns the same error for both, a wrong user name and a wrong password, an auditor may infer that the developer believes that both cases are indistinguishable, mitigating a user enumeration attack. This belief is reasonable, as it follows standard security practice. Yet, a function call inducing a difference in response time for both cases, contradicts this belief. This contradiction uncovers a timing side-channel that syntactic analysis tools would miss. Existing static analysis tools struggle with this type of flaw because they require them to be expressible by general, syntactic patterns. Our belief-guided approach detects such domain-specific, high-level semantic security flaws that remain elusive."
+    },
+    {
+      "arxivId": "2610.14453",
+      "title": "SecReason: Vulnerability Detection and In-Stream Self-Repair for LLM Code Generation",
+      "authors": [
+        "Ruidong Han",
+        "Zhensu Sun",
+        "Chengyan Ma",
+        "Yuqing Niu",
+        "Zhou Yang",
+        "Siqi Ma",
+        "David Lo"
+      ],
+      "primaryCategory": "cs.CR",
+      "published": "2026-10-10",
+      "url": "https://arxiv.org/abs/2610.14453",
+      "pdfUrl": "https://arxiv.org/pdf/2610.14453",
+      "excerpt": "Large language models (LLMs) may introduce security vulnerabilities into generated code, which can persist into production when verification focuses on functional correctness. Existing defenses act before, during, or after generation, but none inspects the code during generation. Security prompts and retrieved security knowledge act before any code exists, constrained decoding limits token choices but cannot guide repair, and post-hoc repair must regenerate the full response. Reasoning LLMs draft code early in their streamed chain of thought, and in this pre-delivery window the code exists only inside the reasoning stream. We present SecReason, an in-stream defense that monitors this window. Dual-track incremental scanning applies security rules, checking each statement as it is emitted and tracing dataflows across the accumulated code. When a security rule fires, SecReason interrupts generation, inserts an in-stream warning, and resumes decoding, so the model repairs the draft within the same reasoning trace without regenerating the full response."
+    },
+    {
+      "arxivId": "2610.14296",
+      "title": "Diagnosing Generalization Boundaries in AI-Based Vulnerability Detection via Calibrated Embedding Distances",
+      "authors": [
+        "Konstantin Ievtushenko",
+        "Ralf Lämmel",
+        "Jan Jürjens"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-10-09",
+      "url": "https://arxiv.org/abs/2610.14296",
+      "pdfUrl": "https://arxiv.org/pdf/2610.14296",
+      "excerpt": "High benchmark scores in learning-based vulnerability detection mask severe degradation under distribution shifts. This paper demonstrates that calibrated embedding geometry exposes these hidden generalization boundaries on syntactically similar vulnerable and patched code pairs. An evaluation of CodeBERT and Qwen2.5-Coder across pattern, project, and temporal shifts on a strictly paired dataset reveals three main findings. First, whitened intermediate-layer embeddings with local nearest-neighbour scoring separate unfamiliar samples with a mean out-of-distribution AUROC of 0.739 (RQ1). Second, distance scores reveal a shift-specific reliability gradient where accuracy drops by over 35 percentage points and cross-project shifts cause the sharpest degradation, even though temporal shifts drift geometrically farthest (RQ2). Third, false positives on patched code systematically correlate with geometric proximity to vulnerable training neighbourhoods, increasing from 9.4% in the lowest-risk decile to 58.8% in the highest (RQ3)."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 366.408,
+      "bytes": 2198684,
+      "sha256": "f42b7dbd003ce9aff60aaa8b6a4c1a5965a1d2dcd3761481fc37ad5bc1932d7f",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 413.064,
+      "bytes": 2478620,
+      "sha256": "00b859c6b2bcb95e0c708e7059506e704d9e5a2f8ff91d90a19984c73ca4de0a",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "failed",
+      "text": "script-de.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Sprachsynthese fehlgeschlagen (exit 1: error: Unsupported language 'de'; /home/box/research)"
+    },
+    "es": {
+      "label": "Español",
+      "status": "failed",
+      "text": "script-es.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Fallo en la síntesis de voz (exit 1: error: Unsupported language 'es'; /home/box/research)"
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "failed",
+      "text": "script-ru.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Ошибка синтеза речи (exit 1: error: Unsupported language 'ru'; /home/box/research)"
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "failed",
+      "text": "script-it.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Sintesi vocale non riuscita (exit 1: error: Unsupported language 'it'; /home/box/research)"
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"vulnerability detection\"",
+    "de: audio failed (Sprachsynthese fehlgeschlagen (exit 1: error: Unsupported language 'de'; /home/box/research))",
+    "es: audio failed (Fallo en la síntesis de voz (exit 1: error: Unsupported language 'es'; /home/box/research))",
+    "ru: audio failed (Ошибка синтеза речи (exit 1: error: Unsupported language 'ru'; /home/box/research))",
+    "it: audio failed (Sintesi vocale non riuscita (exit 1: error: Unsupported language 'it'; /home/box/research))",
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, de, ru, it (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=qwen, es=qwen, ru=qwen, it=qwen"
+  ]
+}

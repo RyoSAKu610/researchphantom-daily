@@ -1,8 +1,24 @@
 {
-  "lastRunAt": "2026-10-23T06:39:55+09:00",
+  "lastRunAt": "2026-10-26T06:41:06+09:00",
   "results": [
     {
-      "date": "2026-10-23",
+      "date": "2026-10-24",
+      "ok": true,
+      "audioLanguages": [
+        "ja",
+        "zh"
+      ]
+    },
+    {
+      "date": "2026-10-25",
+      "ok": true,
+      "audioLanguages": [
+        "ja",
+        "zh"
+      ]
+    },
+    {
+      "date": "2026-10-26",
       "ok": true,
       "audioLanguages": [
         "ja",
@@ -10,5 +26,5 @@
       ]
     }
   ],
-  "siteBuiltAt": "2026-10-23T06:39:55+09:00"
+  "siteBuiltAt": "2026-10-26T06:41:06+09:00"
 }

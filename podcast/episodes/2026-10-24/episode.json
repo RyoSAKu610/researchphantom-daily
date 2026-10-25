@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "date": "2026-10-24",
+  "topic": {
+    "id": "causal-inference",
+    "labels": {
+      "ja": "因果推論",
+      "zh": "因果推断",
+      "de": "Kausalinferenz",
+      "es": "Inferencia causal",
+      "ru": "Причинно-следственный вывод",
+      "it": "Inferenza causale"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-26T06:34:04+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.31537",
+      "title": "Causal inference in staggered adoption panels: The correct comparison set depends on your intervention",
+      "authors": [
+        "Ian Lundberg",
+        "Yaling Xu"
+      ],
+      "primaryCategory": "stat.AP",
+      "published": "2026-10-22",
+      "url": "https://arxiv.org/abs/2610.31537",
+      "pdfUrl": "https://arxiv.org/pdf/2610.31537",
+      "excerpt": "A powerful data structure for causal inference is staggered adoption: many units are observed over many time periods, during which some units adopt an irreversible treatment at various time points while others remain untreated. Popular methods that apply in this setting include difference in difference, fixed effects, matching, and synthetic control. All of these methods compare the future outcomes of treatment adopters and non-adopters to answer the question: for units who adopt treatment, what outcomes would have been realized if they had remained untreated? We show that this question actually hides two very different causal questions of interest. The first is what would have happened under a momentary intervention to prevent treatment at its factual adoption time. The second is what would have happened to a treated unit under a longitudinal ban preventing treatment at all periods until outcome measurement. We show how to answer each question under conditionally ignorable treatment adoption or under parallel trends."
+    },
+    {
+      "arxivId": "2610.31147",
+      "title": "PriMa-Causa: Causal Prescriptive Maintenance",
+      "authors": [
+        "Felix Saretzky"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-22",
+      "url": "https://arxiv.org/abs/2610.31147",
+      "pdfUrl": "https://arxiv.org/pdf/2610.31147",
+      "excerpt": "Automated manufacturing requires data-driven decisions under uncertainty and sparse observational records, and unplanned downtime is a dominant cost of getting them wrong. Prescriptive maintenance recommends a maintenance action against an impending failure rather than merely predicting it. Established reference architectures couple predictive models with rule- or optimisation-based recommendation logic. Selecting a corrective action, however, requires an interventional quantity: how the line behaviour would change if the action were set. Manufacturing data is observational, so a model fitted to predict the outcome estimates an associational quantity and may misdirect the choice of action without the prediction error revealing it. Causal estimators target the interventional quantity but require an expert-led causal study per case, for which the bounded decision window of operation leaves no room. This dissertation analyses how causal reasoning can be embedded into prescriptive maintenance so that actions are ranked by their estimated interventional effect."
+    },
+    {
+      "arxivId": "2610.28983",
+      "title": "Estimand frameworks for causal inference in clinical research and regulatory decision making",
+      "authors": [
+        "Miguel A. Hernán",
+        "Mats J. Stensrud",
+        "Xabier García-Albéniz",
+        "Issa J. Dahabreh",
+        "Jonathan A. C. Sterne"
+      ],
+      "primaryCategory": "stat.ME",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.28983",
+      "pdfUrl": "https://arxiv.org/pdf/2610.28983",
+      "excerpt": "Causal inference for clinical and regulatory decision making requires a precise definition of the causal estimand, that is, what we want to estimate. Three frameworks are commonly used to describe causal estimands: PICO and its extensions, the target trial framework, and the E9(R1) Addendum of the International Council for Harmonisation (ICH). Because these frameworks were developed by different scientific communities, they operate at different levels of detail, emphasize different aspects of the causal estimand, and use different terminology for closely related concepts. Here we compare the three frameworks and translate across their terminologies. PICO is a compact framework that helps jumpstart a conversation about the causal question, but it does not encode sufficient information to fully characterize a causal estimand."
+    },
+    {
+      "arxivId": "2610.28103",
+      "title": "A Semi-Analytical Inference Framework for Structural Causal Models",
+      "authors": [
+        "Tatiana Boura",
+        "Robert Peharz"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.28103",
+      "pdfUrl": "https://arxiv.org/pdf/2610.28103",
+      "excerpt": "Structural Causal Models (SCMs) provide a principled framework for observational, interventional, and counterfactual reasoning, all of which rely on probabilistic inference. Existing frameworks either transform SCMs into alternative tractable representations or rely on approximate inference with expressive generative models. We instead perform inference using a message passing scheme directly on the SCM by representing structural mechanisms and probability densities in a common finite-dimensional function space. Forward propagation combines a numerical realization of the Law of the Unconscious Statistician, while propagated densities are recovered by spline projection from LOTUS moments. The same representation naturally yields backward message passing for conditioning, providing a unified framework for causal inference. Using tensor-product B-spline bases, the resulting algorithm expresses inference through numerical quadrature and linear algebra without explicitly constructing conditional distributions."
+    },
+    {
+      "arxivId": "2610.27354",
+      "title": "A plug-in estimator of the non-iterative conditional expectation g-formula using long short-term memory models",
+      "authors": [
+        "Jing Li",
+        "Sophia M. Rein",
+        "Zilong Wang",
+        "Zixiao Wang",
+        "Sean McGrath",
+        "James M. Robins",
+        "Thomas Kolokotrones",
+        "Rajarshi Mukherjee"
+      ],
+      "primaryCategory": "stat.ME",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.27354",
+      "pdfUrl": "https://arxiv.org/pdf/2610.27354",
+      "excerpt": "The non-iterative conditional expectation (NICE) plug-in estimator of the g-formula can be used to estimate the causal effects of sustained treatment strategies, even in the presence of treatment-confounder feedback, under the assumptions of exchangeability, positivity, and consistency. In practical applications, parametric models are commonly used to estimate the joint distribution of confounders, treatments, and outcomes over time. As an alternative to parametric models, long short-term memory (LSTM) models, designed to capture both short-term patterns and long-range dependencies in sequential data, may better accommodate complex temporal dependencies among time-varying confounders, treatments, and outcomes. However, the validity of statistical inferences of a plug-in estimator based on LSTM models has not yet been investigated."
+    },
+    {
+      "arxivId": "2610.26557",
+      "title": "More Treatments More Problems: Designing the 2026 American Causal Inference Conference Data Challenge",
+      "authors": [
+        "George Perrett",
+        "Sameer K. Deshpande",
+        "Jennifer Hill"
+      ],
+      "primaryCategory": "stat.OT",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26557",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26557",
+      "excerpt": "This paper documents the design of the 2026 American Causal Inference Conference (ACIC) Data Challenge, which uses a large set of simulations to evaluate the performance of a wide variety of causal inference estimators chosen and implemented by challenge participants. Unlike previous ACIC Data Challenges, which tended to mimic observational studies with a single binary treatment, the 2026 Data Challenge focused on randomized control trials with five arms (one control and four active treatments) to isolate key estimation challenges that arise when simultaneously estimating multiple treatment effects. We created 9,000 distinct synthetic populations corresponding to 18 distinct settings to explore variation in performance corresponding to patterns of treatment effect heterogeneity and response surface specifications. From each population, a sample of n = 1,000 was drawn for participants to estimate individual, subgroup, sample, and population-level treatment effects and identify the optimal treatment arm at each level."
+    },
+    {
+      "arxivId": "2610.25870",
+      "title": "Where to weight? Estimating population causal effects with weighted double score matching in complex surveys",
+      "authors": [
+        "Yukang Zeng",
+        "Guangyu Tong",
+        "Jiaqi Tong",
+        "Haidong Lu",
+        "Bhramar Mukherjee",
+        "Fan Li"
+      ],
+      "primaryCategory": "stat.ME",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.25870",
+      "pdfUrl": "https://arxiv.org/pdf/2610.25870",
+      "excerpt": "Double score matching is an emerging method for causal inference that combines propensity and prognostic scores to achieve dimension reduction and model robustness. However, when the observational data are drawn from a complex survey, the existing literature does not provide sufficient guidance on the proper use of survey weights in matching strategies for population-level causal inference. We develop weighted double score matching (WDSM) that provides a unified framework for incorporating survey weights throughout the score estimation, matching, and outcome analysis under both retrospective (informative) and prospective (non-informative) sampling designs. We establish asymptotic normality of the resultant effect estimates under both known and estimated scores and develop a linearization-based bootstrap procedure for variance estimation that preserves the survey-weighted matching structure. Simulation studies show that WDSM substantially reduces bias relative to unweighted matching when either the propensity score model or the prognostic score models are correctly specified."
+    },
+    {
+      "arxivId": "2610.25246",
+      "title": "Estimating Causal Bounds from Observational Data With Neural Generative Models",
+      "authors": [
+        "Max Zhu",
+        "Srivathsan Amruth",
+        "Sina Akbari",
+        "Qingyuan Zhao"
+      ],
+      "primaryCategory": "stat.ME",
+      "published": "2026-10-18",
+      "url": "https://arxiv.org/abs/2610.25246",
+      "pdfUrl": "https://arxiv.org/pdf/2610.25246",
+      "excerpt": "Identifying causal bounds from discrete observational data is a fundamental problem in causal inference. While exact analytical bounds exist for certain graphs, this is not generally the case. In this paper, we introduce a framework for estimating such bounds using neural generative models together with a new extrapolation procedure to estimate these bounds more accurately. Across multiple causal inference settings, it produces bounds that are consistently closer to the true bounds than those obtained with existing general neural approaches. We validate the framework on a range of benchmark problems for which exact bounds are available."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 356.352,
+      "bytes": 2138348,
+      "sha256": "1a4540094dd680934c24abd3e0da70ad0dc743bacd47080940b5e1d5eb1a1c7e",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 410.304,
+      "bytes": 2462060,
+      "sha256": "45b1d91caf4ccc238752e3a7312ffdae2999350d0091f966ad24ac8fa9bf59fd",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "failed",
+      "text": "script-de.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Sprachsynthese fehlgeschlagen (exit 1: error: Unsupported language 'de'; /home/box/research)"
+    },
+    "es": {
+      "label": "Español",
+      "status": "failed",
+      "text": "script-es.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Fallo en la síntesis de voz (exit 1: error: Unsupported language 'es'; /home/box/research)"
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "failed",
+      "text": "script-ru.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Ошибка синтеза речи (exit 1: error: Unsupported language 'ru'; /home/box/research)"
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "failed",
+      "text": "script-it.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Sintesi vocale non riuscita (exit 1: error: Unsupported language 'it'; /home/box/research)"
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"causal inference\"",
+    "de: audio failed (Sprachsynthese fehlgeschlagen (exit 1: error: Unsupported language 'de'; /home/box/research))",
+    "es: audio failed (Fallo en la síntesis de voz (exit 1: error: Unsupported language 'es'; /home/box/research))",
+    "ru: audio failed (Ошибка синтеза речи (exit 1: error: Unsupported language 'ru'; /home/box/research))",
+    "it: audio failed (Sintesi vocale non riuscita (exit 1: error: Unsupported language 'it'; /home/box/research))",
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, de, es, it (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=qwen, es=qwen, ru=qwen, it=qwen"
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "version": 1,
+  "date": "2026-10-25",
+  "topic": {
+    "id": "object-detection",
+    "labels": {
+      "ja": "物体検出",
+      "zh": "目标检测",
+      "de": "Objekterkennung",
+      "es": "Detección de objetos",
+      "ru": "Обнаружение объектов",
+      "it": "Rilevamento di oggetti"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-26T06:37:27+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.31329",
+      "title": "WeVisOne-VL: Unified Visual Perception from Objects to Pixels",
+      "authors": [
+        "Tianming Liang",
+        "Junyi Pan",
+        "Yuxi Li",
+        "Canmiao Fu",
+        "Zhipeng Huang",
+        "Chong Sun",
+        "Chen Li",
+        "Jing Lyu"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-10-22",
+      "url": "https://arxiv.org/abs/2610.31329",
+      "pdfUrl": "https://arxiv.org/pdf/2610.31329",
+      "excerpt": "Existing vision-language models (VLMs) remain unreliable for fine-grained visual perception. In this report, we present WeVisOne-VL (WeChat Vision All-in-One), a powerful VLM that unifies object-level and pixel-level perception through structured next-token prediction. It supports multiple visual tasks including object detection, referring localization, counting, OCR, segmentation, and matting, enabling localization at any user-specific granularity, from points and boxes to masks and alpha mattes. Architecturally, we integrate a lightweight pixel decoder into the VLM via a special <OBJ> token to generate instance-level pixel outputs. We train the model with a three-stage curriculum SFT followed by mixed-task RL. Across over 30 benchmarks, WeVisOne-VL demonstrates leading performance on both object-level and pixel-level tasks, while maintaining robust rejection for object-absent queries. By releasing WeVisOne-VL to the open-source community, we hope to advance VLMs from broad visual understanding toward truly reliable perception systems for real-world deployment."
+    },
+    {
+      "arxivId": "2610.29788",
+      "title": "Open-Vocabulary Models and Label Propagation for Uncertainty-aware Pseudo-Labeling of Object Detection Datasets",
+      "authors": [
+        "Jonathan Klees",
+        "Timo Heller",
+        "Matthias Rottmann"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-10-21",
+      "url": "https://arxiv.org/abs/2610.29788",
+      "pdfUrl": "https://arxiv.org/pdf/2610.29788",
+      "excerpt": "Object detection models rely on large-scale annotated datasets that require substantial manual annotation effort. The labeling costs further increase when annotation uncertainty is captured through soft labels, as multiple annotations must be collected for each object. We address this challenge by introducing a semi-supervised framework for the uncertainty-aware annotation of object detection datasets. Our approach leverages open-vocabulary object detectors to generate region proposals and semantically meaningful object representations. Based on these representations, we construct an object-level similarity graph and propagate probabilistic label information. Our framework assigns soft labels to previously unlabeled objects, quantifying both aleatoric and epistemic uncertainty. We evaluate our method on four object detection benchmarks with soft-label annotations and demonstrate that high-quality annotations can be obtained with only a small fraction of manually labeled objects."
+    },
+    {
+      "arxivId": "2610.29768",
+      "title": "UniRAP: Towards Unified Part-level Physical Affordance Reasoning and Actionable Perception",
+      "authors": [
+        "Linfei Li",
+        "Ruining Hu",
+        "Lin Zhang",
+        "Zhong Wang",
+        "Fengyi Zhang",
+        "Ying Shen",
+        "Binqiang Wang",
+        "Xin Zhang"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-10-21",
+      "url": "https://arxiv.org/abs/2610.29768",
+      "pdfUrl": "https://arxiv.org/pdf/2610.29768",
+      "excerpt": "Vision-language perception has achieved impressive progress in aligning natural language with visual observations, yet grounding high-level semantics into part-level physical interaction remains challenging. To address this gap, we propose UniRAP, a unified model for inferring part-level physical affordances and mapping language instructions to actionable geometric representations. UniRAP formulates this problem as a conditional multimodal generation task, integrating visual inputs, textual instructions, and optional prompts into a shared spatiotemporal representation space through a unified interface token mechanism. To predict executable contact geometry, we introduce a Unified Affordance Decoder (UAD), which jointly performs object detection, part-level affordance segmentation, and 4-DoF interaction pose estimation by leveraging intermediate segmentation features."
+    },
+    {
+      "arxivId": "2610.29618",
+      "title": "FogTTA: Online Test-Time Adaptation for Robust Transformer-based Object Detection in Foggy Weather",
+      "authors": [
+        "Ali Abedi",
+        "Q. M. Jonathan Wu",
+        "Ning Zhang",
+        "Shiqi Tian"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-10-21",
+      "url": "https://arxiv.org/abs/2610.29618",
+      "pdfUrl": "https://arxiv.org/pdf/2610.29618",
+      "excerpt": "Object detection models for autonomous driving commonly experience substantial performance drops when deployed under adverse weather due to the domain shift between training data and real-world operating conditions. This degradation is especially evident when models trained on clear-weather images encounter foggy environments with reduced visibility and contrast. To address this challenge, we introduce FogTTA, an online test-time adaptation framework designed to improve the robustness of Transformer-based object detectors in fog. Using RF-DETR as the underlying object detector, FogTTA enables real-time adaptation to the streaming target domain without requiring source data or retraining. The framework follows a teacher-student design, where the deployed model serves as the teacher and generates pseudo labels from weakly augmented target inputs. These predictions are subsequently refined through non-maximum suppression and confidence filtering. The student model then learns from strongly augmented target sample using the Varifocal loss to mitigate pseudo-label noise."
+    },
+    {
+      "arxivId": "2610.29607",
+      "title": "No Frames, Just Frequencies: Bandwidth-Efficient Deployment-Time Adaptation for Smart Glasses",
+      "authors": [
+        "Francesco Corti",
+        "Moritz Becker",
+        "Olga Saukh"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-10-21",
+      "url": "https://arxiv.org/abs/2610.29607",
+      "pdfUrl": "https://arxiv.org/pdf/2610.29607",
+      "excerpt": "Deep neural networks deployed on smart glasses must adapt to changes in the distribution of incoming data while adhering to strict privacy and device constraints. We present No Frames, Just Frequencies, a bandwidth-efficient source-assisted adaptation framework that characterizes distribution shifts using compact frequency descriptors computed on-device. Rather than transmitting camera frames, the glasses compute and send frequency descriptors to a host device that contains a replica of the model. The host device maps the received frequency descriptor to a distribution shift operator that synthesizes out-of-distribution data and adapts a model replica using a pre-defined adaptation protocol. We evaluate the framework on mixtures of ImageNet-C corruptions using convolution-based (ConvNeXtV2-Femto), self-attention-based (DeiT-Tiny), and hybrid (TinyViT-5M) vision models, on person classification (Visual Wake Words), and on object detection (MS-COCO)."
+    },
+    {
+      "arxivId": "2610.29587",
+      "title": "Guess and Send: World-Model-Guided Semantic Packet Transmission for Robust Video Perception",
+      "authors": [
+        "Yan Gong",
+        "Zheng Chu",
+        "Wei Koong Chai",
+        "Hari Mohan Pandey",
+        "Jiankang Zhang",
+        "Jingrui Hou",
+        "Miao Zhang",
+        "Yuanjian Li"
+      ],
+      "primaryCategory": "cs.MM",
+      "published": "2026-10-21",
+      "url": "https://arxiv.org/abs/2610.29587",
+      "pdfUrl": "https://arxiv.org/pdf/2610.29587",
+      "excerpt": "Reliable video perception over bandwidth-constrained wireless links requires transmitting information that the receiver cannot already recover from its evolving scene representation. This paper introduces WorldGT, a world-model-guided semantic packet transmission framework that prioritizes information according to its contribution to the receiver's perception. A shared feature-space world model predicts the receiver's scene state through affine motion compensation and learned residual displacement, while sender-side verification identifies reusable predictions. An acknowledgment-synchronized receiver twin estimates task-impact scores through two counterfactual evaluations, guiding packet selection and unequal error protection over LDPC-coded wireless channels. A compact 3-bit feature representation increases spatial coverage under stringent bandwidth constraints, while predictive fallback sustains perception during packet outages. Experiments on KITTI and VisDrone under Rayleigh fading and AWGN demonstrate substantial gains in low-SNR conditions."
+    },
+    {
+      "arxivId": "2610.29159",
+      "title": "RiO-DETRv2: Geometry-Aware Uncertainty Modeling Meets Real-Time Oriented Object Detection Transformer",
+      "authors": [
+        "Zhangchi Hu",
+        "Zilong He",
+        "Yifan Zhao",
+        "Xiangyu Yu",
+        "Jie Chen",
+        "Peixi Wu",
+        "Yansong Peng",
+        "Hebei Li"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-10-21",
+      "url": "https://arxiv.org/abs/2610.29159",
+      "pdfUrl": "https://arxiv.org/pdf/2610.29159",
+      "excerpt": "RiO-DETR is the first real-time end-to-end transformer for oriented object detection, yet further localization gains require a more expressive box representation. Although distributional regression has succeeded in horizontal DETRs, extending it to oriented detection introduces geometry-misaligned boundary modeling and topology-inconsistent orientation refinement. We present RiO-DETRv2, a geometry-aware uncertainty modeling framework for real-time oriented object detection. To resolve the geometry mismatch, Object-Aligned Boundary Distribution Refinement represents box boundaries as probability distributions in an object-aligned coordinate system and progressively refines them across decoder layers. For better orientation topology consistency, we introduce Circular-to-Local Angular Residual Refinement that transitions from global periodic search to local fine-grained estimation. Unified OBB Quality-Aligned Learning further aligns classification, boundary and angular refinement with complete-OBB localization quality."
+    },
+    {
+      "arxivId": "2610.28829",
+      "title": "HorizonComposer: Spatiotemporally Consistent Driving Video Editing with Enriched Traffic Semantics",
+      "authors": [
+        "Mauricio Soroco",
+        "Yuqiu Liu",
+        "Zaid Tasneem",
+        "Francesco Pittaluga",
+        "Abhishek Aich",
+        "Wuyang Chen",
+        "Manmohan Chandraker",
+        "Ziyu Jiang"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.28829",
+      "pdfUrl": "https://arxiv.org/pdf/2610.28829",
+      "excerpt": "Instruction-guided video generative models offer a scalable solution for stress-testing autonomous driving systems by simulating diverse environmental conditions. However, driving scenes operate within a dense Operational Design Domain (ODD) governed by strict traffic semantics. When applied to global driving-condition edits, general-purpose instruction-guided video editors frequently corrupt these semantics, leading to structural hallucinations and temporal shock.'' This work distills and protects traffic semantics during video editing at three levels. First, we construct a hybrid dataset by combining temporally aligned real-world videos with synthetic edits, balancing foundational scene structure with unambiguous appearance signals. Second, during training, we adapt advantage conditioning from offline reinforcement learning to align the model using dense rewards. We extract dense, pixel-level rewards from the hybrid data to serve as a localized signal and actively steer generation toward structurally reliable pixels."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 392.136,
+      "bytes": 2353052,
+      "sha256": "847f06c4e885be362557b734ddbd2a4cbb45713c1616a4d117be7645fa40ef88",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 390.624,
+      "bytes": 2343980,
+      "sha256": "cd3980c14c36994441a2e3c7546376355306e585e761061dc53fc804418d87ac",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "failed",
+      "text": "script-de.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Sprachsynthese fehlgeschlagen (exit 1: error: Unsupported language 'de'; /home/box/research)"
+    },
+    "es": {
+      "label": "Español",
+      "status": "failed",
+      "text": "script-es.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Fallo en la síntesis de voz (exit 1: error: Unsupported language 'es'; /home/box/research)"
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "failed",
+      "text": "script-ru.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Ошибка синтеза речи (exit 1: error: Unsupported language 'ru'; /home/box/research)"
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "failed",
+      "text": "script-it.txt",
+      "audio": null,
+      "durationSeconds": null,
+      "bytes": null,
+      "sha256": null,
+      "voice": "default",
+      "error": "Sintesi vocale non riuscita (exit 1: error: Unsupported language 'it'; /home/box/research)"
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"object detection\"",
+    "de: audio failed (Sprachsynthese fehlgeschlagen (exit 1: error: Unsupported language 'de'; /home/box/research))",
+    "es: audio failed (Fallo en la síntesis de voz (exit 1: error: Unsupported language 'es'; /home/box/research))",
+    "ru: audio failed (Ошибка синтеза речи (exit 1: error: Unsupported language 'ru'; /home/box/research))",
+    "it: audio failed (Sintesi vocale non riuscita (exit 1: error: Unsupported language 'it'; /home/box/research))",
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja, zh, de, es, it (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=qwen, es=qwen, ru=qwen, it=qwen"
+  ]
+}

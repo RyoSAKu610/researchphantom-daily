@@ -1,26 +1,38 @@
 [
- {
-  "date": "2026-10-18",
-  "topicId": "robot-manipulation"
- },
- {
-  "date": "2026-10-19",
-  "topicId": "automated-theorem-proving"
- },
- {
-  "date": "2026-10-20",
-  "topicId": "convex-optimization"
- },
- {
-  "date": "2026-10-21",
-  "topicId": "music-generation"
- },
- {
-  "date": "2026-10-22",
-  "topicId": "machine-translation"
- },
- {
-  "date": "2026-10-23",
-  "topicId": "multimodal-learning"
- }
+  {
+    "date": "2026-10-18",
+    "topicId": "robot-manipulation"
+  },
+  {
+    "date": "2026-10-19",
+    "topicId": "automated-theorem-proving"
+  },
+  {
+    "date": "2026-10-20",
+    "topicId": "convex-optimization"
+  },
+  {
+    "date": "2026-10-21",
+    "topicId": "music-generation"
+  },
+  {
+    "date": "2026-10-22",
+    "topicId": "machine-translation"
+  },
+  {
+    "date": "2026-10-23",
+    "topicId": "multimodal-learning"
+  },
+  {
+    "date": "2026-10-24",
+    "topicId": "causal-inference"
+  },
+  {
+    "date": "2026-10-25",
+    "topicId": "object-detection"
+  },
+  {
+    "date": "2026-10-26",
+    "topicId": "vulnerability-detection"
+  }
 ]
