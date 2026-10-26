@@ -1,0 +1,21 @@
+{
+  "provider": "voicestudio-omnivoice",
+  "model": "omnivoice-gguf",
+  "model_commit": null,
+  "language": "de",
+  "voice": "Phantom-DE",
+  "endpoint": "http://127.0.0.1:3901/v1/audio/speech",
+  "style_chars": 10,
+  "text_chars": 7053,
+  "durationSeconds": 486.432,
+  "bytes": 2918828,
+  "sha256": "80e56af84f1bfaf9b7d4b57774e4b3019e2e6de61e07937390a84e15aad64364",
+  "peak": 1.01159,
+  "rms_dbfs": -18.3,
+  "clipped_fraction": 0.0,
+  "silent_fraction": 0.043,
+  "leading_silence_seconds": 0.0,
+  "trailing_silence_seconds": 0.25,
+  "longest_silence_seconds": 0.75,
+  "seconds_per_char": 0.069
+}

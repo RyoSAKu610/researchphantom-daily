@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "date": "2026-10-27",
+  "topic": {
+    "id": "single-cell-analysis",
+    "labels": {
+      "ja": "単一細胞トランスクリプトーム",
+      "zh": "单细胞转录组",
+      "de": "Einzelzell-Transkriptomik",
+      "es": "Transcriptómica de célula única",
+      "ru": "Одноклеточная транскриптомика",
+      "it": "Trascrittomica a cellula singola"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-27T07:05:04+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.21943",
+      "title": "Panoramic modelling of single-cell transcriptomes at scale with CellNet",
+      "authors": [
+        "Xiaoqing Lian",
+        "Pei Liu",
+        "Jiahui Tan",
+        "Luoda Tan",
+        "Chaoyi Li",
+        "Quan Zou",
+        "Chen Lin",
+        "Xiangxiang Zeng"
+      ],
+      "primaryCategory": "q-bio.GN",
+      "published": "2026-10-15",
+      "url": "https://arxiv.org/abs/2610.21943",
+      "pdfUrl": "https://arxiv.org/pdf/2610.21943",
+      "excerpt": "Comprehensively characterizing cellular diversity is critical for understanding tissue development, identifying disease-associated populations and investigating gene programmes linked to specialized functions. Advances in single-cell profiling reveal additional cell-specific transcripts and molecular associations, yet many foundation models represent only a restricted portion of this increasingly rich molecular information. Here we present CellNet, which enables panoramic modelling of single-cell transcriptomes by integrating DNA-derived gene identities and measured RNA expression in a shared image representation. Pretrained on 231 million cell profiles spanning 40 species, CellNet improves rare-population and condition-associated state recognition in evaluated cohorts while retaining competitive general cell representations. It predicts withheld coding-gene expression and selected non-coding targets in total-RNA data, and recovers lineage-specific expression patterns in spatial measurements."
+    },
+    {
+      "arxivId": "2610.19029",
+      "title": "Deep learning-based virtual perturbation reveals increasing heterogeneity of gene regulatory responses with aging",
+      "authors": [
+        "Yongjian He",
+        "Julia Hanna Haddad Guez",
+        "Xu-Wen Wang",
+        "Orr Levy"
+      ],
+      "primaryCategory": "q-bio.MN",
+      "published": "2026-10-13",
+      "url": "https://arxiv.org/abs/2610.19029",
+      "pdfUrl": "https://arxiv.org/pdf/2610.19029",
+      "excerpt": "A central hypothesis in aging biology proposes that the gradual accumulation of stochastic molecular damage drives transcriptional deregulation (TD), ultimately leading to functional decline. However, existing single-cell analyses largely rely on static expression measurements and provide limited resolution of how regulatory responses change at the level of individual cells. Here, we leverage DKO, a deep learning framework that predicts cell-specific virtual gene perturbation effects from unperturbed transcriptomes, capturing cell-to-cell differences in regulatory context without requiring a reconstructed gene regulatory network or matched perturbation data. Applying DKO to single-cell transcriptomic datasets from humans, mice, Drosophila, and C. elegans revealed that the transcriptional consequences of perturbing the same gene became increasingly heterogeneous across cells with age, indicating that gene regulatory responses become less consistent and more dependent on cellular context."
+    },
+    {
+      "arxivId": "2609.38908",
+      "title": "CellMSA: Context Modeling for Single-Cell Representation Learning",
+      "authors": [
+        "Suyuan Zhao",
+        "Minghao Liu",
+        "Yizhen Luo",
+        "Zaiqing Nie"
+      ],
+      "primaryCategory": "q-bio.GN",
+      "published": "2026-09-30",
+      "url": "https://arxiv.org/abs/2609.38908",
+      "pdfUrl": "https://arxiv.org/pdf/2609.38908",
+      "excerpt": "Single-cell transcriptomics enables profiling of cellular states at unprecedented resolution, but its high dimensionality, sparsity, and technical batch effects pose significant challenges for representation learning. Existing single-cell foundation models typically encode each cell independently or only model cells from the same batch for denoising, thereby underutilizing the rich relational information across batches and cell types to model gene expression patterns. We argue that single-cell models can benefit from more informative cell-context modeling. By comparing consistency and variation across cells, models can capture fine-grained gene-gene dependencies associated with cell states, which are essential for learning high-quality representations. Inspired by the use of multiple sequence alignment (MSA) context in protein modeling, we propose CellMSA, a single-cell representation learning framework that introduces an MSA-inspired inductive bias into transcriptomic modeling."
+    },
+    {
+      "arxivId": "2608.20065",
+      "title": "Orthogonal JEPA: Factorized Predictive States for Latent World Models",
+      "authors": [
+        "Taoyong Cui",
+        "Pheng Ann Heng",
+        "Wanli Ouyang"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-08-20",
+      "url": "https://arxiv.org/abs/2608.20065",
+      "pdfUrl": "https://arxiv.org/pdf/2608.20065",
+      "excerpt": "World models construct latent states that support prediction, planning, and reasoning about an underlying system. Joint-embedding predictive architectures (JEPAs) offer a direct way to learn such states by predicting targets in representation space instead of reconstructing every detail of the observation. Standard JEPAs, however, organize all predictable content through one target embedding and one prediction pathway. In complex systems, this monolithic state can allocate redundant capacity to dominant signals while providing weak or conflicting gradients to less dominant predictive structure. We introduce \\method, a latent world-modeling framework based on orthogonal predictive factorization. Learned basis matrices analyze each target state into multiple components, and a dedicated prediction branch estimates each component from a shared context representation."
+    },
+    {
+      "arxivId": "2608.15288",
+      "title": "D2R2: Discrete Diffusion with Regulation Reinforcement for Single-Cell Perturbation Prediction",
+      "authors": [
+        "Ninghan Fan",
+        "Qi Liu",
+        "Xunuo Zhu",
+        "Yukai Sun",
+        "Luyuan Chen",
+        "Xuheng Zhou",
+        "Yuetian Du",
+        "Ming Kong"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-08-15",
+      "url": "https://arxiv.org/abs/2608.15288",
+      "pdfUrl": "https://arxiv.org/pdf/2608.15288",
+      "excerpt": "Predicting single-cell transcriptomic responses to genetic perturbations is central to functional genomics and virtual-cell modeling. Existing approaches, however, typically predict an entire expression profile as a whole, leaving the order in which individual gene responses are generated unmodeled. To address this problem, we introduce \\textbf{ } (\\textbf{D}iscrete \\textbf{D}iffusion with \\textbf{R}egulation \\textbf{R}einforcement), which reformulates perturbation prediction as regulation-guided gene-wise progressive generation. A Masked Discrete Diffusion Model represents expression as ordinal tokens and reconstructs a fully masked profile step by step, allowing generated gene responses to condition those that remain masked. A Regulatory Policy Module initializes the generation policy from a gene regulatory network inferred from control cells and adapts it to the perturbation and current partially generated state. Then, group-relative policy optimization refines only the ordering policy using final perturbation-effect agreement as reward."
+    },
+    {
+      "arxivId": "2608.05928",
+      "title": "BioM-JEPA: joint-embedding prediction of graph-connected gene blocks in single cells",
+      "authors": [
+        "Yuhao Wang",
+        "Zelin Zang",
+        "Yuxuan Liu",
+        "Zhen Lei",
+        "Stan Z. Li"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-08-06",
+      "url": "https://arxiv.org/abs/2608.05928",
+      "pdfUrl": "https://arxiv.org/pdf/2608.05928",
+      "excerpt": "Single-cell transcriptomes are sparse observations of coordinated biological programmes, yet most self-supervised models learn by reconstructing individual genes. Here we present BioM-JEPA, a joint-embedding predictive architecture that instead predicts aggregate representations of graph-connected gene blocks defined by protein-association and corpus-derived coexpression evidence. A student network infers each target-block representation from the remaining genes in a cell, while a slowly updated teacher supplies the corresponding target from the full observed gene set. Under the reported extraction procedure, block-level prediction produced embeddings with higher effective rank and weaker association with detected-gene depth in the tested diagnostics than token-prediction, random-block and reconstruction controls. Across CellBench tasks, frozen BioM-JEPA embeddings retained expression, pathway and neighbourhood information and achieved the lowest aggregate perturbation-response error among the evaluated models."
+    },
+    {
+      "arxivId": "2608.00985",
+      "title": "Beyond Gene Reconstruction: Learning Cell Representations through Complementary Transcriptomic Views",
+      "authors": [
+        "Jiaqi Xiong",
+        "Yuntao hu",
+        "Yu Zheng",
+        "Yifei Shi",
+        "Xinyue Guo",
+        "Jiaxin Qi"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-08-02",
+      "url": "https://arxiv.org/abs/2608.00985",
+      "pdfUrl": "https://arxiv.org/pdf/2608.00985",
+      "excerpt": "The rapid growth of single-cell transcriptomic data has enabled the development of foundation models pretrained primarily by reconstructing masked expression values. This objective encourages these models to learn gene dependencies but does not directly optimize whole-cell representations, which are essential for many downstream tasks. To bridge this gap, we propose a contrastive pretraining framework that learns cell representations through complementary transcriptomic views. Since standard contrastive learning is not readily applicable to single-cell pretraining, we introduce specific adaptations along three dimensions --- co-expression-guided gene partitioning, expression-aware contrast-set construction, and competence-gated contrastive onset. Specifically, we first construct two complementary views of each cell by partitioning its genes according to their co-expression structure. Then, to prevent the model from using gene-set identity as a shortcut, we construct hard negatives by permuting expression values while keeping gene identities unchanged."
+    },
+    {
+      "arxivId": "2607.14596",
+      "title": "A Deterministic Binary Fingerprinting Framework with Zero-Trained Feature Extraction for Sparse Count Matrices",
+      "authors": [
+        "Lei Zhao",
+        "Fujin Huang",
+        "Ling Kang",
+        "Quan Guo"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-07-16",
+      "url": "https://arxiv.org/abs/2607.14596",
+      "pdfUrl": "https://arxiv.org/pdf/2607.14596",
+      "excerpt": "Sparse count matrices from single-cell transcriptomes to k-mer profiles and document-term frequencies are conventionally analyzed via PCA-reduced graph clustering or iterative optimization in continuous embedding spaces. We introduce MMTB, a deterministic non-learned binary representation framework that requires no label supervision, model fitting, or gradient-based optimization. Column-wise Min-Max normalization followed by fixed cutoffs maps each sample to a thermometer fingerprint whose Hamming distances show empirical correspondence with normalized L1 distances, with Pearson correlation approximately 0.92 on single-cell RNA-seq pairs. In a favorable three-cell-line mixture, the 3-threshold fingerprint achieves NMI of 0.99 at 188 bytes per cell. Under a fair Hamming nearest-neighbor graph plus Leiden readout, MMTB approaches PCA plus Leiden on this coarse task."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 650.76,
+      "bytes": 3904796,
+      "sha256": "75f497a094d6b5f857eb7704c6d697b9d92d7a99bf1ea7d79bafc3da22f3cba2",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 501.072,
+      "bytes": 3006668,
+      "sha256": "c63c76404090b4a3775bac9668e1c15c69c3e6d403cc211bd4eba5f09c6780d9",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 486.432,
+      "bytes": 2918828,
+      "sha256": "80e56af84f1bfaf9b7d4b57774e4b3019e2e6de61e07937390a84e15aad64364",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 681.504,
+      "bytes": 4089260,
+      "sha256": "bf71b1e8ddbeea64955236c48589a13968723e4c6f7a44114c4f91a0f5a2918f",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 572.496,
+      "bytes": 3435212,
+      "sha256": "c3a94213d435e9b8c7018e9aa4f8e003b465b68f5a9fd6a5267e36b5a17a29ea",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 685.104,
+      "bytes": 4110860,
+      "sha256": "45cf6e617edb2f974a81827266fb5504d601f3798e37dc9fbe05ccdd37bf9dc2",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"single-cell transcriptomics\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(215s), zh=llm(177s), de=llm(135s), es=llm(185s), ru=llm(188s), it=llm(182s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
