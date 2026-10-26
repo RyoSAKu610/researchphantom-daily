@@ -59,6 +59,9 @@ export function poolOrder(topics, year) {
 
 // Deterministic pick: index = dayOfYear % pool.length, advanced while the
 // candidate was used within the last floor(pool.length / 2) days of history.
+// Only strictly earlier dates count: the date's own entry (left by an earlier
+// run of the same date) is ignored, so a --force rerun / self-repair picks the
+// same topic as the original run instead of rotating to a different one.
 export function pickTopic(dateISO, topics, history = []) {
   const parsed = parseISODate(dateISO);
   if (!parsed) throw new Error(`invalid date: ${dateISO}`);
@@ -72,7 +75,7 @@ export function pickTopic(dateISO, topics, history = []) {
     const entryDate = parseISODate(entry?.date);
     if (!entryDate || typeof entry?.topicId !== "string") continue;
     const diff = today - dayNumberOf(entryDate);
-    if (diff >= 0 && diff <= window) blocked.add(entry.topicId);
+    if (diff > 0 && diff <= window) blocked.add(entry.topicId);
   }
   let index = dayOfYear(dateISO) % ordered.length;
   for (let step = 0; step < ordered.length && blocked.has(ordered[index].id); step += 1) {

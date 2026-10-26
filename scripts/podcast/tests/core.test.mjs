@@ -157,11 +157,15 @@ test("pickTopic is pure: same input gives same topic in any call order", async (
   assert.deepEqual(first, second);
   assert.equal(unrelated.id, pickTopic("2026-03-06", topics, history).id);
   assert.notEqual(first.id, undefined);
-  // Recent history advances the candidate (same-date entry blocks its topic).
+  // Recent history advances the candidate (previous-day entry blocks its topic).
   const pool = topics.slice(0, 3);
   const candidate = pickTopic("2026-01-02", pool, []);
-  const advanced = pickTopic("2026-01-02", pool, [{ date: "2026-01-02", topicId: candidate.id }]);
+  const advanced = pickTopic("2026-01-02", pool, [{ date: "2026-01-01", topicId: candidate.id }]);
   assert.notEqual(advanced.id, candidate.id);
+  // The date's own entry (left by an earlier run) does not block: a --force
+  // rerun of the same date keeps its topic.
+  const rerun = pickTopic("2026-01-02", pool, [{ date: "2026-01-02", topicId: candidate.id }]);
+  assert.equal(rerun.id, candidate.id);
 });
 
 test("poolOrder is stable and does not mutate the input order", async () => {

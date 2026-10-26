@@ -188,40 +188,65 @@ function templateFor(variants, parsed, index) {
 
 // ---- fixed templates per language -------------------------------------------
 
-function introLine(lang, dateText, topicLabel, paperCount, curated) {
+// Intro cue when the per-paper text is a local-LLM narration of the abstract
+// (scripts/podcast/llm.mjs) instead of a verbatim abstract quote.
+const NARRATED_CUE = {
+  ja: "各論文の説明は、arXivの抄録だけをもとにローカルAIがまとめた要約です。",
+  zh: "各篇论文的介绍由本地AI仅根据arXiv摘要整理而成。",
+  de: "Die Erläuterungen zu den Papers hat eine lokale KI ausschließlich aus den arXiv-Abstracts zusammengefasst.",
+  es: "Las explicaciones de cada artículo las resumió una IA local basándose solo en los resúmenes de arXiv.",
+  ru: "Пояснения к статьям подготовлены локальной нейросетью только на основе аннотаций arXiv.",
+  it: "Le spiegazioni dei singoli articoli sono riassunti preparati da un'IA locale basandosi solo sugli abstract di arXiv.",
+};
+
+// appended when only some papers got an AI summary and the rest are quoted
+const PARTIAL_CUE = {
+  ja: "一部の論文は英語抄録の冒頭をそのまま引用します。",
+  zh: "部分论文直接引用英文摘要开头。",
+  de: "Bei einzelnen Papers zitieren wir stattdessen den Anfang des englischen Abstracts.",
+  es: "En algunos artículos citamos directamente el inicio del resumen en inglés.",
+  ru: "Для некоторых статей мы просто цитируем начало английской аннотации.",
+  it: "Per alcuni articoli citiamo direttamente l'inizio dell'abstract in inglese.",
+};
+
+function narratedCue(lang, narrated) {
+  return narrated === "partial" ? `${NARRATED_CUE[lang]}${lang === "ja" || lang === "zh" ? "" : " "}${PARTIAL_CUE[lang]}` : NARRATED_CUE[lang];
+}
+
+function introLine(lang, dateText, topicLabel, paperCount, curated, narrated = false) {
   if (lang === "ja") {
     const base = `こんにちは、Phantomresearch Dailyです。${dateText}、今日のテーマは「${topicLabel}」です。`;
     if (paperCount === 0) return `${base}今日は紹介できる論文が見つかりませんでした。`;
-    const cue = curated ? "編集部の日本語要約から引用します。" : "原文の英語抄録から冒頭を引用します。";
+    const cue = narrated ? narratedCue(lang, narrated) : curated ? "編集部の日本語要約から引用します。" : "原文の英語抄録から冒頭を引用します。";
     return `${base}論文を${countPhrase(lang, paperCount)}、ゆっくり紹介します。結果は断定せず、${cue}`;
   }
   if (lang === "zh") {
     const base = `你好，这里是 Phantomresearch Daily。今天是${dateText}，主题是「${topicLabel}」。`;
     if (paperCount === 0) return `${base}今天没有找到可以介绍的论文。`;
-    const cue = curated ? "引用编辑部日文摘要。" : "引用原文英文摘要开头。";
+    const cue = narrated ? narratedCue(lang, narrated) : curated ? "引用编辑部日文摘要。" : "引用原文英文摘要开头。";
     return `${base}下面详细介绍${countPhrase(lang, paperCount)}论文，不对结果作断言。${cue}`;
   }
   if (lang === "de") {
     const base = `Hallo, hier ist Phantomresearch Daily. Es ist der ${dateText}. Das heutige Thema ist ${topicLabel}.`;
     if (paperCount === 0) return `${base} Für das heutige Briefing standen keine Papers zur Verfügung.`;
-    const cue = curated ? "Zitate stammen aus unseren redaktionellen japanischen Zusammenfassungen." : "Zitate sind die Anfänge der jeweiligen englischen Original-Abstracts.";
+    const cue = narrated ? narratedCue(lang, narrated) : curated ? "Zitate stammen aus unseren redaktionellen japanischen Zusammenfassungen." : "Zitate sind die Anfänge der jeweiligen englischen Original-Abstracts.";
     return `${base} Wir gehen ${countPhrase(lang, paperCount)} in Ruhe durch, ohne Aussagen über die Ergebnisse. ${cue}`;
   }
   if (lang === "es") {
     const base = `Hola, esto es Phantomresearch Daily. Hoy es ${dateText}. El tema de hoy es ${topicLabel}.`;
     if (paperCount === 0) return `${base} Hoy no hubo artículos disponibles para el resumen.`;
-    const cue = curated ? "Las citas provienen de nuestros resúmenes japoneses editados." : "Las citas son el inicio de cada resumen original en inglés.";
+    const cue = narrated ? narratedCue(lang, narrated) : curated ? "Las citas provienen de nuestros resúmenes japoneses editados." : "Las citas son el inicio de cada resumen original en inglés.";
     return `${base} Repasaremos ${countPhrase(lang, paperCount)} con calma, sin afirmar nada sobre los resultados. ${cue}`;
   }
   if (lang === "ru") {
     const base = `Здравствуйте, это Phantomresearch Daily. Сегодня ${dateText}. Тема выпуска — «${topicLabel}».`;
     if (paperCount === 0) return `${base} Сегодня статьи для краткого обзора не нашлись.`;
-    const cue = curated ? "Цитаты взяты из наших редакционных японских пересказов." : "Цитаты — это начало каждого оригинального английского абстракта.";
+    const cue = narrated ? narratedCue(lang, narrated) : curated ? "Цитаты взяты из наших редакционных японских пересказов." : "Цитаты — это начало каждого оригинального английского абстракта.";
     return `${base} Мы спокойно разберём ${countPhrase(lang, paperCount)}, не делая заявлений о результатах. ${cue}`;
   }
   const base = `Ciao, questo è Phantomresearch Daily. Oggi è ${dateText}. Il tema di oggi è ${topicLabel}.`;
   if (paperCount === 0) return `${base} Oggi non ci sono articoli disponibili per il brief.`;
-  const cue = curated ? "Le citazioni provengono dalle nostre sintesi giapponesi a cura della redazione." : "Le citazioni sono l'inizio di ogni abstract originale in inglese.";
+  const cue = narrated ? narratedCue(lang, narrated) : curated ? "Le citazioni provengono dalle nostre sintesi giapponesi a cura della redazione." : "Le citazioni sono l'inizio di ogni abstract originale in inglese.";
   return `${base} Passeremo in rassegna ${countPhrase(lang, paperCount)} senza fretta, senza affermazioni sui risultati. ${cue}`;
 }
 
@@ -414,10 +439,12 @@ function outroLines(lang, topicLabel, labels, ids, hasPapers, paperTitles, dateT
 
 function renderAttempt(language, attempt) {
   const { parsed, topicLabel, curated, papers, labels, joint, cap, dateText } = attempt;
+  const narratedCount = papers.filter((paper) => typeof paper.spokenBody === "string" && paper.spokenBody.trim()).length;
+  const narrated = narratedCount === 0 ? false : narratedCount === papers.length ? "all" : "partial";
   const segments = [];
   segments.push({
     label: "intro",
-    text: introLine(language, dateText, topicLabel, papers.length, curated),
+    text: introLine(language, dateText, topicLabel, papers.length, curated, narrated),
   });
   segments.push({
     label: "topic-overview",
@@ -432,7 +459,11 @@ function renderAttempt(language, attempt) {
     const parts = [paperTitleLine(language, index, title)];
     const author = authorLine(language, paper.authors);
     if (author) parts.push(author);
-    const excerpt = trimExcerpt(paper.abstract ?? paper.excerpt ?? "", cap);
+    // spokenBody: LLM narration (llm.mjs), already validated against the
+    // abstract; otherwise the verbatim abstract quote as before.
+    const excerpt = typeof paper.spokenBody === "string" && paper.spokenBody.trim()
+      ? paper.spokenBody.trim()
+      : trimExcerpt(paper.abstract ?? paper.excerpt ?? "", cap);
     if (excerpt) parts.push(excerpt);
     segments.push({ label: `paper-${index + 1}`, text: parts.join(joint) });
     segments.push({ label: `commentary-paper${index + 1}`, text: commentaryLine(language, parsed, index) });
@@ -556,5 +587,39 @@ export function buildScript(lang, options = {}) {
     maxSeconds: DURATION_MAX_SECONDS,
     targetSeconds: DURATION_TARGET_SECONDS,
     met: chosen.estimate >= DURATION_MIN_SECONDS && chosen.estimate < DURATION_MAX_SECONDS,
+  };
+}
+
+// Script whose per-paper text comes from `bodies` (LLM narrations from
+// llm.mjs; a missing/empty body falls back to that paper's abstract quote).
+// Same intro/overview/commentary/outro templates and the same result shape as
+// buildScript; papers beyond bodies.length are not read out.
+export function buildScriptFromBodies(lang, options = {}, bodies = []) {
+  const language = normalizeLang(lang);
+  const context = prepareContext(language, options);
+  const count = Math.min(context.pool.length, Array.isArray(bodies) ? bodies.length : 0);
+  const papers = context.pool.slice(0, count).map((paper, index) => ({ ...paper, spokenBody: bodies[index] || null }));
+  const attempt = renderAttempt(language, {
+    parsed: context.parsed,
+    topicLabel: context.topicLabel,
+    curated: context.curated,
+    labels: context.labels,
+    joint: context.joint,
+    dateText: context.dateText,
+    papers,
+    cap: context.limit,
+  });
+  const estimate = estimateSpokenSeconds(language, attempt.text);
+  return {
+    text: attempt.text,
+    segments: attempt.segments,
+    papersUsed: count,
+    excerptLimit: context.limit,
+    estimatedSeconds: round10(estimate),
+    plannedSeconds: Math.round(estimate),
+    minSeconds: DURATION_MIN_SECONDS,
+    maxSeconds: DURATION_MAX_SECONDS,
+    targetSeconds: DURATION_TARGET_SECONDS,
+    met: estimate >= DURATION_MIN_SECONDS && estimate < DURATION_MAX_SECONDS,
   };
 }

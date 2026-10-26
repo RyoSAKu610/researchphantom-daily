@@ -147,6 +147,62 @@ Grok Bot に貼る Skill / Routine は、「**`daily.sh` を実行 → exit code
    push 失敗は非 fatal（差分は手元に残り、次回 catchup で re-try）。push 成功で
    `.github/workflows/deploy.yml`（GitHub Pages deploy）が走る。
 
+## 4b. 論文の先取り（prefetch）とローカル AI 台本（どちらも env フラグで opt-in）
+
+どちらも**既定は無効**（env 未設定なら従来どおりの動作）。bot VM では
+`~/.config/podcast-bot/podcast-llm.env` を `run-daily-hub.sh` が読み込んで有効化する。
+
+### 論文の先取り — `PODCAST_PREFETCH=1`
+
+- `scripts/podcast/prefetch.mjs` が、これから数日分のトピック（`pickTopic` を履歴付きで
+  シミュレートして予測）について arXiv のメタデータ＋抄録をローカル cache に保存する。
+  cache は repo 外: `$PODCAST_ARXIV_CACHE_DIR`（既定 `~/.cache/researchphantom-daily/arxiv/<topicId>.json`）
+  なので `daily.sh` の `git add -A` には入らない。
+- `daily.mjs` の論文取得順: **新しい cache（`PODCAST_ARXIV_CACHE_FRESH_HOURS`、既定 12h 以内）→
+  arXiv をその場で取得（成功したら cache 更新）→ 古い cache（`PODCAST_ARXIV_CACHE_MAX_AGE_DAYS`、
+  既定 14 日以内）→ 従来の curated fallback**。arXiv の 429 や offline でも、cache があれば
+  1 本だけの短い fallback 台本にならない。cache を使った日は episode.json の notes に記録。
+- 生成後、`daily.mjs` が翌日以降 `PODCAST_PREFETCH_DAYS`（既定 3）日分を先取りする（失敗は無害）。
+- arXiv API の作法: 同一プロセス内でリクエスト間隔 **≥3.1 秒**、429/503 は `Retry-After`
+  を尊重して 15s→45s で最大 2 回 backoff（上限 90s）。連続 3 トピック失敗で先取りを打ち切る。
+- 手動／定期実行（オンラインの時に）:
+
+  ```bash
+  node scripts/podcast/prefetch.mjs --days 7          # 今日から 7 日分の予測トピック
+  node scripts/podcast/prefetch.mjs --days 7 --all    # ＋全 topics.json（約 29 件、2 分弱）
+  node scripts/podcast/prefetch.mjs --status          # cache の状態（JSON）
+  ```
+
+  推奨スケジュール例（未設定・提案のみ）: 毎日 05:30 JST に `--days 7`、週 1 回 `--all`。
+  05:30 に先取りしておけば 06:30 の本番は cache（12h 以内）を使い、arXiv を叩かない。
+
+### ローカル AI 台本 — `PODCAST_SCRIPT_LLM=1`
+
+- `scripts/podcast/llm.mjs` が llama.cpp の `llama-server`（CPU・127.0.0.1:3911・
+  オープンウェイト GGUF）を起動し、各論文について **タイトル＋抄録だけを根拠に**、
+  各言語（config.languages）で読み上げ用の解説文を作る。イントロ／トピック概要／
+  論文タイトル・著者／定型コメント／アウトロは従来どおり `script.mjs` のテンプレート。
+  全言語の台本を作り終えたら LLM を停止し、その後 TTS を始める（CPU/RAM を取り合わない）。
+- 検証（不合格なら 1 回だけ再生成、それでも駄目ならその論文は従来の抄録引用）:
+  対象言語であること（文字種＋機能語）、長さ、URL/markdown なし、同じ文の繰り返しなし、
+  **数字はすべて抄録・タイトルにある値**（`2億3100万` ↔ `231 million` も照合）、
+  ラテン文字の固有名・略語（モデル名・データセット名など）は抄録・タイトルにあるもの。
+- **自動 fallback（テンプレート台本）**: llama-server／モデルが無い、起動失敗、
+  リクエスト失敗、言語ごとの時間切れ（`PODCAST_LLM_LANG_TIMEOUT_SEC`、既定 900s）、
+  全体予算切れ（`PODCAST_LLM_BUDGET_SEC`、既定 4500s）、過半の論文が不合格、
+  台本が短すぎる（`PODCAST_LLM_MIN_SECONDS`、既定 330s 相当）— いずれもその言語は
+  従来の `buildScript` 台本になる。episode.json の notes に `scripts: ...` として言語ごとの結果を記録。
+- 長さ: `PODCAST_LLM_TARGET_SECONDS`（既定 450s）を、実測した話速（llm.mjs `LLM_PACE`）で
+  文字数に換算し、`PODCAST_LLM_MAX_PAPERS`（既定 5）本に配分。5 分以上の条件を満たす。
+- 導入場所（repo 外）: `~/opt/llama.cpp/current/llama-server`（公式 CPU ビルド b11889）、
+  `~/opt/llm-models/current.gguf` → `Qwen3.5-9B-Q4_K_M.gguf`（Apache-2.0、unsloth GGUF）。
+  変えるときは `PODCAST_LLM_SERVER` / `PODCAST_LLM_MODEL`、既存サーバを使うなら `PODCAST_LLM_URL`。
+- その他: `PODCAST_LLM_THREADS`（既定 8）、`PODCAST_LLM_CTX`（8192）、`PODCAST_LLM_PORT`（3911）、
+  `PODCAST_LLM_REQUEST_TIMEOUT_SEC`（360）、`PODCAST_LLM_RETRIES`（1）、
+  `PODCAST_LLM_DEBUG_FILE`（生成文と判定を追記する検証用ログ）。
+- doctor.sh は cache と LLM（バイナリ・モデル・空きメモリ）の状態を **info/warn で表示するだけ**（FAIL にしない）。
+- 有料 API・商用機能は使わない。モデルはオープンウェイトのみ。
+
 ## 5. トラブルシュート
 
 | 症状 | 対処 |

@@ -14,6 +14,7 @@
 #   QUIET=1            print failures only (still prints the final line)
 #   VOICESTUDIO_HOST   default 127.0.0.1:3901 (local tts-hub)
 #   IRODORI_HOST       default 127.0.0.1:8088
+#   PODCAST_PREFETCH / PODCAST_SCRIPT_LLM (+ PODCAST_LLM_*)  status lines only
 
 set -euo pipefail
 
@@ -157,6 +158,46 @@ if (exec 3<>"/dev/tcp/${IRODORI_HOST%:*}/${irodori_port}") 2>/dev/null; then
 else
   check_warn "Irodori-TTS-Server on ${IRODORI_HOST}" "not reachable" \
     "JA audio simply records as failed for the day (nothing crashes). Start it: systemctl start irodori-tts"
+fi
+
+# ------------------------------------------- arXiv prefetch cache (advisory) --
+# PODCAST_PREFETCH=1 makes daily.mjs read/refresh a local arXiv cache so a 429
+# or offline morning does not shrink the episode. Status only; never fails.
+if [ "${PODCAST_PREFETCH:-0}" = "1" ]; then
+  cache_status="$(cd "${REPO_ROOT}" && node scripts/podcast/prefetch.mjs --status 2>/dev/null || true)"
+  if [ "${cache_status}" = "" ]; then
+    check_warn "arXiv prefetch cache" "status unavailable" "node scripts/podcast/prefetch.mjs --days 7"
+  else
+    cache_topics="$(printf '%s' "${cache_status}" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);console.log(`${j.topics} topics, ${j.fresh} fresh, newest ${j.newest ?? "none"} (${j.dir})`)})' 2>/dev/null || echo "${cache_status}")"
+    say "  [info] arXiv prefetch cache: ${cache_topics}"
+  fi
+else
+  say "  [info] arXiv prefetch disabled (PODCAST_PREFETCH!=1); live arXiv fetch only"
+fi
+
+# ------------------------------------------------ local LLM scripts (advisory) --
+# PODCAST_SCRIPT_LLM=1: daily.mjs narrates papers with a llama.cpp model and
+# falls back to the template script on any problem, so this never fails.
+if [ "${PODCAST_SCRIPT_LLM:-0}" = "1" ]; then
+  llm_bin="${PODCAST_LLM_SERVER:-${HOME}/opt/llama.cpp/current/llama-server}"
+  llm_model="${PODCAST_LLM_MODEL:-${HOME}/opt/llm-models/current.gguf}"
+  if [ -n "${PODCAST_LLM_URL:-}" ]; then
+    say "  [info] local LLM scripts: external server ${PODCAST_LLM_URL}"
+  elif [ ! -x "${llm_bin}" ]; then
+    check_warn "local LLM scripts" "llama-server not found: ${llm_bin}" "scripts fall back to the template; see README 'Local AI scripts'"
+  elif [ ! -s "${llm_model}" ]; then
+    check_warn "local LLM scripts" "model not found: ${llm_model}" "scripts fall back to the template; see README 'Local AI scripts'"
+  else
+    model_real="$(readlink -f "${llm_model}")"
+    model_mb="$(( $(stat -c %s "${model_real}") / 1048576 ))"
+    avail_mb="$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo 2>/dev/null || echo 0)"
+    say "  [info] local LLM scripts: $(basename "${model_real}") (${model_mb} MiB), RAM available ${avail_mb} MiB"
+    if [ "${avail_mb}" -lt "$(( model_mb + 1024 ))" ]; then
+      check_warn "local LLM memory" "MemAvailable ${avail_mb} MiB < model ${model_mb} MiB + 1 GiB" "generation may swap and hit the per-language timeout (template fallback)"
+    fi
+  fi
+else
+  say "  [info] local LLM scripts disabled (PODCAST_SCRIPT_LLM!=1); template scripts"
 fi
 
 # ---------------------------------------------------------------- summary -----

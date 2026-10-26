@@ -7,6 +7,8 @@ import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { fetchPapers } from "./arxiv.mjs";
+import { generateLlmScript, llmModelName, llmSettings, llmUnavailableReason, LlmServer } from "./llm.mjs";
+import { cacheSettings, getPapers, predictTopics, prefetchEnabled, prefetchTopics } from "./prefetch.mjs";
 import { buildScript, trimExcerpt } from "./script.mjs";
 import {
   isValidISODate,
@@ -438,13 +440,100 @@ function topicLabels(topic, languages) {
   return labels;
 }
 
+// Scripts for all languages. Template (script.mjs buildScript) unless
+// PODCAST_SCRIPT_LLM=1 and the local llama.cpp model is available; any LLM
+// problem for a language falls back to the template for that language.
+async function buildScripts(date, { config, topic, papers, source, env, log, verbose, notes }) {
+  const optionsFor = (lang) => ({
+    date,
+    topic,
+    papers,
+    languageLabels: config.languageLabels,
+    source,
+    maxPapers: config.maxPapers,
+    maxExcerptChars: config.maxExcerptChars?.[lang],
+  });
+  const scripts = {};
+  const settings = llmSettings(env);
+  const unavailable = llmUnavailableReason(settings) ?? (papers.length === 0 ? "no papers" : null);
+  if (unavailable) {
+    if (settings.enabled) notes.push(`scripts: template (local LLM unavailable: ${unavailable})`);
+    for (const lang of config.languages) scripts[lang] = buildScript(lang, optionsFor(lang));
+    return scripts;
+  }
+  const model = llmModelName(settings);
+  const server = new LlmServer(settings, (line) => log.info(line));
+  const summary = [];
+  let started = false;
+  try {
+    const t0 = Date.now();
+    await server.start();
+    started = true;
+    log.info(`llm: ${model} ready in ${Math.round((Date.now() - t0) / 1000)}s`);
+  } catch (error) {
+    log.warn(`llm: server start failed: ${short(error?.message ?? error, 200)}`);
+    notes.push(`scripts: template (local LLM start failed: ${short(error?.message ?? error, 120)})`);
+  }
+  try {
+    const deadline = Date.now() + settings.budgetMs;
+    for (const lang of config.languages) {
+      const template = buildScript(lang, optionsFor(lang));
+      if (!started) {
+        scripts[lang] = template;
+        continue;
+      }
+      const cacheKey = createHash("sha256")
+        .update(JSON.stringify([date, lang, topic.id, papers.map((paper) => paper.arxivId || paper.title), model, settings.targetSeconds, settings.maxPapers]))
+        .digest("hex").slice(0, 24);
+      const cachePath = join(settings.scriptCacheDir, `${date}-${lang}-${cacheKey}.json`);
+      const reused = await readJson(cachePath, null);
+      if (reused && typeof reused.text === "string" && reused.text.length > 0) {
+        scripts[lang] = { ...reused, llm: true };
+        summary.push(`${lang}=llm(reused)`);
+        log.info(`llm: ${lang} reused the script generated earlier for this date/topic/papers`);
+        continue;
+      }
+      const result = await generateLlmScript(lang, server, optionsFor(lang), settings, deadline, (line) => verbose && log.detail(line));
+      const secs = Math.round(result.stats.ms / 1000);
+      if (result.ok) {
+        scripts[lang] = { ...result.script, llm: true };
+        await writeJsonAtomic(cachePath, result.script).catch(() => {});
+        summary.push(`${lang}=llm(${secs}s${result.stats.failedPapers ? `, ${result.stats.failedPapers} quoted` : ""})`);
+      } else {
+        scripts[lang] = template;
+        summary.push(`${lang}=template(${result.reason})`);
+      }
+      log.info(`llm: ${lang} ${result.ok ? "ok" : `fallback to template: ${result.reason}`} (${secs}s, ${result.stats.tokens} tokens)`);
+    }
+  } finally {
+    await server.stop();
+  }
+  if (started) notes.push(`scripts: local LLM ${model} (grounded in the abstracts, validated; failures fall back to the template): ${summary.join(", ")}`);
+  return scripts;
+}
+
 async function generateEpisode(date, context) {
   const { config, topics, fallback, history, args, env, episodeRoot, log, verbose, tts = parseTtsEnv(env) } = context;
   const topic = pickTopic(date, topics, history);
   const notes = [];
   let papers = [];
   let source = "curated";
-  if (!args.offline) {
+  let cacheNote = null;
+  if (prefetchEnabled(env)) {
+    // PODCAST_PREFETCH=1: fresh prefetch cache -> live arXiv (polite, 429
+    // backoff) -> stale cache -> curated fallback. --offline reads cache only.
+    const got = await getPapers(topic, {
+      max: Math.max(config.maxPapers + 2, 10),
+      settings: cacheSettings(env),
+      offline: args.offline,
+      onEvent: (event) => verbose && log.detail(`  arXiv ${event.type}${event.status ? ` ${event.status}` : ""}`),
+    });
+    if (got.papers.length > 0) {
+      source = "arxiv";
+      papers = got.papers.slice(0, config.maxPapers);
+      if (got.origin !== "arxiv") cacheNote = `papers taken from the local arXiv prefetch cache (${got.origin}, fetched ${got.fetchedAt})`;
+    }
+  } else if (!args.offline) {
     // Pool wider than maxPapers on purpose: buildScript may need to grow the
     // episode (up to maxPapers) instead of only shrinking it.
     const fetched = await fetchPapers(topic.keyword, { max: Math.max(config.maxPapers + 2, 10) });
@@ -463,6 +552,7 @@ async function generateEpisode(date, context) {
     notes.push("curated excerpt is our edited Japanese summary of the paper, not the original abstract");
   } else {
     notes.push(`papers fetched from the arXiv export API for keyword "${topic.keyword}"`);
+    if (cacheNote) notes.push(cacheNote);
   }
   log.info(`topic=${topic.id} source=${source} papers=${papers.length}`);
 
@@ -471,21 +561,16 @@ async function generateEpisode(date, context) {
   const voices = await readJson(join(moduleDir, "voices.json"), null);
   const languages = {};
   const trimmedLanguages = [];
+  // Pass 1: every script first (optional local LLM narration, template
+  // fallback), so the LLM server is stopped before TTS needs the CPU/RAM.
+  const scripts = await buildScripts(date, { config, topic, papers, source, env, log, verbose, notes });
   for (const lang of config.languages) {
     const label = typeof config.languageLabels?.[lang] === "string" ? config.languageLabels[lang] : lang;
     const engine = engineForLang(tts, lang);
     const voice = engineVoiceFor(voices, engine, lang);
-    const script = buildScript(lang, {
-      date,
-      topic,
-      papers,
-      languageLabels: config.languageLabels,
-      source,
-      maxPapers: config.maxPapers,
-      maxExcerptChars: config.maxExcerptChars?.[lang],
-    });
-    if (script.papersUsed < papers.length) trimmedLanguages.push(lang);
-    verbose && log.detail(`  ${lang}: ~${script.estimatedSeconds}s, papers=${script.papersUsed}, excerptLimit=${script.excerptLimit}`);
+    const script = scripts[lang];
+    if (script.papersUsed < papers.length && !script.llm) trimmedLanguages.push(lang);
+    verbose && log.detail(`  ${lang}: ~${script.estimatedSeconds}s, papers=${script.papersUsed}, excerptLimit=${script.excerptLimit}${script.llm ? " (llm)" : ""}`);
     const scriptName = `script-${lang}.txt`;
     await writeFile(join(episodeDir, scriptName), script.text.endsWith("\n") ? script.text : `${script.text}\n`, "utf8");
     if (args.noTts) {
@@ -658,6 +743,24 @@ export async function main(argv = process.argv.slice(2), env = process.env) {
         history.push(...kept);
         await saveHistory(historyPath, history);
         await appendLog(logPath, logLine(date, outcome, config));
+      }
+
+      // PODCAST_PREFETCH=1: warm the arXiv cache for the coming days' topics
+      // (never fatal; arxiv.mjs keeps >= 3 s between requests).
+      if (prefetchEnabled(env) && !args.offline) {
+        try {
+          const settings = cacheSettings(env);
+          const next = new Date(Date.parse(`${todayISO}T00:00:00Z`) + 86400000).toISOString().slice(0, 10);
+          const plan = predictTopics(next, settings.days, topics, history);
+          const summary = await prefetchTopics(plan.map((entry) => entry.topic), {
+            max: Math.max(config.maxPapers + 2, 10),
+            settings,
+            log: (line) => log.detail(line),
+          });
+          log.info(`prefetch: ${plan.map((entry) => `${entry.date}=${entry.topic.id}`).join(" ")} fetched=${summary.fetched.length} fresh=${summary.fresh.length} failed=${summary.failed.length}`);
+        } catch (error) {
+          log.warn(`prefetch failed: ${short(error?.message ?? error, 200)}`);
+        }
       }
 
       let siteBuiltAt = (await readJson(statusPath, null))?.siteBuiltAt ?? null;
