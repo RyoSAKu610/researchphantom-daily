@@ -1,0 +1,21 @@
+{
+  "provider": "irodori-tts-server",
+  "model": "irodori-tts",
+  "model_commit": null,
+  "language": "ja",
+  "voice": "kanade",
+  "endpoint": "http://127.0.0.1:3901/v1/audio/speech",
+  "style_chars": 6,
+  "text_chars": 3729,
+  "durationSeconds": 548.064,
+  "bytes": 3288620,
+  "sha256": "520a48841e813604baeac86e5ba3c2ec36bd73241c5be862b0bc1a4d1b390df7",
+  "peak": 0.78128,
+  "rms_dbfs": -18.0,
+  "clipped_fraction": 0.0,
+  "silent_fraction": 0.054,
+  "leading_silence_seconds": 0.0,
+  "trailing_silence_seconds": 0.25,
+  "longest_silence_seconds": 0.75,
+  "seconds_per_char": 0.147
+}

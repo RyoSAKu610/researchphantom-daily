@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "date": "2026-10-28",
+  "topic": {
+    "id": "reinforcement-learning",
+    "labels": {
+      "ja": "強化学習",
+      "zh": "强化学习",
+      "de": "Bestärkungslernen",
+      "es": "Aprendizaje por refuerzo",
+      "ru": "Обучение с подкреплением",
+      "it": "Apprendimento per rinforzo"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-28T07:11:35+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.35813",
+      "title": "World Model for Energy Efficiency Maximization in Dynamic Metasurface Antennas",
+      "authors": [
+        "Abdolrasoul Sakhaei Gharagezlou",
+        "Mehdi Monemi",
+        "Matti Latva-aho",
+        "Mehdi Rasti"
+      ],
+      "primaryCategory": "cs.IT",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35813",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35813",
+      "excerpt": "Dynamic metasurface antennas (DMAs) have emerged as a promising technology for realizing large-scale antenna arrays in next-generation wireless networks owing to their ability to enable dense and energy-efficient antenna architectures. However, jointly optimizing digital beamforming and DMA element weights under time-varying channel conditions remains challenging due to their coupled effects on the received signal and interference powers. We formulate this problem to maximize time-averaged energy efficiency (EE) under time-varying channel conditions, subject to transmit power constraints, Lorentzian phase limitations, and minimum rate requirements. To enable long-term planning and improve sample efficiency compared with model-free reinforcement learning, we develop a world model framework that learns latent system dynamics from interactions with the environment and jointly optimizes digital beamforming and DMA element weights through imagined trajectories."
+    },
+    {
+      "arxivId": "2610.35801",
+      "title": "FOCUS: Active Critic Learning for Long-Horizon Language Model Agents",
+      "authors": [
+        "Zhengping Jiang",
+        "William Jurayj",
+        "Liaoyaqi Wang",
+        "Chunsheng Zuo",
+        "Anqi Liu",
+        "Benjamin Van Durme"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35801",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35801",
+      "excerpt": "Sparse outcome rewards make it difficult for long-horizon language-model agents to assign credit to earlier actions. Learned critics provide value estimates for intermediate states, but these estimates can be inaccurate, while estimating intermediate values with repetitive continuation samples from points within a trajectory incurs substantial costs. To mitigate these issues, we introduce FOCUS, an RL method that uses selective branching to help the critic network learn its value estimator. The rollout controller facilitates active learning for the critic by sampling continuations from states that are expected to most reduce the critic's estimation error. These refined value estimates then score the segment between consecutive states with a TD( ) advantage, while the sampled evidence supplies training targets for the critic. FOCUS supports long-horizon agentic reinforcement learning through a modular context-management interface that decouples context management from rollout allocation."
+    },
+    {
+      "arxivId": "2610.35743",
+      "title": "SEMA-Auto: Sighted and Efficient Multi-Turn Attack with Autonomy",
+      "authors": [
+        "Mingqian Feng",
+        "Xiaodong Liu",
+        "Weiwei Yang",
+        "Chenliang Xu",
+        "Jialin Song",
+        "Qiyao Ma",
+        "Chengquan Guo",
+        "Carolyn Buractaon"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35743",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35743",
+      "excerpt": "Existing jailbreak attackers fall into two classes: static planners fix their single- or multi-turn adversarial plans in advance, remaining simple but losing sight of the victim's replies, wasting turns and limiting transferability; interactive generators read each victim reply to generate the next-turn attack but require in-loop evaluators for success signals or hints, incurring substantial costs and inflated performance. Bridging this gap, we propose SEMA-Auto, a sighted and efficient multi-turn attacker with autonomy, interacting with the victim model and terminating the session by itself upon success. To stabilize its behaviors and boost its capabilities, SEMA-Auto is trained in two stages. Synthetic bootstrap tuning installs the notion of attack targets and conforming decisions by fine-tuning the base model with bootstrapped trajectories. Decision-supervised reinforcement learning then optimizes two objectives jointly yet separately, reinforcing the attack with higher jailbreak reward while supervising the decision at each turn against an absolute target."
+    },
+    {
+      "arxivId": "2610.35736",
+      "title": "Preference-Guided Cooperation in Multi-Objective Multi-Agent Reinforcement Learning",
+      "authors": [
+        "Qiyue Xia",
+        "J. Michael Herrmann"
+      ],
+      "primaryCategory": "cs.MA",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35736",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35736",
+      "excerpt": "Multi-objective multi-agent reinforcement learning (MOMARL) addresses agent coordination and objective trade-offs simultaneously while optimising overall system performance. Existing work tends to treat multi-agent cooperation and multi-objective optimisation as largely independent components of a learning problem, which amounts to an exorbitant complexity except in trivial cases. We study here whether the structure provided by multiple objectives can itself be exploited to facilitate cooperation, rather than being treated as an additional optimisation challenge. We formulate MOMARL at both the team and individual levels and introduce objective-wise counterfactual credit assignment to evaluate each agent's contribution across the team objectives. We propose Meta-Gradient Informed Multi-Objective Multi-Agent Reinforcement Learning (MIRL), with static (MIRL-S) and dynamic (MIRL-D) variants."
+    },
+    {
+      "arxivId": "2610.35733",
+      "title": "Multi-Objective Reinforcement Learning Using Routed Ensembles and Trajectory Attribution",
+      "authors": [
+        "Zhenshuo Zhang",
+        "Ruoxuan Xiong",
+        "Hongyang R. Zhang"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35733",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35733",
+      "excerpt": "Multi-objective reinforcement learning is a fundamental problem for modern AI, with applications spanning post-training, reasoning models, and robotic control. A central challenge is to learn policies that balance competing objectives, such as helpfulness versus honesty in safety and alignment, or speed versus energy in robotics. The optimal policy can vary sharply with objective-weighting combinations, and the extent of this variation depends crucially on the degree of conflict among objectives, making per-preference policy learning sample-inefficient. In this paper, we introduce objective-conflict coefficients and derive near-optimal regret bounds for online settings using this measure, thereby quantifying the impact of misalignment on learning efficiency. Then, we design routed ensemble policy learning, an algorithm that maintains a small set of basis policies and dynamically routes trajectories to the policy with the highest potential reward."
+    },
+    {
+      "arxivId": "2610.35731",
+      "title": "State-augmented deep reinforcement learning for active flow control around an elliptical cylinder",
+      "authors": [
+        "Wang Jia",
+        "Hang Xu"
+      ],
+      "primaryCategory": "physics.flu-dyn",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35731",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35731",
+      "excerpt": "We employ reinforcement learning algorithms to develop control strategies for manipulating synthetic jets on an elliptical cylinder, targeting robust flow control across varying aspect ratios (Ar). Our results show that for high aspect ratios (Ar = 1 and 0.75), the learned strategies effectively mitigate vortex shedding, achieving drag reductions of 13.4% and 20.1%, respectively. As the Ar decreases, more complex wake dynamics challenge flow control. For Ar = 0.5 and 0.25, drag reductions of 26.88% and 30.37% are achieved, though vortex suppression becomes increasingly difficult. For extremely slender cylinders (Ar = 0.1), we enhance control performance by enriching dynamic feature representation and using Kalman filtering for state estimation. Unlike conventional methods, our approach successfully achieves complete vortex shedding suppression, a maximum drag reduction of 32.2%, and eliminates periodic oscillations, stabilizing the flow. These results demonstrate the efficacy of state-enhanced RL in controlling highly slender geometries."
+    },
+    {
+      "arxivId": "2610.35716",
+      "title": "Audit Where Hacks Pay: Budgeted Strong-Verifier Audits Against Reward Hacking in GRPO",
+      "authors": [
+        "Shurun Li",
+        "Michael Hua Wang",
+        "Haibo Zeng",
+        "Long Wang"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35716",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35716",
+      "excerpt": "Reinforcement learning with verifiable rewards trains on cheap checks, such as unit tests, that a policy can learn to game, while a stronger check is too expensive to run on every rollout. We study how to spend a limited strong-verifier budget in GRPO, separating which weakly passing rollouts to audit from what reward a caught hack receives. At a fixed policy state with centered advantages, the expected update depends on a design only through each rollout's marginal audit probability and correction; reflecting a caught hack's reward about the failure reward negates the advantages of an all-hack group; and auditing whole groups with the fewest weak passes first (low-pass budgeted audits, LB) minimizes the advantage mass left on hacks among pass-count designs with a fixed correction when a label's value falls with the pass count. We tested this analysis in actual LLM training: from each run's starting state, the sign of this mass on a frozen panel predicted whether hacking would be suppressed in 33 of 39 runs, including 13 of 16 preregistered ones."
+    },
+    {
+      "arxivId": "2610.35697",
+      "title": "MiRL: Error-Targeted Reinforcement Learning for Correcting Terminal Agent Misbehaviors",
+      "authors": [
+        "Runchu Tian",
+        "Zaid Khan",
+        "Zun Wang",
+        "Justin Chih-Yao Chen",
+        "Mohit Bansal"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35697",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35697",
+      "excerpt": "Error-targeted learning gives a legible way to improve a model: identify specific weaknesses of the model, train the model to fix these weaknesses, and check whether the weaknesses are fixed. We study how to apply error-targeted learning to terminal agents, which solve long-horizon tasks specified in natural language by interacting with a command shell. Existing error-targeted methods are designed for single-turn tasks, and existing analyses of agent failures are used to evaluate and debug agents rather than to train them. We propose Misbehavior-driven RL (MiRL), which first profiles the errors of a policy to find generalizable misbehaviors: kinds of wrong steps that recur across many environments. MiRL then trains the policy with RL, starting rollouts at the steps where these misbehaviors occur and rewarding a rollout only if it passes the tests and avoids the misbehavior. On Qwen3.5-4B, eight misbehaviors account for 52.1% of wrong steps. After training with MiRL, the policy repeats the measured misbehaviors 43% to 57% less often on average on unseen prefixes."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 548.064,
+      "bytes": 3288620,
+      "sha256": "520a48841e813604baeac86e5ba3c2ec36bd73241c5be862b0bc1a4d1b390df7",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 483.216,
+      "bytes": 2899532,
+      "sha256": "2dce163e57040d4299f790bb277f13d25c763aef8b31d03bfe1a1e8cb17eb96a",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 484.368,
+      "bytes": 2906444,
+      "sha256": "dbada77a5d29bed936a188775cdcc3e6b145b7d5af98602d8e2018da585a21cb",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 666.552,
+      "bytes": 3999548,
+      "sha256": "361f27f4a6b9f938a5821e57d541f803eb932fd57fefa350cffacca4f589d3ed",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 530.04,
+      "bytes": 3180476,
+      "sha256": "949f04905f2b38414f12ac23ec00b196ea28f2992e91dc77bd340ce919a7f7ce",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 644.088,
+      "bytes": 3864764,
+      "sha256": "cf0ba1212366f834dccd6fa6d13e771145b88aa16242a844ae7eaae213dc1d5f",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"reinforcement learning\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(181s), zh=llm(147s), de=llm(142s), es=llm(194s), ru=llm(141s), it=llm(176s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
