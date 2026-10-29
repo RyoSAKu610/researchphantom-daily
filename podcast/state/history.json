@@ -42,5 +42,13 @@
   {
     "date": "2026-10-28",
     "topicId": "reinforcement-learning"
+  },
+  {
+    "date": "2026-10-29",
+    "topicId": "time-series-forecasting"
+  },
+  {
+    "date": "2026-10-30",
+    "topicId": "code-generation"
   }
 ]

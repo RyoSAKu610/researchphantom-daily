@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "date": "2026-10-29",
+  "topic": {
+    "id": "time-series-forecasting",
+    "labels": {
+      "ja": "時系列予測",
+      "zh": "时间序列预测",
+      "de": "Zeitreihenprognosen",
+      "es": "Predicción de series temporales",
+      "ru": "Прогнозирование временных рядов",
+      "it": "Previsione di serie temporali"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-30T07:10:45+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.36703",
+      "title": "RankFormer: Rethinking Time Series Transformers through Representation Capacity Analysis and Progressive Decoding",
+      "authors": [
+        "Peiwang Tang",
+        "Cheng HE",
+        "Xijie Liang",
+        "Defu Lian"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.36703",
+      "pdfUrl": "https://arxiv.org/pdf/2610.36703",
+      "excerpt": "Multivariate time series forecasting plays a critical role in Web and cyber-physical systems, where large-scale services and IoT infrastructures generate complex temporal data. Transformer-based models have achieved strong empirical performance in this domain, yet the principles governing the expressive capacity of their learned representations remain insufficiently understood. Moreover, many existing models rely on simplified decoding strategies, including channel-independent modeling and direct projection heads, which limit their ability to capture complex multivariate dynamics. To address these challenges, we propose RankFormer, a novel encoder-decoder architecture for multivariate time series forecasting. We establish a rank-based analysis framework to investigate how tokenization, embedding, and attention designs affect the representation capacity of time series Transformers."
+    },
+    {
+      "arxivId": "2610.35128",
+      "title": "STeP-TS: Shared Temporal Filters with Pruning for Time Series",
+      "authors": [
+        "Hanne Raum",
+        "Jasper Hoffmann",
+        "Joschka Boedecker"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35128",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35128",
+      "excerpt": "Multivariate time series forecasting requires capturing temporal dependencies across multiple scales while accounting for both shared and variable-specific dynamics. Compact forecasting models have emerged as an attractive alternative to increasingly large architectures, but preserving strong predictive performance within tight computational and memory budgets remains challenging. We propose a compact one-layer convolutional framework that learns a shared bank of multi-scale temporal filters of each variable. Lightweight variable-specific scalar weights determine the contribution of each temporal component, enabling the model to capture shared temporal structure while adapting to variable-specific dynamics. The learned weights and filter-output energy further provide a natural signal for structured pruning of convolutional filters, reducing computational complexity with minimal degradation in forecasting performance. We additionally introduce an amplitude-adaptive normalization mechanism that preserves variable-dependent temporal amplitudes."
+    },
+    {
+      "arxivId": "2610.34797",
+      "title": "TimeWorld: Towards Action-Conditioned Multimodal World Models for Time Series Forecasting",
+      "authors": [
+        "Hang Ni",
+        "Weijia Zhang",
+        "Hao Liu"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.34797",
+      "pdfUrl": "https://arxiv.org/pdf/2610.34797",
+      "excerpt": "Time series forecasting supports decision-making in web applications such as online retail and network management, where planned actions can reshape future dynamics. World models provide a natural paradigm for predicting such action-dependent changes beyond extrapolating historical patterns. However, existing time series world models (TSWMs) typically rely on fixed, domain-specific covariate schemas that limit flexible intervention specification, while multimodal forecasters treat text primarily as passive predictive context. To investigate these gaps, we introduce TSWM-Bench, a cross-domain benchmark for multimodal TSWMs spanning seven real-world datasets, with textual interventions grounded in recorded action--outcome data. Our evaluation reveals that conventional multimodal forecasters underperform history-only time series foundation models (TSFMs) despite dataset-specific training, whereas simple text-prefix adaptations improve forecasting across all evaluated TSFM backbones."
+    },
+    {
+      "arxivId": "2610.34409",
+      "title": "Dynamic Multi-Step Decoding for Time-Series Foundation Models",
+      "authors": [
+        "Birmjune Kim",
+        "Hyungju Lee",
+        "Hyun Oh Song"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-25",
+      "url": "https://arxiv.org/abs/2610.34409",
+      "pdfUrl": "https://arxiv.org/pdf/2610.34409",
+      "excerpt": "Time-series forecasting models typically use a fixed decoding strategy at inference time: either one-shot prediction of the full horizon or autoregressive rollout over atomic chunks. While one-shot decoding reduces error accumulation, it can discard useful sequential structure; conversely, autoregressive decoding preserves temporal dependencies but may compound errors. We argue that the optimal decoding strategy is not fixed across inputs, but should be selected adaptively for each forecasting instance. We propose a dynamic strategy selector that treats the forecast rollout schedule as an inference-time decision problem for frozen pretrained time-series foundation models. The selector is a learned network that ranks candidate rollout schedules using hidden states of the backbone, and is trained on historical windows of the evaluated tasks for each backbone. To make the candidate set tractable over the exponentially large space of horizon partitions, we use dynamic programming that reduces candidate evaluation to quadratic complexity while preserving much of the oracle gain."
+    },
+    {
+      "arxivId": "2610.33822",
+      "title": "Learning What to Share: Expert Specialization for Time-Series Forecasting",
+      "authors": [
+        "Bashar Khoury",
+        "Shadi Omari",
+        "Assaf Schuster"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-24",
+      "url": "https://arxiv.org/abs/2610.33822",
+      "pdfUrl": "https://arxiv.org/pdf/2610.33822",
+      "excerpt": "A central challenge in multivariate forecasting is deciding what to share across channels and where to specialize. Mixture-of-experts models offer flexible sharing, yet it remains unclear how much of their forecasting gains comes from added capacity or expert allocation. Through controlled comparisons across eleven datasets and three backbones, we show that informative channel assignments improve forecasting beyond matched shared capacity and random allocation. On frozen transformer backbones, persistent channel-specific mixtures outperform input-dependent routing on average. To examine when and how much specialization helps, we introduce GalaxyTS, a controlled synthetic dataset with exact shared and channel-specific forecasting references. It reveals how persistent channel mixtures exploit predictive differences concealed by short input windows and measures gains over matched shared corrections."
+    },
+    {
+      "arxivId": "2610.33330",
+      "title": "TempShap: When and How Much a Feature Matters in Time-Series Forecasting",
+      "authors": [
+        "Chi Zhao",
+        "Anastasiia Chelnokova",
+        "Jing Liu",
+        "Elena Parilina"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-23",
+      "url": "https://arxiv.org/abs/2610.33330",
+      "pdfUrl": "https://arxiv.org/pdf/2610.33330",
+      "excerpt": "Attribution for a time-series forecaster should answer two questions that a feature-level scalar cannot: when in the input window a feature acts, and how much its influence changes across the forecast horizon. Most existing Shapley explainers treat each feature as one player and therefore collapse both axes. We propose TempShap, a retrospective, loss-based Shapley framework whose players are the individual input cells . Its attribution tensor yields temporal-localization and horizon-impact profiles. We validate these against planted temporal structures, a tractable exact cell game, and a closed-form attribution oracle for a real linear forecaster. Permutation sharing estimates the cell-level game at localized perturbation cost. Under redundant inputs, one-at-a-time scores under-credit substitutable information, whereas the signed Shapley decomposition preserves total value and yields more reliable held-out deletion rankings under mean masking. A planted counterexample isolates the redundancy mechanism."
+    },
+    {
+      "arxivId": "2610.33209",
+      "title": "Model-agnostic predictability quantification of multivariable time series",
+      "authors": [
+        "Yuxuan Shu",
+        "Vasileios Lampos"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-23",
+      "url": "https://arxiv.org/abs/2610.33209",
+      "pdfUrl": "https://arxiv.org/pdf/2610.33209",
+      "excerpt": "Multivariable time series forecasting plays an important role in various domains, where predictions depend on complex interactions among covariates. Forecasting models are commonly evaluated across numerous benchmark datasets. However, forecasting accuracy reflects both model capability and task predictability, making it difficult to characterise the difficulty of a task independently of the model used. Existing predictability measures often fail to capture nonlinear dependencies or are limited to univariate series. In this work, we propose Multivariable Predictability Score (MAPS), a model-agnostic metric for measuring the intrinsic predictability of multivariable time series forecasting tasks. MAPS uses covariate information to assess predictability across different lookback windows and forecasting horizons, and provides a quantitative assessment of the predictive information available for forecasting. We evaluate MAPS across synthetic and real-world forecasting datasets against 6 baseline predictability measures."
+    },
+    {
+      "arxivId": "2610.32071",
+      "title": "DBCM: Dual-Branch Calibration Module for Test-Time Adaptation in Time Series Forecasting",
+      "authors": [
+        "Jaebyeong Jeon",
+        "Kunwoo Kang",
+        "Sang Yup Lee",
+        "Kibok Lee"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-23",
+      "url": "https://arxiv.org/abs/2610.32071",
+      "pdfUrl": "https://arxiv.org/pdf/2610.32071",
+      "excerpt": "Non-stationarity induces test-time distribution shifts in time series forecasting (TSF), resulting in forecast residuals between predictions and the corresponding ground truth. Recent works on test-time adaptation for TSF address this by introducing lightweight calibration modules around frozen forecasters, updated using observations that become incrementally available at test time. Existing approaches typically employ channel-wise adapters, implicitly assuming that forecast residuals are inherently channel-specific. However, we observe that forecast residuals often exhibit substantial shared structure across channels, suggesting that fully independent channel-wise parameterization may be redundant. Motivated by this observation, we propose the Dual-Branch Calibration Module (DBCM), which shares adaptation capacity across channels through a shared adapter while retaining limited channel-specific flexibility through a low-rank channel-wise adapter, further enhanced by channel mixing and nonlinear gated modulation."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 622.512,
+      "bytes": 3735308,
+      "sha256": "5d0511859dc47dc1f79a04c7e188a6f05f8bf3cc18b1570694ea390009aa9473",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 492.216,
+      "bytes": 2953532,
+      "sha256": "a3500cda9d8c76326751cbf5ecabe8a5afb834a056a2177ce3c629b81cd250d7",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 537.48,
+      "bytes": 3225116,
+      "sha256": "ed82f73e84c744b75912acdf42a8a38c3aa136724e80fbe5524f50edaeaa0e4b",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 654.696,
+      "bytes": 3928412,
+      "sha256": "e2507e69c8b984dcb8fe939c5fdcf47e38c870befc164ed6b328cac80270fd75",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 545.064,
+      "bytes": 3270620,
+      "sha256": "a4e78102470667410a5b2b85747bd551288ab21756ecbc24b6b6d186e72e5d64",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 634.536,
+      "bytes": 3807452,
+      "sha256": "36d4814972e60b55be37a8b376659310090fc1720f7301cbdbf0668b89552fbb",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"time series forecasting\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(212s), zh=llm(162s), de=llm(159s), es=llm(178s), ru=llm(166s), it=llm(184s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}

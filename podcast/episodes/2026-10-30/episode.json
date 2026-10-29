@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "date": "2026-10-30",
+  "topic": {
+    "id": "code-generation",
+    "labels": {
+      "ja": "コード生成",
+      "zh": "代码生成",
+      "de": "Codegenerierung",
+      "es": "Generación de código",
+      "ru": "Генерация кода",
+      "it": "Generazione di codice"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-30T08:16:55+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.37041",
+      "title": "Guided-RLVR: Guided Exploration in Reinforcement Learning with Verifiable Rewards",
+      "authors": [
+        "Bo Yang",
+        "Zishuai Zhang",
+        "Weihua Li",
+        "Qinnan Zhang",
+        "Sijia Wen",
+        "Hainan Zhang"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.37041",
+      "pdfUrl": "https://arxiv.org/pdf/2610.37041",
+      "excerpt": "Reinforcement learning with verifiable rewards (RLVR) has shown strong empirical gains in improving the reasoning ability of large language models (LLMs) on tasks such as mathematics and programming. However, recent studies have shown that RLVR rollouts often collapse onto a narrow set of reasoning trajectories, limiting the explored reasoning space. Motivated by findings that thinking tokens at critical steps serve as critical structural elements in LLM reasoning pathways, we propose Guided-RLVR, a novel approach that augments RLVR with a lightweight controller. The controller strategically injects semantically meaningful steering tokens into the sampling distribution, encouraging the model to approach problems from multiple reasoning perspectives and thereby expanding the exploration space. Experiments on mathematical reasoning and code generation benchmarks show that Guided-RLVR consistently outperforms existing RLVR methods while producing more diverse reasoning trajectories."
+    },
+    {
+      "arxivId": "2610.36952",
+      "title": "Does More Thinking Pay Off? Reasoning Cost and Correctness of LLMs in Code Generation and Bug Fixing",
+      "authors": [
+        "Andie Huang",
+        "Ying Pang",
+        "Qian Zhang",
+        "Yihang Cheng",
+        "Lin Ma"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.36952",
+      "pdfUrl": "https://arxiv.org/pdf/2610.36952",
+      "excerpt": "Many LLMs now emit an explicit reasoning trace before they write code, but benchmark results for code generation and bug fixing usually report correctness alone. It is therefore unclear how much the extra reasoning contributes relative to the tokens it consumes. We examine this question with 866 Python tasks drawn from HumanEval Pro, MBPP Pro, and BugsInPy under five model settings. We look at the accuracy gain and token overhead of reasoning, the behaviors that appear inside reasoning traces, and whether a shortened trace still leads to a correct solution. Turning reasoning on in Qwen3-32B over five runs improves mean pass@1 on HumanEval Pro from 71.1% to 76.5% and mean tests pass on BugsInPy from 3.5% to 7.9%. On MBPP Pro the improvement from 68.1% to 69.5% is not statistically significant, even though the model uses a median of over 2,000 thinking tokens per task. Across models, a longer median trace does not reliably mean higher accuracy."
+    },
+    {
+      "arxivId": "2610.36907",
+      "title": "A lightweight C Code Generator for Heterogeneous TinyML Systems",
+      "authors": [
+        "Chen Liu",
+        "Bernhard Vogginger",
+        "Christian Mayr"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.36907",
+      "pdfUrl": "https://arxiv.org/pdf/2610.36907",
+      "excerpt": "Over the past decade, the significant advancements in artificial intelligence have been closely tied to increasingly sophisticated training frameworks and steadily powerful computing hardware. However, the entire ecosystem remains fragmented. On one hand, models are represented with frameworks dependent formats, while on the other hand, new tailored hardware for accelerating novel operators has continued to emerge. To effectively diminish the transfer costs from training to inference, we propose a lightweight C code generator designed for bare-metal heterogeneous systems that incorporate domain-specific accelerators. Through a comprehensive case study on a RISC-V based radar DSP, we demonstrate that by employing an accelerator with ahead-of-time optimizations like weight tuning and bias fusion, our approach achieves a 2.3 times improvement in inference speed and a 20% reduction in binary size compared to the microTVM flow registered with the same accelerator, thus offering another compelling choice for resource-constrained edge devices. The code is open-sourced in Gitlab."
+    },
+    {
+      "arxivId": "2610.36901",
+      "title": "HiLo-RD: Cross-Budget Self-Distillation for Masked Diffusion Language Models",
+      "authors": [
+        "Xiang Li",
+        "Chengting Yu",
+        "Jungang Li",
+        "Yilun Zheng",
+        "Junzhuo Li",
+        "Xingyao Zhang",
+        "Wenbo Su",
+        "Xuming Hu"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.36901",
+      "pdfUrl": "https://arxiv.org/pdf/2610.36901",
+      "excerpt": "We propose HiLo-RD (High-to-Low Budget Representation Distillation) to improve masked diffusion language models (MDLMs) under a limited generation budget. Unlike autoregressive models, MDLMs choose both what to generate and where to commit it. This creates two coupled challenges: predicting useful content before reasoning is complete, and deciding when to fix answer tokens that shape later predictions. We identify budget-induced premature commitment: even when a correct solution fits, the model can fix answer fragments near the window boundary before resolving intermediate steps. These fragments become context for later predictions and redirect subsequent reasoning. Existing post-training methods do not directly transfer the stronger trajectories that the same model follows with a larger window. HiLo-RD addresses this gap by (1) pairing large-window teacher states with cropped small-window views and (2) matching their hidden representations at committed positions. This supervision guides both token prediction and commitment order without an external teacher."
+    },
+    {
+      "arxivId": "2610.36734",
+      "title": "CAMR: Compatibility-Aware Memory Replay for Continual Learning in Large Language Models",
+      "authors": [
+        "Jingpu Yang",
+        "Tianhao Li",
+        "Fengxian Ji",
+        "Yufeng Wang",
+        "Shuxin Zheng",
+        "Xiaoqing Zhang"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.36734",
+      "pdfUrl": "https://arxiv.org/pdf/2610.36734",
+      "excerpt": "Continual learning requires large language models to acquire new knowledge and capabilities while retaining what they have learned. Fine-tuning and replay support acquisition and retention, but deciding whether incoming examples need supervision and which historical examples to revisit remains a challenge. We propose Compatibility-Aware Memory Replay (CAMR), an adaptive framework that jointly controls current-example supervision and historical replay. CAMR combines compatibility checks with a learned memory gate to guide an online policy over three actions: learning incoming examples with general replay, jointly reinforcing compatible related examples, and skipping direct supervision of verified mastered duplicates. The policy learns from acquisition, retention, and training-cost feedback under a bounded per-arrival replay budget. We evaluate CAMR with Qwen3-8B-Base on continual factual updating and cross-task and cross-domain learning."
+    },
+    {
+      "arxivId": "2610.36652",
+      "title": "Remembering Is Not Enough: Refining Memories and Learning When to Use Them in Multi-Agent Systems",
+      "authors": [
+        "Yipeng Hao",
+        "Yuxuan Cai",
+        "Wenkai Ji",
+        "Jie Zhou",
+        "Liyang Yu",
+        "Qin Chen",
+        "Zhiguo Yan",
+        "Shulei Zheng"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.36652",
+      "pdfUrl": "https://arxiv.org/pdf/2610.36652",
+      "excerpt": "Memory helps LLM-based multi-agent systems reuse experience, but stored advice can be flawed or applied in the wrong situation. Team-level success or failure alone cannot reliably show whether a memory needs correction or should not have been used. We propose DiscernMem, a training-free framework that improves both memory quality and memory use. To improve quality, Defect-Aware Memory Refinement (DMR) compares team executions with a single memory and with no memory, diagnoses rule defects, and tests repairs on current and earlier tasks to guard against losing previously useful behavior. To guide appropriate use, Boundary-Learning Meta-Memory (BLM) records each memory's past uses and effects, learning when its owner role should apply or avoid it based on task context and incoming messages. Together, these components help teams correct flawed experience while retaining useful rules that were applied incorrectly."
+    },
+    {
+      "arxivId": "2610.36584",
+      "title": "Benchmarking LLM Agents for Behaviorally Adequate Test Generation from Software Requirements",
+      "authors": [
+        "Binhang Qi",
+        "Yiming Liu",
+        "Yun Lin",
+        "Yangjie Zhou",
+        "Hailong Sun",
+        "Jin Song Dong"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.36584",
+      "pdfUrl": "https://arxiv.org/pdf/2610.36584",
+      "excerpt": "As large language model agents increasingly compile natural-language requirements into repository-level code, requirement-to-test generation grows in importance to provide validation constraints (or harness) to guide code generation. Yet it remains unclear whether current agents can generate tests that validate the required behavior when the implementation of that behavior is withheld. Existing test-generation benchmarks mostly focus on white-box testing, whereas the requirement--test-related study usually requires evaluation on semantic alignment between the given documents and the generated tests. We introduce Req2Test-Bench, a benchmark containing 5,086 execution-validated instances recovered from developer-authored behavior-driven development (BDD) artifacts in 8 open-source projects, spanning 5 programming languages and 4 BDD frameworks. Each instance pairs a natural-language requirement in Gherkin with its developer-written Test Implementation."
+    },
+    {
+      "arxivId": "2610.36549",
+      "title": "From Ripple to Boundary: Deterministic Impact Boundaries for LLM-Based Software Evolution",
+      "authors": [
+        "Jiameng Bai",
+        "Zhitao Wang",
+        "Long Wang",
+        "Keyue Qian",
+        "Sai Wu"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.36549",
+      "pdfUrl": "https://arxiv.org/pdf/2610.36549",
+      "excerpt": "The landscape of software evolution is undergoing a fundamental paradigm shift in the era of Large Language Models. As industrial software engineering increasingly transitions toward design-driven code generation, the bottleneck of evolution has shifted from writing code to maintaining deterministic consistency between multi-source design assets and the generated code. When a design asset changes, LLM agents currently lack a deterministic impact boundary to identify which code must be evolved, leading to two failure modes: hallucinating missing changes or breaking unrelated code. Probabilistic approaches, such as semantic retrieval or text-based diffing, fail to capture the structural ripple effects across highly interconnected design dependencies. We propose a paradigm shift from probabilistic semantic retrieval to deterministic structural constraints. We formalize the design assets as a Knowledge Graph and organize them into a content-addressed Merkle Directed Acyclic Graph."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 649.896,
+      "bytes": 3899612,
+      "sha256": "b1a2c902b35f0adc2289a2b7d2d643b806d5fc96243271291d426ad3d5d64511",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 492.072,
+      "bytes": 2952668,
+      "sha256": "77295d422d2659557e1bffdea04fc8b8057a2e32696b497b80dbe7e066012d8a",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 509.04,
+      "bytes": 3054476,
+      "sha256": "ebe9274da9088c04df37f68e922615862c9404404f02e32f3abaae7fd0e7192e",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 634.296,
+      "bytes": 3806012,
+      "sha256": "30b7b9b92fc665a8a1fed42c48c2457e66a60e2657102d78fb86ead74f49e102",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 542.184,
+      "bytes": 3253340,
+      "sha256": "fb6bf2ce4ce408da203f38c435b7acfde7589ae2b79842f952486f8f6f10bcd5",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 638.784,
+      "bytes": 3832940,
+      "sha256": "562edc5f001f0cc235e0381e0e8d53288d69464477e42ed91039c9c7da34a4ea",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"code generation\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(265s), zh=llm(144s), de=llm(173s, 1 quoted), es=llm(177s), ru=llm(155s), it=llm(166s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
