@@ -1,0 +1,223 @@
+{
+  "version": 1,
+  "date": "2026-10-31",
+  "topic": {
+    "id": "protein-structure-prediction",
+    "labels": {
+      "ja": "タンパク質構造予測",
+      "zh": "蛋白质结构预测",
+      "de": "Vorhersage von Proteinstrukturen",
+      "es": "Predicción de la estructura de proteínas",
+      "ru": "Предсказание структуры белков",
+      "it": "Predizione della struttura delle proteine"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-10-31T07:02:31+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.23703",
+      "title": "Blitz: Accelerating the Diffusion Modules of AlphaFold3 and Boltz-2",
+      "authors": [
+        "Vinay Saji Mathew",
+        "Soundar Kumara",
+        "Gretta Kellogg",
+        "William K. M. Lai"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-16",
+      "url": "https://arxiv.org/abs/2610.23703",
+      "pdfUrl": "https://arxiv.org/pdf/2610.23703",
+      "excerpt": "Diffusion-based protein structure prediction models produce all-atom structures in about 200 denoising steps, and that cost has driven a number of few-step samplers. We present Blitz, a few-step distillation framework that uses a geometric noise schedule to distribute steps more evenly across noise scales, then learns those updates through multistep consistency training. Physical steering and target-free candidate selection help reduce the remaining geometric defects at inference. We apply Blitz to AlphaFold 3 and Boltz-2, reducing denoising from 200 steps to eight. Because published few-step results use different benchmarks and scoring procedures, we compare both distilled models with their teachers and other few-step methods under a common evaluation protocol covering structural accuracy, interface quality, ligand placement, and stereochemical validity. Blitz retains teacher-level structural accuracy, with AF3-Blitz outperforming all evaluated few-step baselines and exceeding its teacher on several accuracy metrics."
+    },
+    {
+      "arxivId": "2610.01358",
+      "title": "Fold'EM: Direct atomic structure inference from Cryo-EM particles",
+      "authors": [
+        "Advaith Maddipatla",
+        "Märt-Erik Mäeots",
+        "Marco Pegoraro",
+        "Nikolaus Dräger",
+        "Roberto Covino",
+        "Sanketh Vedula",
+        "Martin Pacesa",
+        "Alex M. Bronstein"
+      ],
+      "primaryCategory": "q-bio.BM",
+      "published": "2026-10-01",
+      "url": "https://arxiv.org/abs/2610.01358",
+      "pdfUrl": "https://arxiv.org/pdf/2610.01358",
+      "excerpt": "Single-particle cryo-electron microscopy (cryo-EM) has become a widely adopted technique for biomolecular structure determination. The conventional cryo-EM computational pipeline first combines many particle images to reconstruct an electrostatic potential (ESP) map and then fits an atomic model to the recovered map. Density reconstruction has high sample complexity, requiring large numbers of particle images and making structure determination high-cost and low-throughput, particularly for heterogeneous samples. Downstream atomic model building, in turn, becomes increasingly difficult as the resolution of the reconstructed map deteriorates. Protein structure prediction models provide strong sequence-derived priors on atomic structure, and experiment-guided approaches can use these priors to recover structures consistent with experimental measurements. Yet, in cryo-EM, such priors are typically integrated only after density reconstruction during atomic model fitting."
+    },
+    {
+      "arxivId": "2609.38879",
+      "title": "Does Learning Protein Folding Generalize to Broader Reasoning?",
+      "authors": [
+        "Yong Liu",
+        "Zhanpeng Shi",
+        "Yizhou Dang",
+        "Zhongyue Zhang",
+        "Xiaoliang Shi",
+        "Zhijian Wei",
+        "Shuangjia Zheng"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-09-30",
+      "url": "https://arxiv.org/abs/2609.38879",
+      "pdfUrl": "https://arxiv.org/pdf/2609.38879",
+      "excerpt": "Large language models rely heavily on human text, which often conveys surface answers rather than the spatial and structural logic behind them. Protein folding is a natural testbed, because one solved structure yields thousands of exactly checkable spatial and topological statements. We ask: can learning to fold proteins teach general models reusable reasoning capabilities? To answer this, we build FoldingCorpus, a protein-derived question-answer dataset, and Fold2Reason, a recipe that post-trains on it through two complementary signals: discrete structural answers predicted via the model's native language head, and continuous 3D geometry decoded from the same shared representations. On FoldBench, Fold2Reason achieves structure prediction scores 2.7 to 3.5 times those of Qwen3.5-9B."
+    },
+    {
+      "arxivId": "2609.24842",
+      "title": "Towards Accurate Prediction of Mutation-Induced Changes in Protein Structure",
+      "authors": [
+        "Zhuoyi Liu",
+        "Alex Calabrese",
+        "Corey S. O'Hern"
+      ],
+      "primaryCategory": "physics.bio-ph",
+      "published": "2026-09-21",
+      "url": "https://arxiv.org/abs/2609.24842",
+      "pdfUrl": "https://arxiv.org/pdf/2609.24842",
+      "excerpt": "Proteins can possess numerous mutations relative to their wild-type amino acid sequences with minimal impact to their structure and function. However, in other cases, even a single amino acid mutation relative to the wild-type sequence can lead to a large change in structure or even a disease phenotype. While the accuracy of wild-type protein structure prediction has improved significantly in recent years, it remains difficult to accurately predict the structure of mutant proteins. Here, we characterize the local mutation-induced structural changes in proteins for a dataset of wildtype and the corresponding single-amino acid mutant x-ray crystal structures from the Protein Data Bank (PDB). We find that mutation-induced structural changes in these proteins are localized at the site of the mutation, decaying rapidly with increasing spatial distance from the mutation site. In addition, we evaluate how well AlphaFold3 can recapitulate the observed mutation-induced structural deformations in the x-ray crystal structures."
+    },
+    {
+      "arxivId": "2609.02113",
+      "title": "Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space",
+      "authors": [
+        "Fabio Cumbo",
+        "Bryan Raubenolt",
+        "Varun Puram",
+        "Natalie Katzenmeyer",
+        "Jayadev Joshi",
+        "Daniel Blankenberg"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-09-02",
+      "url": "https://arxiv.org/abs/2609.02113",
+      "pdfUrl": "https://arxiv.org/pdf/2609.02113",
+      "excerpt": "Classical and current quantum approaches to protein structure prediction (QPSP) face limitations, notably massive qubit requirements restricting near-term models to simplistic on-lattice simulations. We propose a logarithmic-scale variational quantum eigensolver (VQE) that reduces qubit requirements for N torsional degrees of freedom to O(log2N), enabling off-lattice, all-atom simulations. Our architecture extracts molecular torsions from relative phases in statevector simulations. On quantum hardware, a decoder maps the empirical cumulative distribution function (CDF) from basis-state probabilities to bounded torsional variables. These feed a classical algorithm to build heavy-atom coordinates. We use an EfficientSU2 ansatz and multi-stage relaxation to mitigate barren plateaus. Structures are evaluated via a custom hybrid quantum-classical Hamiltonian, alongside Rosetta and OpenMM benchmarks. Evaluation on chignolin and Trp-cage yielded native-like conformations."
+    },
+    {
+      "arxivId": "2608.27408",
+      "title": "Reservoir: A Large-Scale Simulated Dataset for Training and Evaluating Epidemiological Models",
+      "authors": [
+        "Carson Dudley",
+        "Reiden Magdaleno",
+        "Marisa Eisenberg"
+      ],
+      "primaryCategory": "q-bio.PE",
+      "published": "2026-08-27",
+      "url": "https://arxiv.org/abs/2608.27408",
+      "pdfUrl": "https://arxiv.org/pdf/2608.27408",
+      "excerpt": "Large-scale, standardized datasets have driven many advances in AI-based scientific modeling, from protein structure prediction to natural language processing. Infectious disease epidemiology is increasingly adopting AI methods for forecasting, surveillance, and outbreak analytics, but the time-series data available to train them remains orders of magnitude smaller than the corpora behind the advances seen in other fields. Because the scope of real-world epidemiological data cannot practically reach the scale needed to train truly large-scale AI methods, simulated data provides a possible alternative. Here we introduce Reservoir, a large open simulator and dataset of realistic epidemic simulations in which every trajectory carries complete ground-truth labels, including quantities that cannot be measured directly in a real outbreak, such as true infection counts, time-varying reproduction numbers, and counterfactual intervention effects."
+    },
+    {
+      "arxivId": "2608.16094",
+      "title": "Protein Structure Prediction: From Evolutionary Constraints to Generative Modeling",
+      "authors": [
+        "Wengan He",
+        "Yongsheng Luo",
+        "Lihong Jiang",
+        "Wenhui Xu",
+        "Yu Li"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-08-17",
+      "url": "https://arxiv.org/abs/2608.16094",
+      "pdfUrl": "https://arxiv.org/pdf/2608.16094",
+      "excerpt": "Accurate protein structure prediction is fundamental to structural biology because protein structure underlies molecular function and provides a basis for mechanistic interpretation. Recent advances in deep learning have transformed the field from multiple sequence alignment (MSA)-driven monomer folding into broader frameworks capable of modeling protein complexes and increasingly heterogeneous molecular systems. Existing reviews have summarized this progress from the perspectives of representative models, application domains, and protein design. Building on these efforts, this review focuses on the methodological evolution of the field itself. It examines recent developments through three closely related dimensions: representations and data, architectures and learning strategies, and confidence and evaluation."
+    },
+    {
+      "arxivId": "2608.12192",
+      "title": "How to Spend Your Oracle Budget: Practical Guidance for Protein Structure Prediction Models",
+      "authors": [
+        "Aleksandra Kalisz",
+        "Jack Simons",
+        "Krisztina Sinkovics",
+        "Noam Ghenassia",
+        "Shikha Surana",
+        "Henry Moss",
+        "Paul Duckworth"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-08-12",
+      "url": "https://arxiv.org/abs/2608.12192",
+      "pdfUrl": "https://arxiv.org/pdf/2608.12192",
+      "excerpt": "Foundation models for protein structure prediction remain unreliable on certain targets. External oracles can flag and correct these failures, but biological oracles are expensive, making oracle budget a critical constraint. Existing guidance methods, such as FK-steering, DPO, and Best K-of-N sampling, differ in how they spend this budget, yet no systematic comparison exists to guide method selection. To bridge this gap, we benchmark these methods alongside the recently proposed Optimisation Over Outputs (O3), which applies off-the-shelf optimisers within a generative model's latent subspace. We extend the usage of O3 to protein structure prediction models. Overall, our work provides the first practical reference for oracle budget-aware guidance. Our evaluation on two protein targets, calmodulin (1CLL) and E. coli aspartate transcarbamoylase (9EEH), reveals that no single method consistently dominates across all budgets and oracles. Specifically, O3 proves most effective at low oracle budgets, while FK-steering and DPO demonstrate improved performance as the budget increases."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 550.464,
+      "bytes": 3303020,
+      "sha256": "a6cf9e603af19ca835338a954ee2ebc6666a80911cfd1eaa45d1c7355baa6874",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 492.096,
+      "bytes": 2952812,
+      "sha256": "7b41a72733b227d00b50e2142aac3f2c9c7647c88593d2fe52e6197a4a95936d",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 520.68,
+      "bytes": 3124316,
+      "sha256": "de740134270d957b2628a42331d1a0881251386cee2aa3039369aa15c2d4515d",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 672.456,
+      "bytes": 4034972,
+      "sha256": "f4723698945adb00350cae85381ccf95fa7a08a0670b7bbfa58d723ce336aa76",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 555.168,
+      "bytes": 3331244,
+      "sha256": "7cf95b8789274cfdff0fca5c8c82e37d3f3edf980b990945da92e2f21b5f5bd3",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 628.896,
+      "bytes": 3773612,
+      "sha256": "e2544b65e1576b914df7d84089004153a4bf7a7ff04a11eb6aa5f20f782c15f8",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"protein structure prediction\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(192s), zh=llm(145s), de=llm(174s, 1 quoted), es=llm(192s), ru=llm(195s, 1 quoted), it=llm(163s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
