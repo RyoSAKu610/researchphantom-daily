@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "date": "2026-11-01",
+  "topic": {
+    "id": "quantum-computing",
+    "labels": {
+      "ja": "量子計算",
+      "zh": "量子计算",
+      "de": "Quantencomputing",
+      "es": "Computación cuántica",
+      "ru": "Квантовые вычисления",
+      "it": "Calcolo quantistico"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-01T07:12:29+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.40642",
+      "title": "Comparison of entangling strategies for unitary synthesis",
+      "authors": [
+        "Jonas Wunder",
+        "Hendrik Weimer",
+        "Ricardo Costa de Almeida"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.40642",
+      "pdfUrl": "https://arxiv.org/pdf/2610.40642",
+      "excerpt": "Trapped-ion quantum computers are promising as a platform for realizing quantum computational advantage. They promise long coherence times, near all-to-all connectivity, and potential multiqubit gates as distinguishing advantages compared to competing platforms. Regarding these advantages, it is crucial to understand the trade-offs between increasing engineering complexity and actual improvements in running quantum algorithms with a more flexible gate set. In this work, we investigate this question and develop a versatile toolset to evaluate the performance of gate sets composed of native Mølmer--Sørensen multiqubit gates. To this end, we employ unitary synthesis as an application-agnostic benchmark target and identify specific hardware requirements for multiqubit gates to be advantageous."
+    },
+    {
+      "arxivId": "2610.40592",
+      "title": "Toric codes all the way down: decoupling translation-invariant topological CSS codes in higher dimensions",
+      "authors": [
+        "Mingxin He",
+        "Yifei Wang",
+        "Hao Song",
+        "Yingfei Gu"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.40592",
+      "pdfUrl": "https://arxiv.org/pdf/2610.40592",
+      "excerpt": "Topological Calderbank-Shor-Steane (CSS) codes in more than two spatial dimensions offer features useful for fault-tolerant quantum computation, such as transversal non-Clifford gates and single-shot decoding, but a systematic understanding of them is still lacking. One approach is to decouple a code: map it to a stack of higher-form toric codes by a finite-depth local CSS-preserving Clifford circuit, possibly after adding ancillas. For translation-invariant -ary CSS codes, where is prime ( for qubits), we require the circuit to commute with the translations of a superlattice. In two dimensions, such a decoupling exists once these translations act trivially on every anyon type. In higher dimensions, excitations are sorted by their dimension into superselection layers, which can remain glued together even when translations act trivially on each layer. We show that this gluing is the only remaining obstruction: a code can be decoupled on a superlattice exactly when, after coarse-graining to it, translations act trivially on every layer and the gluing vanishes."
+    },
+    {
+      "arxivId": "2610.40573",
+      "title": "What Can Be Computed with Indefinite Causal Structure?",
+      "authors": [
+        "Omri Shmueli"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.40573",
+      "pdfUrl": "https://arxiv.org/pdf/2610.40573",
+      "excerpt": "Can quantum computation become more powerful when operations do not need to follow a definite causal order? We study this question in the process matrix formalism of Oreshkov et al. (Nature Communications, 2012), which allows quantum operations to be connected without a fixed global order. In the computational model, a quantum circuit succinctly describes a process matrix, and the algorithm is given access to its generated channel, with computational cost measured by the size of the generating circuit. We give polynomial-time algorithms in two settings. First, general process matrix computation suffices to solve every problem in . The valid processes used by our algorithm satisfy the purification postulate of Araújo et al. (Quantum, 2017), and their generated channels are unitary, although their generating circuits are not. Second, requiring the process matrices themselves to be pure, we give a polynomial-time algorithm for unique-sink orientation, a general problem capturing several longstanding computational problems in optimization."
+    },
+    {
+      "arxivId": "2610.40561",
+      "title": "Grow, Compress, and Perturb: A Hybrid Quantum-Classical Pathway to Scalable Quantum Chemistry on Quantum Computers",
+      "authors": [
+        "Hugo D. Nogueira",
+        "Siwar Badreddine",
+        "Olivier Adjoua",
+        "Diata Traore",
+        "Guillaume Michel",
+        "Jean-Philip Piquemal"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.40561",
+      "pdfUrl": "https://arxiv.org/pdf/2610.40561",
+      "excerpt": "While Variational Quantum Eigensolver (VQE) variants are among leading candidates for electronic structure calculations on quantum computers, gradient-based operator selection limits their scalability. To solve this, we introduce the Hamiltonian-gradient-free VULCAN (Variational Upbuilding, Layered Compression, Adaptive N-body perturbation) layered VQE framework. Our method dynamically generates ansatz operators using Variational Double Bracket Flow (VDBF) equations. Combined with a linearly scaling minimal complete pool, it creates a pool 4-12 times smaller than QEB (Qubit-Excitation-Based) pools. By appending entire layers simultaneously, Hamiltonian gradient measurements are completely eliminated. Circuit depth is managed via a grow-then-compress scheme using efficient state-overlap measurements, and qubit requirements are reduced by projecting the Hamiltonian onto a dominant-determinant subspace. Using high-performance emulation up to 32 logical qubits, we achieve chemical accuracy at just 5-20% of the measurement cost of batched ADAPT-VQE for hydrogen chains, BeH2 and H2O."
+    },
+    {
+      "arxivId": "2610.40490",
+      "title": "Fast and accurate neural triage decoding of ultra-high-rate quantum LDPC codes",
+      "authors": [
+        "Hong-Ye Hu",
+        "Zhenlai Wang",
+        "Binzhao Luo",
+        "Tao Xiang",
+        "Chen Zhao"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.40490",
+      "pdfUrl": "https://arxiv.org/pdf/2610.40490",
+      "excerpt": "Quantum error correction is essential for fault-tolerant quantum computing. High-rate quantum low-density parity-check (qLDPC) codes have emerged as a promising approach to reducing the substantial physical qubit overhead of quantum error correction, enabling encoding rates exceeding in blocks of approximately one thousand physical data qubits. However, their practical implementation requires decoders that combine high accuracy with low latency to keep pace with quantum hardware. Existing decoders of high-rate qLDPC codes can achieve high accuracy but often incur substantial computational latency, whereas neural network decoders have yet to be demonstrated for high-rate qLDPC codes. Here, we introduce \\emph{neural triage decoding}, a framework that uses syndrome consistency to adaptively allocate neural computation. A local neural message-passing network rapidly predicts error corrections, additional iterations reduce residual syndrome violations, and a rarely invoked diversification stage searches for consistent corrections to the remaining shots."
+    },
+    {
+      "arxivId": "2610.40393",
+      "title": "Quantum Computing through Computational Imaging: Representations, Measurement, and Inference",
+      "authors": [
+        "George Kourousias",
+        "Sergio Carrato",
+        "Roberto Pugliese",
+        "Panagiotis Dimitrakis",
+        "Alberto Carini"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.40393",
+      "pdfUrl": "https://arxiv.org/pdf/2610.40393",
+      "excerpt": "An algebraic correspondence between an imaging model and a quantum state does not specify a computational method: input access, measurement and decoding determine what can be returned. This exposition develops four distinctions for computational-imaging and engineering readers. It separates amplitude encodings of input values from encodings of complete candidate labelings, explaining why amplitude storage does not provide full-array readout. Complex-field interference motivates unknown-phase inference: complementary measurements resolve ambiguities that local Fisher information alone does not detect. Reshaping joint amplitudes into a matrix connects singular-value decomposition to pure-state entanglement, while distinguishing Schmidt rank from conditions for efficient classical simulation. In a four-pixel segmentation, an objective becomes a cost operator and a sampling circuit. One layer of the quantum approximate optimization algorithm (QAOA) lowers mean energy from to relative to uniform sampling, yet makes a nonoptimal labeling more probable than the optimum 0.484 versus 0.365."
+    },
+    {
+      "arxivId": "2610.40052",
+      "title": "Identifying Logical Operations from Syndrome Histories for qLDPC Codes",
+      "authors": [
+        "Yizhuo Tan",
+        "Shifan Xu",
+        "Yongshan Ding",
+        "Jakub Szefer"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.40052",
+      "pdfUrl": "https://arxiv.org/pdf/2610.40052",
+      "excerpt": "Syndrome histories are normally used to detect and correct errors in fault-tolerant quantum computation, but they can also reveal information about the logical operations executed during computation. We study logical-operation identification using syndrome histories alone or together with other classical measurement outcomes. We develop an exact inference method and a scalable approximation that account for unknown circuit faults and ideal measurement randomness. We evaluate automorphisms, logical Pauli measurements, T injections, and logical circuits combining these instructions on and bivariate bicycle (BB) codes under multiple noise models and error rates. A single logical instruction can be identified with over 94\\% accuracy under circuit-level noise with error rates between and . We also achieve over 99\\% accuracy for automorphism-based logical circuits and 78.32\\% for logical circuits combining all three instructions. We further analyze identification ambiguities arising from insufficient or indistinguishable measurement information, fault timing, and approximation inference."
+    },
+    {
+      "arxivId": "2610.39980",
+      "title": "Benchmarking Quantum Neural Networks Developed for MBHB Coalescence in the Context of LISA Space Mission",
+      "authors": [
+        "Maria-Catalina Isfan",
+        "Laurentiu-Ioan Caramete",
+        "Ana Caramete"
+      ],
+      "primaryCategory": "astro-ph.CO",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.39980",
+      "pdfUrl": "https://arxiv.org/pdf/2610.39980",
+      "excerpt": "Machine learning (ML) techniques are increasingly explored to analyse gravitational wave (GW) data expected from the Laser Interferometer Space Antenna (LISA). At the same time, advances in quantum computing have stimulated interest in quantum machine learning as a potential alternative to conventional approaches. We investigate the applicability of quantum, hybrid quantum-classical, and classical ML models to two tasks relevant for LISA observations of massive black hole binaries: GW signal detection and merger prediction. Using the Sangria dataset from the LISA Data Challenge, we benchmark several quantum architectures, including variational quantum classifiers (VQCs), post VQC hybrid models, quantum kernel methods, data reuploading classifiers, and quantum long short-term memory (QLSTM) networks, against classical support vector machines, multilayer perceptrons, recurrent neural networks, and LSTM networks. The models are trained on labelled data derived from the Sangria training dataset and evaluated on the corresponding blind dataset."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 587.64,
+      "bytes": 3526076,
+      "sha256": "fb5857376388df150fe8173ce229a20097e65410a1b5dde7105bd330526a3a20",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 454.608,
+      "bytes": 2727884,
+      "sha256": "e2dbb24f4dbedd5b82ca947660dbdb2b1f4e4b2b2f1a9b8bffe6536c16f6044a",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 510.384,
+      "bytes": 3062540,
+      "sha256": "57e82623b41e498248bdb0c5a1cd8907e6a337d8c924114479b76b8906bea605",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 666.048,
+      "bytes": 3996524,
+      "sha256": "c74a93b164275ebee05b004405ffa6e2cb6b19695f8230ad04794037a9b54161",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 511.056,
+      "bytes": 3066572,
+      "sha256": "cc4659ca1548a751369b7586cb25276e6c251f58072766aad5e0b70382e34849",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 655.056,
+      "bytes": 3930572,
+      "sha256": "7680c03a36d7cbff3911d003bd11e886da753c5771ed9e3673e2c45a827a9982",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"quantum computing\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(282s), zh=llm(170s), de=llm(150s), es=llm(194s), ru=llm(160s), it=llm(182s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
