@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "date": "2026-11-02",
+  "topic": {
+    "id": "interpretability",
+    "labels": {
+      "ja": "機械的解釈可能性",
+      "zh": "机制可解释性",
+      "de": "Mechanistische Interpretierbarkeit",
+      "es": "Interpretabilidad mecanicista",
+      "ru": "Механистическая интерпретируемость",
+      "it": "Interpretabilità meccanicistica"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-02T07:05:02+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.40637",
+      "title": "world2vec: Mechanistic world models through latent dynamics learning",
+      "authors": [
+        "Tobias Schmidt",
+        "Rodrigo Gonzalez Laiz",
+        "Krisztián Szuppinger",
+        "Steffen Schneider"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.40637",
+      "pdfUrl": "https://arxiv.org/pdf/2610.40637",
+      "excerpt": "World models can achieve strong control performance without faithfully capturing the dynamics of their environment, limiting their potential for mechanistic interpretability and scientific discovery. Here, we introduce world2vec to learn mechanistic world models without reward information directly from observations and actions. World2vec learns latent dynamics that faithfully reproduce the true system over long prediction horizons, with at least one order of magnitude fewer parameters than DreamerV3, TD-MPC2 and LeWM. This enables state of the art performance in controlling continuous environments from pixels and accurate system identification across a benchmark of 71 attractors, demonstrating how world models are amenable to scientific discovery."
+    },
+    {
+      "arxivId": "2610.39766",
+      "title": "Activation Probes Are Reliable With a Handful of Positive Examples",
+      "authors": [
+        "Riya Tyagi",
+        "Stefan Heimersheim"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.39766",
+      "pdfUrl": "https://arxiv.org/pdf/2610.39766",
+      "excerpt": "Efforts to monitor advanced AI for rare misalignments face a data challenge: abundant aligned examples but only a handful of misaligned ones. We test activation probes in this \"few vs. thousands\" regime on spam and honesty detection tasks. For our tasks, training with many negative examples is on average more positive-sample-efficient than balanced training for small numbers (1-10) of positive samples. We also find that LLM upsampling can provide a performance boost equivalent to roughly doubling the number of real positive samples, though excessive upsampling hurts performance. Finally, we show a positive scaling trend, where larger models are more positive-sample-efficient to probe. Our findings suggest we should leverage the large number of negative samples available to amplify the signal from rare but critical misalignment examples."
+    },
+    {
+      "arxivId": "2610.39182",
+      "title": "Reasoning or Pattern Exploitation? Mechanistic Insights from RL-Trained Language Models",
+      "authors": [
+        "Aishik Nagar",
+        "Cheston Tan"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.39182",
+      "pdfUrl": "https://arxiv.org/pdf/2610.39182",
+      "excerpt": "Large language models (LLMs) are increasingly described as acquiring \"reasoning\" skills after reinforcement learning with verifiable rewards. However, whether these gains reflect genuine reasoning or more superficial adaptations remains underexplored. In this work, we probe LLMs trained in a finite and exhaustively analyzable logical domain, namely Tic-Tac-Toe, and trace how internal representations evolve across reinforcement learning (RL) with Group Relative Policy Optimization (GRPO). Quantitatively, RL yields high accuracy and robustness across prompt variations, suggesting the emergence of game reasoning. Mechanistic interpretability, however, paints a different picture: features extracted with sparse autoencoders (SAEs) reveal that models primarily adapt to rely more heavily on information already explicit in the prompt, such as whose turn it is, game progression and board occupancy. In comparison, high-level concepts like board symmetries and strategic forks remain weakly represented, raising concerns that reasoning benchmarks overestimate model abilities."
+    },
+    {
+      "arxivId": "2610.38326",
+      "title": "Can LLMs Faithfully Solve Ontology Engineering Tasks? A Mechanistic Interpretability Study",
+      "authors": [
+        "Bohui Zhang",
+        "Albert Meroño-Peñuela",
+        "Elena Simperl"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-28",
+      "url": "https://arxiv.org/abs/2610.38326",
+      "pdfUrl": "https://arxiv.org/pdf/2610.38326",
+      "excerpt": "Ontological knowledge underpins large language model (LLM) performance on knowledge-intensive tasks. However, existing evaluations of LLMs' ontological understanding largely rely on behavioral correctness, leaving the underlying mechanisms unexplained. Existing mechanistic interpretability work has largely focused on instance-level factual knowledge, leaving ontological knowledge under-explored. To bridge this gap, we introduce MIOE, a causal-abstraction benchmark that evaluates interchange interventions for two ontology engineering tasks: entity typing and subsumption prediction. MIOE tests whether learned internal intervention targets can change an ontology-level target answer while preserving class-specific auxiliary information. Across Qwen3-8B and Qwen3-4B, we evaluate SAE-, DBM-, and DAS-based methods, including multi-task and multi-layer variants. Distributed subspace methods give the strongest results and generalize across prompt settings, but the induced changes remain only partially separated from auxiliary class-specific information."
+    },
+    {
+      "arxivId": "2610.37157",
+      "title": "What Survives Distillation? A Mechanistic Interpretability Study of GPT-2 and DistilGPT-2",
+      "authors": [
+        "Nabeelah Faumi",
+        "Deshan Sumanathilaka"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-27",
+      "url": "https://arxiv.org/abs/2610.37157",
+      "pdfUrl": "https://arxiv.org/pdf/2610.37157",
+      "excerpt": "Knowledge distillation compresses large language models into compact students that preserve aggregate metrics, yet the mechanistic consequences of depth-reduction distillation remain largely uncharacterized. This work applies linear CKA, logit lens analysis, attention pattern decomposition, sparse autoencoder feature statistics, and activation patching to compare GPT-2 and its six-layer student DistilGPT-2 across two canonical circuits: the Indirect Object Identification (IOI) circuit and the Greater-Than (GT) circuit. The results reveal a compression-collapse dichotomy: the IOI circuit suffers complete mechanistic collapse (DistilGPT-2: 35.2% accuracy vs. 94.8%, zero name-mover preservation), while the GT circuit survives with 87.7% task performance recovery through active remapping of the teacher's layer-9 comparison head into student layer~4 (mean Pearson r = 0.945). These findings demonstrate that circuit compressibility governs mechanistic survival under distillation, and that aggregate metrics are insufficient diagnostics for circuit integrity."
+    },
+    {
+      "arxivId": "2610.34756",
+      "title": "Mechanistic Insights into LoRA: Layer Sparsity for Adaptive Fine-Tuning via Path Patching",
+      "authors": [
+        "Fei Zuo",
+        "Yizhou Huang",
+        "Kezhi Wang"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.34756",
+      "pdfUrl": "https://arxiv.org/pdf/2610.34756",
+      "excerpt": "Low-Rank Adaptation (LoRA) has emerged as the dominant paradigm for parameter-efficient fine-tuning of large language models. Standard all-layer LoRA applies adaptation throughout the transformer, despite heterogeneous contributions from its components. In this work, we conduct a systematic mechanistic interpretability analysis to understand how LoRA affects model internals. We observe that LoRA's adaptation effect is highly non-uniform, with significant component-wise and layer-wise sparsity. Most critically, we find that important layers are highly task-dependent, with limited overlap across tasks. Motivated by these insights, we propose Adaptive-LoRA, a calibration-driven method that automatically identifies task-specific layers via frozen-base zero-ablation, enabling efficient layer selection without exhaustive search. Extensive experiments on Qwen2.5-1.5B across 11 diverse reasoning tasks demonstrate that Adaptive-LoRA outperforms full-layer LoRA while using only 30% of layers, achieving a reduction in adapter parameters."
+    },
+    {
+      "arxivId": "2610.31520",
+      "title": "The Geometry of Metaphor: Probing and Steering Metaphor Representations in Large Language Models",
+      "authors": [
+        "Shihui Li",
+        "Mette Andersen",
+        "Martha Lewis"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-22",
+      "url": "https://arxiv.org/abs/2610.31520",
+      "pdfUrl": "https://arxiv.org/pdf/2610.31520",
+      "excerpt": "Metaphor is a crucial aspect of human cognition. As such, we would like to understand how it is represented in large language models (LLMs) and how it might be controlled. We use mechanistic interpretability techniques to identify causal subspaces in a range of LLMs covering different architectures and sizes. We show that we are able to steer output on classification tasks across different parts of speech. We are also able to steer output on generation tasks, indicating that these techniques can be used to control the metaphoricity of LLM output."
+    },
+    {
+      "arxivId": "2610.28992",
+      "title": "Language Impairment as a Lens onto Large Language Models",
+      "authors": [
+        "Muxuan He",
+        "Wang Bill Zhu",
+        "Yue Chen",
+        "Elsi Kaiser",
+        "Weizhi Du",
+        "Yao Du",
+        "Samuel Nastase",
+        "Yanjun Gao"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.28992",
+      "pdfUrl": "https://arxiv.org/pdf/2610.28992",
+      "excerpt": "Although large language models (LLMs) encode language in highly distributed spaces, they remain vulnerable to focal disruptions---a phenomenon strikingly similar to how localized brain damage causes clinical aphasia in humans. To investigate this theoretical tension, we ask whether LLMs possess a functional structure analogous to the human language system, by introducing a novel mechanistic interpretability framework inspired by aphasia. Through two complementary approaches, classifier-guided lesioning and continuous activation steering, we systematically induce aphasia-like breakdowns in LLMs. We find that language functions can be successfully isolated to discrete structural circuits and continuous representational vectors, yet these functions remain densely entangled with significant circuit overlap and vector similarities across distinct aphasic profiles. Furthermore, while steering generalizes robustly across downstream tasks, structural lesioning remains asymmetrically constrained."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 560.592,
+      "bytes": 3363788,
+      "sha256": "73959f16fe3ed7abe5f2c882793d8238a0f71af5708d2533f6f26ed399792f8d",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 453.048,
+      "bytes": 2718524,
+      "sha256": "e8bdb9bd407ca685bb8acb1921893bf80cc6c739ef8be58b9ab390e9f7980d57",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 478.104,
+      "bytes": 2868860,
+      "sha256": "5cab717abd897ae1fb2b98fd0e4bb1f0d450710816ef22ed020a1511d9b448c1",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 619.992,
+      "bytes": 3720188,
+      "sha256": "98041105cea74604dc58785bcc5f4393b09461ee9fe973f9b20b305d3fc8603c",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 518.952,
+      "bytes": 3113948,
+      "sha256": "d6c9589abaa77e65c861d0b66cb813ab3b2442f21b39ee22e277e031d5f86833",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 630.456,
+      "bytes": 3782972,
+      "sha256": "3807ba0ff63054b818ed42853f48da93d21e4eaa29bb0f8841f21e8c4aefa667",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"mechanistic interpretability\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(220s), zh=llm(122s), de=llm(149s), es=llm(156s), ru=llm(161s), it=llm(175s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
