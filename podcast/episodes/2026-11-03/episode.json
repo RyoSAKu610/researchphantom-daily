@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "topic": {
+    "id": "climate-modeling",
+    "labels": {
+      "ja": "気候モデリング",
+      "zh": "气候建模",
+      "de": "Klimamodellierung",
+      "es": "Modelización climática",
+      "ru": "Климатическое моделирование",
+      "it": "Modellizzazione climatica"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-03T07:12:12+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.41313",
+      "title": "Migrating a Legacy Scientific Application with an AI Coding Agent: NICAM from Fortran to Kokkos",
+      "authors": [
+        "Xuanzhengbo Ren",
+        "Takashi Shimokawabe",
+        "Hisashi Yashiro"
+      ],
+      "primaryCategory": "cs.DC",
+      "published": "2026-10-30",
+      "url": "https://arxiv.org/abs/2610.41313",
+      "pdfUrl": "https://arxiv.org/pdf/2610.41313",
+      "excerpt": "Migrating from Fortran to C++/Kokkos broadens access to hardware accelerators through backends such as CUDA and HIP while offering greater flexibility in software design. However, legacy Fortran applications often have large codebases, making manual porting time-consuming and costly. Recent advances in large language models (LLMs) and AI coding agents have made large-scale code migration increasingly feasible. In this study, we ported NICAM (Nonhydrostatic ICosahedral Atmospheric Model), a legacy Fortran climate model accelerated with OpenACC, to C++/Kokkos with the assistance of Claude Code. The agent translated the code directly from Fortran to C++/Kokkos under human review. Approximately 140,000 lines of Fortran were analyzed and ported into 35,000 lines of C++/Kokkos, covering the dynamical core and seven physics packages. A 100-member ensemble comparison with the original Fortran model showed that the port is statistically consistent with the original. Performance was evaluated on Miyabi-G, an NVIDIA GH200 cluster, and Sirius, an AMD MI300A cluster."
+    },
+    {
+      "arxivId": "2610.36297",
+      "title": "FASST: A Compact Stateless Atmosphere Model for Long-Term Ocean Coupling",
+      "authors": [
+        "Pratham Aggarwal",
+        "Duncan Watson-Parris",
+        "William E. Chapman"
+      ],
+      "primaryCategory": "physics.ao-ph",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.36297",
+      "pdfUrl": "https://arxiv.org/pdf/2610.36297",
+      "excerpt": "Coupled climate simulations are computationally expensive, largely because of the atmosphere. We introduce FASST, a coupled climate model that retains the prognostic POP2 ocean while replacing the atmosphere and sea ice with lightweight U-Net emulators. The atmospheric emulator is diagnostic, predicting surface fluxes from the evolving ocean-ice state every simulated hours, while the sea-ice emulator advances the ice state monthly. For years of unforced integration, FASST maintains a stable global-mean climate without SST restoring, with post-transient global-mean SST of compared with in CESM piControl. FASST also captures interannual Niño- variability, although with weaker amplitude than CESM ( versus ). These results demonstrate that a stateless learned atmosphere can sustain stable, free-running coupled climate simulations over century-scale integrations."
+    },
+    {
+      "arxivId": "2610.35251",
+      "title": "Mesoscale Modelling of Titan's Shangri-La region: the impact of surface properties on winds",
+      "authors": [
+        "Maxence Lefèvre",
+        "Léa E. Bonnefoy",
+        "Aymeric Spiga",
+        "Bruno de Batz de Trenquelléon",
+        "Sébastien Lebonnois",
+        "Alexander G. Hayes"
+      ],
+      "primaryCategory": "astro-ph.EP",
+      "published": "2026-10-26",
+      "url": "https://arxiv.org/abs/2610.35251",
+      "pdfUrl": "https://arxiv.org/pdf/2610.35251",
+      "excerpt": "The knowledge of Titan's near-surface atmosphere is sparse. The Huygens descent probe measured winds, and the multiple dune field observations and possible dust storms suggest active near-surface dynamics. The Dragonfly rotorcraft lander will fly close to the surface in the Shangri-La region, near the Huygens landing site, where complex dune orientations were observed. This study presents the first mesoscale modelling of the near-surface dynamics in this region. However, due to a lack of high-resolution topography data, synthetic maps of surface properties were built. The surface was divided into different topographical units, such as plains, mountains, etc. The slopes and height of those units were then parametrised. Maps of thermal inertia, albedo and the aerodynamic roughness height were also built. The mesoscale model is coupled to a comprehensive radiative transfer code and forced by a global climate model. No moist processes are considered in this study. Topography has a major impact on near-surface wind amplitude and direction through slope flows and valley circulations."
+    },
+    {
+      "arxivId": "2610.33884",
+      "title": "The Fate of Ice Sheets on Near-Synchronously Rotating Land Planets",
+      "authors": [
+        "Sarah Silverman",
+        "Thomas Navarro",
+        "Martin Turbet",
+        "Nicolas B. Cowan",
+        "Natalya Gomez",
+        "Siddharth Bhatnagar",
+        "Emeline Bolmont"
+      ],
+      "primaryCategory": "astro-ph.EP",
+      "published": "2026-10-24",
+      "url": "https://arxiv.org/abs/2610.33884",
+      "pdfUrl": "https://arxiv.org/pdf/2610.33884",
+      "excerpt": "Rocky exoplanets orbiting M dwarf stars are often assumed to be synchronously rotating, such that water-trapping in ice sheets on the permanent nightside may pose a threat to habitability. However, in compact M dwarf systems, gravitational interactions between planets may cause the substellar point to librate or circulate on millennial timescales and sporadically change direction or speed. Here, we use a 3D global climate model to quantify, for the first time, the water-trapping capabilities of these \"near\"-synchronously rotating exoplanets, with TRAPPIST-1e as our test case. Across a range of synodic day lengths, we find that there is a permanent polar ice reservoir and an increasingly large build-up of lower-latitude transient nightside ice for longer days. A persistent ice-free region develops on the dayside where surface conditions can sustain liquid water. However, this steady-state ice distribution may never be realized since the accumulation timescale may be slower than changes in the spin regime."
+    },
+    {
+      "arxivId": "2610.33797",
+      "title": "Variational Structure of Energy-Balance Climate Models with Heterogeneous Insolation",
+      "authors": [
+        "Gianmarco Del Sarto",
+        "Giuseppe Floridia"
+      ],
+      "primaryCategory": "math.AP",
+      "published": "2026-10-24",
+      "url": "https://arxiv.org/abs/2610.33797",
+      "pdfUrl": "https://arxiv.org/pdf/2610.33797",
+      "excerpt": "We analyse stationary Sellers-type energy-balance climate models with heterogeneous insolation , both on the interval with degenerate diffusion and on with uniformly elliptic diffusion. Assuming that the homogeneous model corresponding to admits three constant equilibria satisfying suitable non-degeneracy and spectral conditions, we prove that, for sufficiently small , these equilibria continue to three stationary branches , , and . The cold and warm branches, and respectively, are strict local minimisers of the associated energy functional, while the intermediate branch is non-degenerate and has Morse index one. We further establish the Palais-Smale condition and obtain a mountain-pass critical point at the minimax level between the two local minima. Under an additional isolation assumption for the homogeneous problem at the minimax level, this critical point coincides with . Lastly, a Legendre-Galerkin discretisation of the one-dimensional model numerically illustrates the three stationary branches, their discrete Morse indices, and the corresponding energy landscape."
+    },
+    {
+      "arxivId": "2610.33482",
+      "title": "Climate downscaling with likelihood functional flow matching",
+      "authors": [
+        "Zhi-Song Liu",
+        "Helmi Toropainen",
+        "Ammar Kheder",
+        "Michael Boy"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-24",
+      "url": "https://arxiv.org/abs/2610.33482",
+      "pdfUrl": "https://arxiv.org/pdf/2610.33482",
+      "excerpt": "Decisions about heat, frost and flooding are made locally, yet reanalyses and climate models resolve tens of kilometres. Generative downscalers add kilometre-scale detail with uncertainty, but are tied to a grid, costly to sample and lack a tractable likelihood. Here we introduce CD-FFM, a functional flow-matching model that treats the high-resolution field as a continuous random field that one model can query at any location and resolution. Its velocity acts pointwise, so spatial variability comes from a noise prior fitted to the observed spectrum and every observation has an exact likelihood. Downscaling ERA5 to 1 km daily temperature over Fennoscandia, CD-FFM lowers the continuous ranked probability score by 27-31% against regression and 12-18% against a forty-times larger neural operator in each of three test years, and outperforms a CorrDiff-style diffusion model while sampling about fifty times faster. The same model transfers to precipitation and makes large kilometre-scale ensembles affordable."
+    },
+    {
+      "arxivId": "2610.28219",
+      "title": "Disentangling forced and internal components in observed climate evolution using spatiotemporal deep learning",
+      "authors": [
+        "Parvathi Kooloth",
+        "Wenyu Zhou",
+        "L. Ruby Leung",
+        "Shang-Ping Xie",
+        "Hailong Wang",
+        "Qiang Fu"
+      ],
+      "primaryCategory": "physics.ao-ph",
+      "published": "2026-10-20",
+      "url": "https://arxiv.org/abs/2610.28219",
+      "pdfUrl": "https://arxiv.org/pdf/2610.28219",
+      "excerpt": "Attribution of observed historical climate evolution to externally forced change and internal variability is fundamental to understanding climate change and evaluating climate models. Yet such attribution remains challenging because the forced response is intertwined with internal variability in observations. Here, we develop a convolutional long short-term memory network (ConvLSTM) to disentangle these two components. Trained and evaluated using large-ensemble simulations from multiple climate models, ConvLSTM consistently outperforms existing model-based, statistical, and machine-learning approaches. Applying ConvLSTM to observations reveals an evolving spatial pattern of the forced response and substantial contributions from internal variability to recent multidecadal climate trends."
+    },
+    {
+      "arxivId": "2610.26279",
+      "title": "Physics-anchored residual quantum neural networks for cloud-cover parameterization",
+      "authors": [
+        "Zhuo Wang",
+        "Ce Yu",
+        "Bin Yang"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-10-19",
+      "url": "https://arxiv.org/abs/2610.26279",
+      "pdfUrl": "https://arxiv.org/pdf/2610.26279",
+      "excerpt": "Compact quantum neural networks have been explored for cloud-cover parameterization, but their predictive value depends on how physical knowledge is incorporated and which classical models provide the reference. We investigate an offline residual formulation that retains a fitted \\XR\\ cloud-cover estimate and learns a correction to its logit in transformed target space. Using released ICON/DYAMOND-derived data, we compare ten model variants in six- and eight-input settings, with three matched replicates and 10,000 training samples per replicate. All quantum circuits use local Z readout and noiseless exact expectation values. Under a common 30-epoch protocol, residual prediction reduced physical-space test mean squared error relative to direct QNN prediction by 54.3\\% and 38.8\\% for six-input XYZ and ZZXY circuits, and by 49.2\\% and 38.9\\% for their eight-input versions. Residual QNNs also outperformed the selected compact residual multilayer perceptron in every paired replicate."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 601.68,
+      "bytes": 3610316,
+      "sha256": "1afe1b8e239e788db293f9ff07892ec94fc0a84da2d3adcc9d8d51b6941e705b",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 500.016,
+      "bytes": 3000332,
+      "sha256": "fc072ad19be52deb11e19f1b3808b14c91af82b21635f54985a6f62075592b91",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 474.672,
+      "bytes": 2848268,
+      "sha256": "6ad94610b0eecbfd42a6ae32a624890d520f8f8e3b71f44f9202778853e53107",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 651.312,
+      "bytes": 3908108,
+      "sha256": "bd810029c7c01f375ca76a3c28c29f3c222bad967619c8f07ea83ecdc14ab354",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 555.288,
+      "bytes": 3331964,
+      "sha256": "641989c97d2537a77e18322cd337cc2f1821809504a16d8afffd78a5e4afe4f3",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 640.896,
+      "bytes": 3845612,
+      "sha256": "d472d10364236bc6647bb2e7e22ccebf4437c711cff27786a373d2f088cee2ef",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"climate modeling\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(262s), zh=llm(185s), de=llm(143s), es=llm(228s, 1 quoted), ru=llm(205s, 1 quoted), it=llm(227s, 1 quoted)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
