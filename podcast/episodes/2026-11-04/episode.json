@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "date": "2026-11-04",
+  "topic": {
+    "id": "diffusion-models",
+    "labels": {
+      "ja": "拡散モデル",
+      "zh": "扩散模型",
+      "de": "Diffusionsmodelle",
+      "es": "Modelos de difusión",
+      "ru": "Диффузионные модели",
+      "it": "Modelli di diffusione"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-04T07:10:07+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.03597",
+      "title": "Structured Visual Landscape: Generating Preferred Representations in Biological and Artificial Neural Networks",
+      "authors": [
+        "Yusong Zhao",
+        "Edgar Y. Walker",
+        "Hao Wang",
+        "Mi Lu"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.03597",
+      "pdfUrl": "https://arxiv.org/pdf/2611.03597",
+      "excerpt": "Understanding how neurons respond to visual stimulus is an important question in both deep learning and neuroscience. It has significant implications for enhancing the interpretability of black-box artificial neural networks and for understanding the visual representation in the human brain. We propose a structured visual representations landscape and design an activation-based prior that allows us to effectively regularize the landscape with activations from brain regions or neural network units. Our model Vis-Lens integrates a variational autoencoder and a diffusion model into an image generation framework. It enables the generation of natural, realistic preferred images by directly modifying the activation-regularized latent codes without per-image iterative optimization. We demonstrate the effectiveness of our framework on both artificial neural networks and human visual cortex using functional magnetic resonance imaging (fMRI) data."
+    },
+    {
+      "arxivId": "2611.03530",
+      "title": "Generalizable Equivariant Diffusion Models for Non-Abelian Lattice Gauge Theory: Analytical Foundations and Numerical Scaling Tests",
+      "authors": [
+        "Gert Aarts",
+        "Diaa E. Habibi",
+        "Andreas Ipp",
+        "David I. Müller",
+        "Thomas R. Ranner",
+        "Lingxiao Wang",
+        "Wei Wang",
+        "Qianteng Zhu"
+      ],
+      "primaryCategory": "hep-lat",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.03530",
+      "pdfUrl": "https://arxiv.org/pdf/2611.03530",
+      "excerpt": "Gauge-equivariant diffusion models can be used to generate ensembles of field configurations in non-abelian lattice gauge theories. Previously, we demonstrated the feasibility of modeling these theories by combining L-CNN-based diffusion models with the Metropolis-adjusted annealed Langevin algorithm (MAALA). Here we focus on the underlying analytical framework. In particular, we present a rigorous derivation of the reverse-time stochastic differential equation on the group manifold, discuss the gauge invariance of the denoising loss function, and provide extensive numerical benchmarks regarding the scaling behavior with respect to the lattice volume and the inverse coupling . Full analytical expressions for arbitrarily sized Wilson loops and the topological charge susceptibility during the forward process are given as well."
+    },
+    {
+      "arxivId": "2611.03473",
+      "title": "Fracture-Bench: A Controlled Benchmark Suite for Machine Learning Surrogates in Phase-Field Fracture Mechanics",
+      "authors": [
+        "Meenu Krishnan U.",
+        "Maryam Hakimzadeh",
+        "Indrashish Saha",
+        "Meer Mehran Rashid",
+        "Lori Graham-Brady",
+        "Somdatta Goswami"
+      ],
+      "primaryCategory": "physics.comp-ph",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.03473",
+      "pdfUrl": "https://arxiv.org/pdf/2611.03473",
+      "excerpt": "Machine-learning surrogates are increasingly proposed to replace phase-field fracture simulations in many-query tasks such as uncertainty quantification, inverse analysis and design. Little controlled evidence shows which architectures are reliable, for which fracture problems and how far beyond their training data. We introduce Fracture-Bench, an open benchmark of two phase-field datasets with fixed splits, common test metrics and a description of each dataset's physical regime. Dataset~1 contains 1,000 AT2 simulations of multiple cracks growing from a notched hole in a hyperelastic plate under random non-uniform biaxial boundary displacements (44 load steps, grid). Dataset~2 contains 4,000 PF-CZM simulations of a pre-cracked plate with two inclusions, each ten times stiffer or more compliant than the matrix ( grid). We train a Fourier neural operator (FNO), DeepONet, Latent DeepONet, a UNet and a conditional diffusion model on identical splits and compare one test metric per dataset, training time, inference time and model size."
+    },
+    {
+      "arxivId": "2611.03454",
+      "title": "Online Class Posteriors for Interpretable and Controllable Discrete Diffusion",
+      "authors": [
+        "Felix Koulischer",
+        "Gianni Van De Velde",
+        "François Remy",
+        "Chris Develder",
+        "Thomas Demeester"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.03454",
+      "pdfUrl": "https://arxiv.org/pdf/2611.03454",
+      "excerpt": "Discrete diffusion models remain far less understood than their continuous counterparts, despite recent breakthroughs across modalities, most notably in text. Leveraging tools from continuous diffusion, we formulate a theoretical framework to track the class-conditional posterior in an online manner by combining conditional and unconditional model predictions. In masked language modeling, this posterior offers highly interpretable dynamics: tokens aligned with a class boost the posterior, while contradictory ones suppress it. We also show that the posterior can be used for logical guidance operations (AND, OR, NOT) in discrete diffusion. These operations enable precise control over generation, such as avoiding specific classes. In addition, we discuss a mismatch in the formulation of classifier-free guidance between discrete and continuous settings: discrete models mix the data distributions, while continuous models mix the marginals."
+    },
+    {
+      "arxivId": "2611.03140",
+      "title": "When Optimization Meets Human Intent: Human-Centered Diffusion Model Optimization",
+      "authors": [
+        "Renye Yan",
+        "Jikang Cheng"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.03140",
+      "pdfUrl": "https://arxiv.org/pdf/2611.03140",
+      "excerpt": "Diffusion models are evolving from general tools into personalized systems that adapt to user needs through fine-tuning and guidance. However, diffusion optimization mainly targets measurable objectives such as aesthetics, rarely examining whether they align with human intent. Human needs are multidimensional, contextual, and dynamic, whereas existing methods approximate them with fixed metrics. Because these metrics capture human needs only partially and may amplify deviations from true intent during optimization, higher scores need not yield results better matching human expectations. To understand how human needs enter and influence optimization, we systematically analyze how human intent is expressed, translated into optimizable objectives, applied to model behavior or generation, and evaluated through outputs. We further discuss trade-offs affecting human-intent alignment in personalized image generation and gaps between automated metrics and real user judgments."
+    },
+    {
+      "arxivId": "2611.03017",
+      "title": "Efficient Hybrid Distillation: Synergizing Score and Adversarial Objectives for One-Step Diffusion",
+      "authors": [
+        "Fei Peng",
+        "Junqiang Wu",
+        "Haoxian Tan",
+        "Jun Zhou",
+        "Jie Hu",
+        "Xiaoming Wei",
+        "Jie Guo",
+        "Xiu Li"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.03017",
+      "pdfUrl": "https://arxiv.org/pdf/2611.03017",
+      "excerpt": "Numerous distillation methods have been developed to accelerate diffusion models. Recent research indicates that hybrid strategies---blending different paradigms---yield superior results compared to single-method approaches. However, current works predominantly rely on a simple combination of objectives, leaving the question of how to effectively synergize them largely underexplored. In this paper, we specifically investigate the synergy between Score Distillation and Adversarial Distillation. We reveal that their operating zones are distinct and complementary: Score Distillation is effective in high-noise regimes for capturing the global distribution yet lacks fine-grained supervision in low-noise regions. Conversely, Adversarial Distillation is effective in low-noise regions but is prone to instability and suffers from discriminator failure when applied to high-noise intervals."
+    },
+    {
+      "arxivId": "2611.02955",
+      "title": "Generative diffusion in long-range correlated landscapes: Speciation cascade and the foam structure of the score",
+      "authors": [
+        "Jerome Garnier-Brun",
+        "Giulio Biroli",
+        "Marc Mézard",
+        "Jean-Philippe Bouchaud"
+      ],
+      "primaryCategory": "cond-mat.dis-nn",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.02955",
+      "pdfUrl": "https://arxiv.org/pdf/2611.02955",
+      "excerpt": "While state of the art for image and video generation, the fundamental reasons for the effectiveness of generative diffusion remain unclear. In particular, the observed advantage of following an entire reverse process with respect to single-shot or autoregressive methods, and for what type of data it may hold, is not well understood. In this work, we aim to better understand the role of the reverse process by considering a complex yet analytically tractable data model, the Gibbs measure of a high-dimensional Gaussian random potential with long-range correlations. Focusing on the exact score, we show that the speciation threshold, in which a trajectory commits to one class of the data, becomes a speciation window, in which the reverse process progressively resolves the Parisi tree of pure states of the full replica-symmetry breaking measure, committing to ever finer branches down to a single pure state."
+    },
+    {
+      "arxivId": "2611.02952",
+      "title": "Balancing Representations by Identifying and Generating Under-represented Data",
+      "authors": [
+        "Filipe Laitenberger",
+        "Hirokatsu Kataoka",
+        "Yuki Asano",
+        "Cees Snoek",
+        "Mohammadreza Salehi"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.02952",
+      "pdfUrl": "https://arxiv.org/pdf/2611.02952",
+      "excerpt": "Self-supervised learning inherits the coverage of its source data. When an unlabeled corpus is long-tailed, the representation becomes dense around frequent modes and thin where coverage is weak. Objectives for long-tailed SSL reweight the images already in the corpus and add no new ones. We introduce BRIDGE (Balancing Representations by Identifying and Generating Under-represented Data), a label-free feedback loop around the source set. The current encoder scores every source image by its mean kNN distance, and a budgeted acquisition rule selects images from a band of that score distribution where support is thin and the generator still produces faithful variants. A frozen image-to-image diffusion model then adds local variants of the selected anchors, and pretraining continues on the enlarged source set. We formulate acquisition as recoverability-weighted allocation of local support and derive when a finite budget should favor a sparse band that excludes the extreme tail and when reallocation after each repair is optimal under a fixed objective."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 544.344,
+      "bytes": 3266300,
+      "sha256": "7556cabe77137611c7e31131723c6c9b56da57177bee7ac023c154afa9f0608f",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 469.512,
+      "bytes": 2817308,
+      "sha256": "3c3473fba262881d892af31f5d82deb88964c324d49bf2ff7e4eaf5774ec1c32",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 487.992,
+      "bytes": 2928188,
+      "sha256": "8ca80df53b0e4f76b2c5372450acfd0ccab77f1e3d6f51248df490709d9beb85",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 624.336,
+      "bytes": 3746252,
+      "sha256": "53b0de0eadfe73b3dcf6fa0f10b9ae9fd39005e8aaa21f8f193579025ccd34e2",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 543.768,
+      "bytes": 3262844,
+      "sha256": "eddd017ee81774606c38a5eed2c3fc933a325fb98c424ee2f1e98bff0c49ba65",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 661.056,
+      "bytes": 3966572,
+      "sha256": "246b008a895bafd4834e4d48de982f2108880025dd977373855dd3ac29e71d7b",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"diffusion models\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(225s), zh=llm(163s), de=llm(213s), es=llm(208s), ru=llm(164s), it=llm(179s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
