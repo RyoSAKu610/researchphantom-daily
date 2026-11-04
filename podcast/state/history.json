@@ -70,5 +70,9 @@
   {
     "date": "2026-11-04",
     "topicId": "diffusion-models"
+  },
+  {
+    "date": "2026-11-05",
+    "topicId": "neural-decoding"
   }
 ]
