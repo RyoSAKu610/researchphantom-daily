@@ -152,12 +152,13 @@ fi
 # ------------------------------------------------------------ Irodori :8088 ---
 # Simple TCP connect check (no need to speak OpenAI here). Advisory only:
 # daily.mjs's per-language error design tolerates a missing JA engine.
+# Reachable -> [info]; unreachable -> [warn]. Never fails the exit code.
 irodori_port="${IRODORI_HOST##*:}"
 if (exec 3<>"/dev/tcp/${IRODORI_HOST%:*}/${irodori_port}") 2>/dev/null; then
-  check_warn "Irodori-TTS-Server on ${IRODORI_HOST}" "reachable (advisory check only)"
+  say "  [info] Irodori-TTS-Server on ${IRODORI_HOST} reachable (advisory; ja falls back via tts-hub)"
 else
   check_warn "Irodori-TTS-Server on ${IRODORI_HOST}" "not reachable" \
-    "JA audio simply records as failed for the day (nothing crashes). Start it: systemctl start irodori-tts"
+    "JA audio simply records as failed for the day (nothing crashes). Start it: ~/.config/podcast-bot/start-irodori.sh"
 fi
 
 # ------------------------------------------- arXiv prefetch cache (advisory) --
