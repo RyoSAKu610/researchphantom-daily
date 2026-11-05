@@ -27,6 +27,16 @@ RSS: [ja](https://ryosaku610.github.io/researchphantom-daily/feed-ja.xml) · [zh
 
 さらに毎日 06:30 / 06:37 JST の GitHub Actions（`daily-catchup.yml`）が、直近日付の**監査（report のみ・音声生成なし）**を行い、欠日・欠言語・尺異常があれば red X で知らせます（idempotent・bot 生成物には触れません）。
 
+## Site — 音の図書館
+
+`podcast-site/index.html` は「夜の図書館」として生成されます（`scripts/podcast/site/library.{css,js}` をインライン化）。
+
+- **今日の一冊**: ポインタで揺れ、タップで波紋が広がり、再生中は実際の音声に反応する波形の地形（ヒーロー）
+- **書架**: 各回を背表紙として並べ、クリックで本がひらく閲覧室（6 言語の声・台本・収録論文・抄録）
+- **目録**: 全論文をカードカタログとして検索・分野で絞り込み
+- **プレーヤー**: 常駐ミニプレーヤー（波形シーク・速度・続きから再生・ロック画面操作）
+- JavaScript なしでも全エピソードの再生／ダウンロードができるアーカイブを同梱
+
 ## Repo layout
 
 ```

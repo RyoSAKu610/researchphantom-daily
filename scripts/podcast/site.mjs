@@ -8,11 +8,13 @@
 // incremental, and zero episodes must produce empty-but-valid output (empty
 // index, empty feeds, empty episodes.json).
 //
-// No dependencies beyond Node builtins. The generated HTML embeds all CSS and
-// the tiny language switcher, so the page has zero external dependencies.
+// No dependencies beyond Node builtins. index.html inlines site/library.css
+// and site/library.js (the "音の図書館" UI); its only external request is
+// Google Fonts, which degrades to local system fonts when unavailable.
 // Base URL contract (pickBaseUrl): absolute URLs are used in RSS enclosures
 // and episodes.json; index.html always writes relative paths so a local
 // preview straight off the filesystem simply works.
+import { readFileSync } from "node:fs";
 import { copyFile, mkdir, readdir, rm, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -301,6 +303,146 @@ export function buildEpisodesJson(episodeEntries, config, baseUrl, languages) {
 }
 
 // ---- index.html -------------------------------------------------------------------
+//
+// "音の図書館" (The Sound Library): every episode is a book on a shelf. The
+// page is fully server-rendered (hero, shelf of spines, feeds and a plain
+// archive of every episode with native <audio> players), so it works without
+// JavaScript. library.js then upgrades it: an interactive sound-field hero,
+// a reading-room dialog per book, a searchable card catalog of every paper
+// and a persistent mini player. All episode data the script needs is
+// embedded as JSON, so the page makes no extra requests besides audio,
+// transcripts (on demand) and web fonts.
+
+const LIB_CSS = readFileSync(new URL("./site/library.css", import.meta.url), "utf8");
+const LIB_JS = readFileSync(new URL("./site/library.js", import.meta.url), "utf8");
+const FONTS_URL = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&family=Shippori+Mincho:wght@500;700&display=swap";
+
+// Cloth colours for the book spines (top, bottom of the gradient).
+const SPINE_CLOTH = [
+  ["#6b2424", "#3a1010"], // oxblood
+  ["#24452f", "#0f2117"], // forest
+  ["#22325a", "#0d162b"], // navy
+  ["#7a5418", "#3e2808"], // ochre
+  ["#4f2647", "#230e20"], // plum
+  ["#1d4a4c", "#0b2324"], // teal
+  ["#3b404b", "#191c22"], // slate
+  ["#5d3b27", "#2b190e"], // umber
+  ["#5c1a36", "#2a0816"], // wine
+  ["#4a5222", "#22260c"], // moss
+  ["#2e2c60", "#12112c"], // indigo
+  ["#7a3519", "#3a1408"], // rust
+];
+const WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+// FNV-1a: deterministic per-topic variation (colour, height) without Math.random.
+function hash32(value) {
+  let h = 0x811c9dc5;
+  for (const ch of String(value)) {
+    h ^= ch.codePointAt(0);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h >>> 0;
+}
+
+// Visual length of a label on a vertical spine: CJK glyphs stand upright and
+// take a full em, sideways Latin/Cyrillic letters roughly 0.58em.
+export function spineLength(label) {
+  let len = 0;
+  for (const ch of String(label ?? "")) {
+    len += /[　-鿿豈-﫿＀-￯]/.test(ch) ? 1 : ch === " " ? 0.3 : 0.58;
+  }
+  return Math.max(1, Math.round(len * 10) / 10);
+}
+
+// Font size (px) that fits a spine label: one vertical column when it fits
+// at a readable size, otherwise two columns. library.js mirrors this when
+// the visitor switches languages.
+export function spineFontSize(label, height, width) {
+  const len = spineLength(label);
+  const avail = height - 118;
+  const one = avail / len;
+  const size = one >= 12.5
+    ? Math.min(19, one)
+    : Math.min(16, avail / Math.ceil(len / 2), (width - 10) / 2 / 1.18);
+  return Math.max(10, Math.floor(size * 10) / 10);
+}
+
+function totalSeconds(view) {
+  return Object.values(view.audio).reduce((sum, audio) => sum + (Number(audio?.durationSeconds) || 0), 0);
+}
+
+function clock(seconds) {
+  const value = Math.max(0, Math.round(Number(seconds) || 0));
+  return `${Math.floor(value / 60)}:${String(value % 60).padStart(2, "0")}`;
+}
+
+// Book identity for every episode: number (oldest = 1), cloth, spine size.
+export function bookLayout(views) {
+  const books = [];
+  let previous = -1;
+  for (const [index, view] of views.entries()) {
+    const h = hash32(view.topicId || view.date);
+    let cloth = h % SPINE_CLOTH.length;
+    if (cloth === previous) cloth = (cloth + 5) % SPINE_CLOTH.length; // no twin neighbours
+    previous = cloth;
+    const minutes = totalSeconds(view) / 60;
+    books.push({
+      no: views.length - index,
+      cloth: SPINE_CLOTH[cloth],
+      height: 238 + ((h >>> 8) % 56) + Math.min(8, view.papers.length),
+      width: Math.round(44 + Math.min(20, minutes / 3.2)),
+      lean: (h >>> 16) % 9 === 0 ? ((h >>> 20) % 2 ? "lean-l" : "lean-r") : "",
+    });
+  }
+  return books;
+}
+
+function weekday(date) {
+  const parsed = new Date(`${date}T00:00:00Z`);
+  return Number.isNaN(parsed.getTime()) ? "" : WEEKDAYS[parsed.getUTCDay()];
+}
+
+// JSON for library.js. `<` is escaped so the payload can never close the
+// surrounding <script> element.
+export function libraryData(views, books, config, languages, covered) {
+  const data = {
+    title: config?.title ?? "Phantomresearch Daily",
+    languages: covered,
+    allLanguages: languages,
+    labels: Object.fromEntries(languages.map((lang) => [lang, langLabel(config, lang)])),
+    episodes: views.map((view, index) => ({
+      no: books[index].no,
+      date: view.date,
+      day: weekday(view.date),
+      topicId: view.topicId,
+      labels: view.topicLabels,
+      cloth: books[index].cloth,
+      papers: view.papers.map((paper) => ({
+        id: paper?.arxivId ?? "",
+        title: String(paper?.title ?? "").trim(),
+        authors: Array.isArray(paper?.authors) ? paper.authors : [],
+        cat: paper?.primaryCategory ?? "",
+        published: paper?.published ?? "",
+        url: typeof paper?.url === "string" && paper.url ? paper.url : paper?.arxivId ? `https://arxiv.org/abs/${paper.arxivId}` : "",
+        // Abstracts are fetched lazily from episodes.json (keeps the page light).
+        ex: String(paper?.excerpt ?? "").trim() ? 1 : 0,
+      })),
+      notes: view.notes,
+      audio: Object.fromEntries(covered.filter((lang) => view.audio[lang]).map((lang) => {
+        const audio = view.audio[lang];
+        return [lang, {
+          path: audio.path,
+          dur: audio.durationSeconds,
+          bytes: audio.bytes,
+          script: audio.scriptPath,
+          file: audioFileName(config, view.date, lang),
+        }];
+      })),
+    })),
+  };
+  return JSON.stringify(data).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
+}
 
 function paperListHtml(view) {
   if (view.papers.length === 0) {
@@ -324,7 +466,7 @@ function paperListHtml(view) {
 function langBlockHtml(view, lang, config) {
   if (!view.audio[lang]) return ""; // unavailable language: render nothing at all
   const audio = view.audio[lang];
-  const details = [formatBytes(audio.bytes), formatDuration(audio.durationSeconds) ? `${formatDuration(audio.durationSeconds)}s` : ""]
+  const details = [formatBytes(audio.bytes), audio.durationSeconds ? clock(audio.durationSeconds) : ""]
     .filter(Boolean).join(" · ");
   return [
     `      <div class="lang-block" data-lang="${escapeHtml(lang)}">`,
@@ -339,8 +481,7 @@ function langBlockHtml(view, lang, config) {
   ].filter((line) => line !== null).join("\n");
 }
 
-function episodeArticleHtml(entry, config, languages, latest) {
-  const view = episodeView(entry, config, languages);
+function episodeArticleHtml(view, config, languages, latest) {
   const topicSpans = languages
     .map((lang) => `<span class="topic-label" data-lang="${escapeHtml(lang)}">${escapeHtml(view.topicLabels[lang])}</span>`)
     .join("");
@@ -349,7 +490,7 @@ function episodeArticleHtml(entry, config, languages, latest) {
   return [
     `  <article class="episode${latest ? " latest" : ""}" id="ep-${escapeHtml(view.date)}">`,
     "    <header class=\"ep-head\">",
-    `      <h2 class="topic">${topicSpans}</h2>`,
+    `      <h3 class="topic">${topicSpans}</h3>`,
     `      <p class="when"><time datetime="${escapeHtml(view.date)}">${escapeHtml(view.date)}</time> <span class="badge">${badge}</span></p>`,
     "    </header>",
     blocks,
@@ -361,108 +502,250 @@ function episodeArticleHtml(entry, config, languages, latest) {
   ].join("\n");
 }
 
+function spineHtml(view, book, lang, latest) {
+  const label = view.topicLabels[lang] ?? view.topicId;
+  const [c1, c2] = book.cloth;
+  const style = `--c1:${c1};--c2:${c2};--h:${book.height};--w:${book.width};--fs:${spineFontSize(label, book.height, book.width)}`;
+  const aria = `No.${book.no} ${view.date} ${label}`;
+  return [
+    `      <a class="spine${book.lean ? ` ${book.lean}` : ""}${latest ? " is-new" : ""}" href="#ep-${escapeHtml(view.date)}" data-i="${book.no}" style="${style}" aria-label="${escapeHtml(aria)}">`,
+    `        <i class="band t"></i><i class="band t2"></i><i class="band b"></i><i class="band b2"></i>`,
+    `        <span class="spine-no">${book.no}</span>`,
+    `        <span class="spine-title">${escapeHtml(label)}</span>`,
+    `        <span class="spine-date">${escapeHtml(view.date.slice(5).replace("-", "."))}</span>`,
+    `      </a>`,
+  ].join("\n");
+}
+
+function shelfHtml(views, books, lang) {
+  const parts = [];
+  let month = "";
+  for (const [index, view] of views.entries()) {
+    const key = view.date.slice(0, 7);
+    if (key !== month) {
+      month = key;
+      const [year, mm] = key.split("-");
+      parts.push(`      <div class="bookend" aria-hidden="true"><i></i><b>${escapeHtml(String(Number(mm)))}</b><span>${escapeHtml(`${MONTHS[Number(mm) - 1] ?? ""} ${year}`)}</span></div>`);
+    }
+    parts.push(spineHtml(view, books[index], lang, index === 0));
+  }
+  return parts.join("\n");
+}
+
+const ICONS = {
+  play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.5 4.6v14.8a1 1 0 0 0 1.52.85l12.1-7.4a1 1 0 0 0 0-1.7L9.02 3.75A1 1 0 0 0 7.5 4.6z"/></svg>',
+  rss: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="5.5" cy="18.5" r="1.5" fill="currentColor" stroke="none"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
+  arrowL: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  arrowR: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>',
+  books: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h4v16H4zM10 4h4v16h-4zM16.2 4.6l3.8 1 -3.6 14.8-3.8-1z"/></svg>',
+};
+const BRAND_MARK = '<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e8c2"/><stop offset=".55" stop-color="#c9a061"/><stop offset="1" stop-color="#f0d9a6"/></linearGradient></defs><rect x="5" y="6" width="5" height="20" rx="1" fill="url(#bm)"/><rect x="12" y="4" width="5" height="22" rx="1" fill="url(#bm)" opacity=".75"/><path d="M20 8.5c3 2 4.5 4.6 4.5 7.5s-1.5 5.5-4.5 7.5" fill="none" stroke="url(#bm)" stroke-width="2" stroke-linecap="round"/><path d="M20 12.5c1.4 1 2 2.2 2 3.5s-.6 2.5-2 3.5" fill="none" stroke="url(#bm)" stroke-width="2" stroke-linecap="round" opacity=".6"/></svg>';
+const FAVICON = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#0c0a08"/><rect x="7" y="7" width="5" height="18" rx="1" fill="#e3c583"/><rect x="14" y="5" width="5" height="20" rx="1" fill="#c9a061"/><path d="M22 10c2.2 1.6 3.3 3.6 3.3 6s-1.1 4.4-3.3 6" fill="none" stroke="#e3c583" stroke-width="2" stroke-linecap="round"/></svg>');
+
+function statementHtml(languageCount) {
+  // Words light up one by one as the visitor scrolls (library.js).
+  const words = [
+    ["毎朝6:30、"], ["arXivに"], ["届いたばかりの"], ["論文を、"], [`${languageCount}つの声で。`],
+    ["読むかわりに、"], ["聴く。"], ["ここは、"], ["音の", "gold"], ["図書館", "gold"], ["です。"],
+  ];
+  return words.map(([word, cls]) => `<span class="w${cls ? ` ${cls}` : ""}">${escapeHtml(word)}</span>`).join("");
+}
+
 export function buildIndexHtml(episodeEntries, config, languages) {
   languages = (languages ?? (config?.languages ?? [])).filter(Boolean);
-  const title = escapeHtml(config?.title ?? "Phantomresearch Daily");
+  const titleText = config?.title ?? "Phantomresearch Daily";
+  const title = escapeHtml(titleText);
   const subtitleJa = escapeHtml(config?.subtitle?.ja ?? "");
-  // Secondary hero line: prefer German (first European lineup language), then
-  // any remaining subtitle entry, so removed-lineup keys (en) are not required.
-  const subtitleSecond = escapeHtml(config?.subtitle?.de ?? config?.subtitle?.es ?? config?.subtitle?.zh ?? "");
   const views = episodeEntries.map((entry) => episodeView(entry, config, languages));
+  const books = bookLayout(views);
 
   // A language tab exists only when at least one episode ships that language.
   const covered = languages.filter((lang) => views.some((view) => view.audio[lang]));
+  const uiLang = covered.includes("ja") ? "ja" : covered[0] ?? languages[0] ?? "ja";
   const tabs = covered
-    .map((lang) => `<button type="button" class="tab" data-lang-tab="${escapeHtml(lang)}">${escapeHtml(langLabel(config, lang))}</button>`)
-    .join("\n      ");
-  const feedRows = languages
-    .map((lang) => `<a href="feed-${escapeHtml(lang)}.xml">${escapeHtml(LANG_DEFAULTS.rss[lang] ?? `RSS (${lang})`)}</a>`)
-    .join(`<span class="dot">·</span>`);
-  const articles = views.map((view, index) => episodeArticleHtml(episodeEntries[index], config, languages, index === 0)).join("\n");
-  const navigation = covered.length > 0 ? `<nav class="tabs" aria-label="Language">\n      ${tabs}\n    </nav>\n` : "";
-  const body = views.length === 0
+    .map((lang) => `<button type="button" class="tab${lang === uiLang ? " is-active" : ""}" data-lang-tab="${escapeHtml(lang)}" aria-pressed="${lang === uiLang}" title="${escapeHtml(langLabel(config, lang))}">${escapeHtml(lang.toUpperCase())}</button>`)
+    .join("");
+  const navigation = covered.length > 0 ? `<nav class="tabs" aria-label="Language">${tabs}</nav>` : "";
+
+  // Library-wide numbers for the stats band.
+  const paperIds = new Set();
+  for (const view of views) for (const paper of view.papers) paperIds.add(paper?.arxivId || paper?.title);
+  const hours = views.reduce((sum, view) => sum + totalSeconds(view), 0) / 3600;
+
+  const latest = views[0] ?? null;
+  const latestBook = books[0] ?? null;
+  const latestLabel = latest ? latest.topicLabels[uiLang] ?? latest.topicId : "";
+  const latestAudio = latest ? latest.audio[uiLang] ?? covered.map((lang) => latest.audio[lang]).find(Boolean) : null;
+  const latestVoices = latest ? covered.filter((lang) => latest.audio[lang]).length : 0;
+  const altLabels = latest ? covered.filter((lang) => lang !== uiLang).map((lang) => latest.topicLabels[lang]).filter(Boolean) : [];
+
+  const hero = latest ? `
+  <section class="hero" id="today" aria-label="今日の一冊">
+    <canvas class="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <p class="eyebrow rise"><span>No.${latestBook.no}</span><i class="sep"></i><time datetime="${escapeHtml(latest.date)}">${escapeHtml(latest.date.replaceAll("-", "."))} ${escapeHtml(weekday(latest.date))}</time><i class="sep"></i><span>Today's volume</span></p>
+      <p class="hero-kicker rise d1">今日の一冊</p>
+      <h1 class="hero-title rise d2"><span class="foil" data-hero-title>${escapeHtml(latestLabel)}</span></h1>
+      <p class="hero-alt rise d3" data-hero-alt aria-hidden="true"><span>${escapeHtml(altLabels[0] ?? "")}</span></p>
+      <div class="hero-row rise d4">
+        <button type="button" class="play-xl js-only" data-hero-play aria-label="今日の回を再生">
+          <svg class="ring" viewBox="0 0 88 88" aria-hidden="true"><circle class="track" cx="44" cy="44" r="42"/><circle class="bar" cx="44" cy="44" r="42"/></svg>
+          <span class="ico" data-ico>${ICONS.play}</span>
+        </button>
+        <div class="hero-meta">
+          <strong>${latestAudio?.durationSeconds ? `${Math.round(latestAudio.durationSeconds / 60)} min` : "—"} · ${latest.papers.length} papers · ${latestVoices} voices</strong>
+          <span>${title} — ${subtitleJa}</span>
+          <span class="resume" data-hero-resume hidden></span>
+        </div>
+        <div class="hero-links">
+          <a class="pill js-only" href="#ep-${escapeHtml(latest.date)}" data-open-book="${latestBook.no}">${ICONS.books}本をひらく</a>
+          <a class="pill no-js-only" href="#ep-${escapeHtml(latest.date)}">${ICONS.books}今日の回へ</a>
+          <a class="pill" href="#stacks">書架をみる</a>
+        </div>
+      </div>
+    </div>
+    <span class="scroll-cue" aria-hidden="true"></span>
+  </section>` : `
+  <section class="hero" id="today" aria-label="${title}">
+    <canvas class="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <p class="eyebrow rise"><span>The sound library</span></p>
+      <h1 class="hero-title rise d2"><span class="foil">${title}</span></h1>
+      <p class="hero-alt rise d3">${subtitleJa}</p>
+    </div>
+  </section>`;
+
+  const stats = [
+    [views.length, 0, "", "所蔵エピソード", "Volumes"],
+    [paperIds.size, 0, "", "収録論文", "Papers"],
+    [Math.round(hours * 10) / 10, 1, "h", "音声の総量", "Hours of audio"],
+    [covered.length, 0, "", "ナレーションの言語", "Voices"],
+  ].map(([n, dec, unit, ja, en]) => `<div class="stat"><div class="stat-n"><span data-count="${n}" data-dec="${dec}">${dec ? Number(n).toFixed(dec) : n}</span>${unit ? `<sup>${unit}</sup>` : ""}</div><div class="stat-l">${ja}<span>${en}</span></div></div>`).join("");
+
+  const shelf = views.length === 0
     ? `  <p class="empty">まだエピソードはありません。<span class="lmuted">No episodes yet — try <code>node scripts/podcast/daily.mjs</code>.</span></p>`
-    : articles;
+    : `  <div class="shelf-outer" data-reveal>
+    <div class="shelf" data-shelf>
+${shelfHtml(views, books, uiLang)}
+      <div class="bookend" aria-hidden="true"><i></i><b>No.1</b><span>The first volume</span></div>
+    </div>
+    <div class="shelf-board"></div><div class="shelf-glow"></div>
+  </div>
+  <div class="wrap shelf-hint js-only"><span>← 新しい巻</span><span class="shelf-progress"><i data-shelf-thumb></i></span><span>古い巻 →</span></div>`;
+
+  const feedCards = languages.map((lang) => `<div class="feed"><div class="feed-name">${escapeHtml(langLabel(config, lang))}<small>feed-${escapeHtml(lang)}.xml</small></div><div class="feed-actions"><button type="button" class="js-only" data-copy="feed-${escapeHtml(lang)}.xml" aria-label="${escapeHtml(`${langLabel(config, lang)} の RSS URL をコピー`)}">${ICONS.copy}</button><a href="feed-${escapeHtml(lang)}.xml" aria-label="${escapeHtml(LANG_DEFAULTS.rss[lang] ?? `RSS (${lang})`)}">${ICONS.rss}</a></div></div>`).join("\n      ");
+
+  const articles = views.map((view, index) => episodeArticleHtml(view, config, languages, index === 0)).join("\n");
 
   return `<!doctype html>
-<html lang="ja">
+<html lang="ja" data-lang="${escapeHtml(uiLang)}">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="${subtitleJa}">
-<title>${title}</title>
+<meta name="theme-color" content="#0c0a08">
+<meta property="og:title" content="${title} — 音の図書館">
+<meta property="og:description" content="${subtitleJa}">
+<meta property="og:type" content="website">
+<title>${title} — 音の図書館</title>
+<link rel="icon" href="${FAVICON}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="${FONTS_URL}">
+${covered.map((lang) => `<link rel="alternate" type="application/rss+xml" title="${escapeHtml(channelTitle(config, lang))}" href="feed-${escapeHtml(lang)}.xml">`).join("\n")}
+<script>document.documentElement.classList.add("js")</script>
 <style>
-:root{--ink:#15100c;--line:rgba(227,197,131,.22);--cream:#f6efdf;--muted:#b8a98d;--gold:#e3c583;--dark:#1a1410;--radius:14px}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background-color:var(--ink);color:var(--cream);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Noto Sans SC","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}
-main{max-width:760px;margin:0 auto;padding:32px 20px 56px}
-header.hero{padding-bottom:24px;border-bottom:1px solid var(--line)}
-.hero h1{margin:0;font-size:clamp(28px,6vw,40px);font-weight:800;letter-spacing:.01em;background:linear-gradient(115deg,#f5e5bd 0%,#e3c583 38%,#b58a45 72%,#ecd8a4 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero .sub{margin:8px 0 0;color:var(--muted);font-size:14px}
-.hero .sub-en{margin:2px 0 0;color:#8e8168;font-size:13px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--muted)}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
-.tab{cursor:pointer;font:inherit;font-size:13px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px}
-.tab:hover{color:var(--cream);border-color:rgba(227,197,131,.45)}
-.tab.is-active{background:linear-gradient(135deg,#f0d9a6 0%,#e3c583 45%,#c99b52 100%);color:var(--dark);border-color:transparent;font-weight:600}
-.feeds{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 0;font-size:13px;color:var(--muted)}
-.feeds a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px}
-.feeds a:hover{color:var(--gold)}
-.feeds .dot{color:#5b4f3c}
-h2.section{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin:28px 0 8px}
-article.episode{margin:18px 0;padding:20px 20px 16px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(255,255,255,.015))}
-article.episode.latest{border-color:rgba(227,197,131,.35)}
-.ep-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
-.ep-head .topic{margin:0;font-size:19px;font-weight:700}
-.topic-label+.topic-label::before{content:"·";margin:0 6px 0 2px;color:#5b4f3c;font-weight:400}
-.ep-head .when{margin:0;color:var(--muted);font-size:13px;display:flex;gap:10px;align-items:center}
-.badge{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--muted)}
-.lang-block{margin-top:18px}
-.lang-label{margin:0 0 6px;font-size:12px;color:var(--muted);letter-spacing:.08em}
-audio{display:block;width:100%;height:40px}
-.dl-row{display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;margin:10px 0 0}
-.btn{display:inline-block;text-decoration:none;background:linear-gradient(135deg,#f0d9a6 0%,#e3c583 45%,#c99b52 100%);color:var(--dark);font-size:13px;font-weight:600;border-radius:10px;padding:8px 16px;transition:transform .3s cubic-bezier(.22,1,.36,1)}
-.btn:hover{transform:translateY(-1px)}
-.link{font-size:13px;color:var(--muted)}
-.dl-meta{font-size:12px;color:#8e8168}
-details.papers{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
-details.papers summary{cursor:pointer;color:var(--muted);font-size:13px}
-details.papers ul{list-style:none;margin:12px 0 0;padding:0}
-details.papers li{margin:10px 0;font-size:14px}
-details.papers a{color:var(--cream);text-decoration:none;border-bottom:1px solid var(--line)}
-details.papers a:hover{color:var(--gold);border-color:var(--gold)}
-details.papers .meta{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-.papers-empty{color:var(--muted);font-size:13px;margin:10px 0 0}
-p.empty{border:1px dashed var(--line);border-radius:var(--radius);padding:32px 20px;text-align:center;color:var(--muted)}
-p.empty .lmuted{display:block;font-size:13px;color:#8e8168;margin-top:6px}
-p.empty code{font-size:11px}
-footer{max-width:760px;margin:0 auto;padding:0 20px 48px;color:var(--muted);font-size:12px;line-height:1.9}
-footer a{color:var(--muted)}
-@media (max-width:560px){
-  main{padding:24px 14px 40px}
-  footer{padding-left:14px;padding-right:14px}
-  article.episode{padding:16px 14px 12px}
-  .dl-row{gap:10px}
-}
-</style>
+${LIB_CSS}</style>
 </head>
 <body>
+<header class="nav" data-nav>
+  <div class="wrap">
+    <a class="brand" href="#today" aria-label="${title}">${BRAND_MARK}<span class="brand-name">Phantom<em>research</em> Daily</span></a>
+    <nav class="nav-links" aria-label="Sections"><a href="#today">今日</a><a href="#stacks">書架</a><a class="js-only" href="#catalog">目録</a><a href="#subscribe">購読</a></nav>
+    ${navigation}
+  </div>
+</header>
 <main>
-  <header class="hero">
-    <h1>${title}</h1>
-    <p class="sub">${subtitleJa}</p>
-    <p class="sub-en">${subtitleSecond}</p>
-    <div class="chips"><span class="chip">毎日テーマが変わる</span><span class="chip">${languages.length} languages</span><span class="chip">ローカル生成音声</span></div>
-    ${navigation}<nav class="feeds" aria-label="RSS feeds">${feedRows}</nav>
-  </header>
-  <h2 class="section">エピソード / Episodes</h2>
-${body}
+${hero}
+
+  <section class="statement" aria-label="About">
+    <div class="statement-sticky"><div class="wrap"><p data-statement>${statementHtml(covered.length || languages.length)}</p></div></div>
+  </section>
+
+  <section class="wrap" aria-label="Library in numbers"><div class="stats" data-reveal>${stats}</div></section>
+
+  <section class="section" id="stacks" aria-labelledby="stacks-title">
+    <div class="wrap sec-head" data-reveal>
+      <div><p class="sec-no">01 — The stacks</p><h2 class="sec-title" id="stacks-title">書架<small>Every morning, a new volume.</small></h2></div>
+      <div class="stacks-tools js-only"><button type="button" class="icon-btn" data-shelf-prev aria-label="新しい巻へ">${ICONS.arrowL}</button><button type="button" class="icon-btn" data-shelf-next aria-label="古い巻へ">${ICONS.arrowR}</button></div>
+    </div>
+${shelf}
+  </section>
+
+  <section class="section wrap js-only" id="catalog" aria-labelledby="catalog-title">
+    <div class="sec-head" data-reveal>
+      <div><p class="sec-no">02 — Card catalog</p><h2 class="sec-title" id="catalog-title">目録<small>Search every paper we have read aloud.</small></h2></div>
+      <p class="sec-lede">収録したすべての論文をカードにしました。タイトル・著者・分野・テーマで探せます。カードを選ぶと、その論文が収められた巻がひらきます。</p>
+    </div>
+    <div class="catalog-bar">
+      <label class="search">${ICONS.search}<input type="search" data-search placeholder="論文・著者・分野・テーマを検索" autocomplete="off" aria-label="論文を検索"><kbd>/</kbd></label>
+    </div>
+    <div class="chips" data-chips></div>
+    <p class="catalog-count" data-count-label></p>
+    <div class="cards" data-cards></div>
+    <div class="more"><button type="button" class="pill" data-more hidden>さらに表示</button></div>
+  </section>
+
+  <section class="section wrap" id="subscribe" aria-labelledby="subscribe-title">
+    <div class="sec-head" data-reveal>
+      <div><p class="sec-no">03 — Subscribe</p><h2 class="sec-title" id="subscribe-title">購読<small>Take the library with you.</small></h2></div>
+      <p class="sec-lede">お使いのポッドキャストアプリに RSS を登録すると、毎朝の新しい巻が自動で届きます。言語ごとに別のフィードです。</p>
+    </div>
+    <div class="feeds-grid" data-reveal="2">
+      ${feedCards}
+    </div>
+  </section>
+
+  <section class="archive wrap" id="archive" aria-label="Archive">
+    <h2 class="sec-title">全エピソード<small>Episodes</small></h2>
+${articles}
+  </section>
 </main>
-<footer>出典: arXiv（各論文のライセンスに従います）・音声はローカル生成です。機械可読一覧: <a href="episodes.json">episodes.json</a></footer>
-<script>(function(){var html=document.documentElement;if(!html||!html.classList)return;html.classList.add("js");var tabs=[].slice.call(document.querySelectorAll(".tab[data-lang-tab]"));if(!tabs.length)return;function apply(lang){tabs.forEach(function(tab){tab.classList.toggle("is-active",tab.getAttribute("data-lang-tab")===lang)});[].slice.call(document.querySelectorAll("[data-lang]")).forEach(function(el){var active=el.getAttribute("data-lang")===lang;el.classList.toggle("is-active",active);el.hidden=!active;});if(!document.querySelector("[data-lang].is-active")){tabs[0]&&tabs[0].classList.add("is-active")}}for(var i=0;i<tabs.length;i++)tabs[i].addEventListener("click",function(){apply(this.getAttribute("data-lang-tab"))});apply(tabs[0].getAttribute("data-lang-tab"));})();</script>
+
+<footer class="foot">
+  <div class="wrap foot-grid">
+    <div><div class="foot-mark">Phantom<em>research</em><br>Daily</div><p>${subtitleJa}<br>arXiv の新着論文から毎朝テーマを選び、各言語の短いブリーフとしてお届けする、音の図書館です。</p></div>
+    <div><h4>Colophon</h4><p>出典: arXiv（各論文のライセンスに従います）・音声はローカル生成です。台本は抄録のみをもとにした要約で、内容の評価は行いません。</p></div>
+    <div><h4>Data</h4><p>機械可読一覧: <a href="episodes.json">episodes.json</a><br>RSS: ${languages.map((lang) => `<a href="feed-${escapeHtml(lang)}.xml">${escapeHtml(lang)}</a>`).join(" · ")}</p><p class="kbd-hint js-only"><kbd>Space</kbd>再生/停止 <kbd>←</kbd><kbd>→</kbd>15秒 <kbd>/</kbd>検索</p></div>
+  </div>
+</footer>
+
+<div class="room" id="room" role="dialog" aria-modal="true" aria-label="閲覧室" hidden>
+  <div class="room-scrim" data-close></div>
+  <div class="book" data-book></div>
+</div>
+
+<div class="player" data-player aria-label="プレーヤー" role="region">
+  <button type="button" class="pl-book" data-pl-open aria-label="この巻をひらく"></button>
+  <div class="pl-mid">
+    <div class="pl-line"><span class="pl-lang" data-pl-lang></span><span class="pl-title" data-pl-title></span><span class="pl-time" data-pl-time>0:00</span></div>
+    <canvas class="pl-wave" data-pl-wave aria-label="再生位置" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></canvas>
+  </div>
+  <div class="pl-ctrls">
+    <button type="button" class="pl-btn skip" data-pl-back aria-label="15秒戻る"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/><text x="12" y="15.4" font-size="7" text-anchor="middle" fill="currentColor" stroke="none" font-family="sans-serif">15</text></svg></button>
+    <button type="button" class="pl-btn main" data-pl-toggle aria-label="再生">${ICONS.play}</button>
+    <button type="button" class="pl-btn skip" data-pl-fwd aria-label="30秒進む"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v4.5h-4.5"/><text x="12" y="15.4" font-size="7" text-anchor="middle" fill="currentColor" stroke="none" font-family="sans-serif">30</text></svg></button>
+    <button type="button" class="pl-btn pl-rate" data-pl-rate aria-label="再生速度">1×</button>
+    <button type="button" class="pl-btn pl-x" data-pl-close aria-label="プレーヤーを閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+</div>
+<div class="toast" data-toast role="status" aria-live="polite"></div>
+
+<script type="application/json" id="library-data">${libraryData(views, books, config, languages, covered)}</script>
+<script>
+${LIB_JS}</script>
 </body>
 </html>
 `;
