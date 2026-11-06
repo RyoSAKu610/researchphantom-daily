@@ -392,7 +392,8 @@ export function bookLayout(views) {
       cloth: SPINE_CLOTH[cloth],
       height: 238 + ((h >>> 8) % 56) + Math.min(8, view.papers.length),
       width: Math.round(44 + Math.min(20, minutes / 3.2)),
-      lean: (h >>> 16) % 9 === 0 ? ((h >>> 20) % 2 ? "lean-l" : "lean-r") : "",
+      // Spine design: 0 = gilt bands, 1 = leather title label, 2 = blind-tooled panel.
+      variant: (h >>> 16) % 3,
     });
   }
   return books;
@@ -502,17 +503,28 @@ function episodeArticleHtml(view, config, languages, latest) {
   ].join("\n");
 }
 
-function spineHtml(view, book, lang, latest) {
+// One book = a 3D object: spine (front face), front cover (right face, shows
+// the title when the book is pulled out and turned), back cover (left face)
+// and the page block on top. library.js drives its physics; without JS it
+// is simply a link to the episode in the archive.
+function bookHtml(view, book, lang, latest) {
   const label = view.topicLabels[lang] ?? view.topicId;
   const [c1, c2] = book.cloth;
   const style = `--c1:${c1};--c2:${c2};--h:${book.height};--w:${book.width};--fs:${spineFontSize(label, book.height, book.width)}`;
   const aria = `No.${book.no} ${view.date} ${label}`;
+  const ornament = book.variant === 0
+    ? `<i class="band t"></i><i class="band t2"></i><i class="band b"></i><i class="band b2"></i>`
+    : book.variant === 1
+      ? `<i class="band t2"></i><i class="band b2"></i>`
+      : `<i class="panel"></i>`;
   return [
-    `      <a class="spine${book.lean ? ` ${book.lean}` : ""}${latest ? " is-new" : ""}" href="#ep-${escapeHtml(view.date)}" data-i="${book.no}" style="${style}" aria-label="${escapeHtml(aria)}">`,
-    `        <i class="band t"></i><i class="band t2"></i><i class="band b"></i><i class="band b2"></i>`,
-    `        <span class="spine-no">${book.no}</span>`,
-    `        <span class="spine-title">${escapeHtml(label)}</span>`,
-    `        <span class="spine-date">${escapeHtml(view.date.slice(5).replace("-", "."))}</span>`,
+    `      <a class="slot${latest ? " is-new" : ""}" href="#ep-${escapeHtml(view.date)}" data-i="${book.no}" style="${style}" aria-label="${escapeHtml(aria)}">`,
+    `        <span class="bk"><span class="bk-in">`,
+    `          <span class="face spine v${book.variant}">${ornament}<span class="spine-no">${book.no}</span><span class="spine-title">${escapeHtml(label)}</span><span class="spine-date">${escapeHtml(view.date.slice(5).replace("-", "."))}</span></span>`,
+    `          <span class="face f-cover" aria-hidden="true"><span class="cv-no">No.${book.no}</span><span class="cv-title">${escapeHtml(label)}</span><span class="cv-rule"></span><span class="cv-date">${escapeHtml(view.date.replaceAll("-", "."))}</span></span>`,
+    `          <span class="face f-back" aria-hidden="true"></span>`,
+    `          <span class="face f-top" aria-hidden="true"></span>`,
+    `        </span></span>`,
     `      </a>`,
   ].join("\n");
 }
@@ -525,12 +537,62 @@ function shelfHtml(views, books, lang) {
     if (key !== month) {
       month = key;
       const [year, mm] = key.split("-");
-      parts.push(`      <div class="bookend" aria-hidden="true"><i></i><b>${escapeHtml(String(Number(mm)))}</b><span>${escapeHtml(`${MONTHS[Number(mm) - 1] ?? ""} ${year}`)}</span></div>`);
+      parts.push(`      <div class="plate" aria-hidden="true"><span class="plate-face"><b>${escapeHtml(String(Number(mm)))}</b><small>${escapeHtml(`${MONTHS[Number(mm) - 1] ?? ""} ${year}`)}</small></span></div>`);
     }
-    parts.push(spineHtml(view, books[index], lang, index === 0));
+    parts.push(bookHtml(view, books[index], lang, index === 0));
   }
+  // Still-life at the end of the stacks: books lying flat, an hourglass, a plant.
+  parts.push(`      <div class="deco deco-stack" aria-hidden="true"><i></i><i></i><i></i><i></i></div>`);
+  parts.push(`      <div class="deco deco-glass" aria-hidden="true">${HOURGLASS_SVG}</div>`);
+  parts.push(`      <div class="deco deco-plant" aria-hidden="true">${PLANT_SVG}</div>`);
   return parts.join("\n");
 }
+
+// ---- assistants: しおり (black cat, the librarian) and こむぎ (shiba, the guide) ----
+const CAT_SVG = `<svg class="cat-svg" viewBox="0 0 140 180" aria-hidden="true">
+<g class="cat-tail"><path d="M92 106 C106 116 112 136 104 156 C100 166 108 174 116 168" fill="none" stroke="#17141a" stroke-width="9" stroke-linecap="round"/></g>
+<path d="M40 112 C33 84 44 62 70 60 C96 62 107 84 100 112 Z" fill="#17141a"/>
+<path d="M58 108 C56 90 62 76 70 74 C78 76 84 90 82 108 Z" fill="#221e27"/>
+<ellipse cx="58" cy="111" rx="8" ry="4.5" fill="#211d25"/><ellipse cx="82" cy="111" rx="8" ry="4.5" fill="#211d25"/>
+<path d="M50 64 Q70 76 90 64" fill="none" stroke="#8a2f2a" stroke-width="4" stroke-linecap="round"/>
+<g class="cat-tag"><rect x="65" y="69" width="10" height="8" rx="1.5" fill="#e3c583"/><path d="M67 72h6M67 74.5h4" stroke="#7a5418" stroke-width=".8"/></g>
+<g class="cat-head">
+<path d="M47 32 L44 5 L66 22 Z" fill="#17141a"/><path d="M93 32 L96 5 L74 22 Z" fill="#17141a"/>
+<path d="M50 27 L48.5 12 L60 21 Z" fill="#3a2a35"/><path d="M90 27 L91.5 12 L80 21 Z" fill="#3a2a35"/>
+<circle cx="70" cy="44" r="27" fill="#17141a"/>
+<g class="cat-eyes"><ellipse cx="59" cy="44" rx="6.6" ry="7.2" fill="#e3c583"/><ellipse cx="81" cy="44" rx="6.6" ry="7.2" fill="#e3c583"/>
+<g class="cat-pupils"><ellipse cx="59" cy="44" rx="2.3" ry="5.6" fill="#0c0a08"/><ellipse cx="81" cy="44" rx="2.3" ry="5.6" fill="#0c0a08"/><circle cx="60.6" cy="41.4" r="1.2" fill="#fff8e6"/><circle cx="82.6" cy="41.4" r="1.2" fill="#fff8e6"/></g>
+<ellipse class="lid" cx="59" cy="44" rx="7.6" ry="8.2" fill="#17141a"/><ellipse class="lid" cx="81" cy="44" rx="7.6" ry="8.2" fill="#17141a"/></g>
+<path class="cat-sleepy" d="M53 45 q6 4 12 0 M75 45 q6 4 12 0" fill="none" stroke="#e3c583" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M67 53.5 L73 53.5 L70 57 Z" fill="#c98a8a"/>
+<path d="M70 57 q-3 4 -6.5 2 M70 57 q3 4 6.5 2" fill="none" stroke="#6b5560" stroke-width="1.1" stroke-linecap="round"/>
+<path d="M50 52 L36 49 M50 55 L35 56 M90 52 L104 49 M90 55 L105 56" stroke="rgba(243,234,216,.32)" stroke-width=".9" stroke-linecap="round"/>
+<g class="cat-phones"><path d="M44 40 Q70 2 96 40" fill="none" stroke="#c9a061" stroke-width="3.5" stroke-linecap="round"/><rect x="38" y="34" width="10" height="16" rx="4" fill="#2d2620" stroke="#e3c583" stroke-width="1.5"/><rect x="92" y="34" width="10" height="16" rx="4" fill="#2d2620" stroke="#e3c583" stroke-width="1.5"/></g>
+</g></svg>`;
+
+const DOG_SVG = `<svg class="dog-svg" viewBox="0 0 120 124" aria-hidden="true">
+<g class="dog-tail"><path d="M84 96 C102 92 108 74 98 66 C91 61 84 67 89 74" fill="none" stroke="#d48f4f" stroke-width="10" stroke-linecap="round"/><path d="M98 70 C100 74 98 80 94 84" fill="none" stroke="#f4e4c8" stroke-width="4" stroke-linecap="round"/></g>
+<g class="dog-body"><path d="M34 114 C29 90 40 70 60 68 C80 70 91 90 86 114 Z" fill="#d48f4f"/>
+<path d="M48 114 C48 98 54 86 60 86 C66 86 72 98 72 114 Z" fill="#f4e4c8"/>
+<g class="dog-legs"><ellipse class="leg-l" cx="50" cy="114" rx="8" ry="4.6" fill="#f4e4c8"/><ellipse class="leg-r" cx="70" cy="114" rx="8" ry="4.6" fill="#f4e4c8"/></g>
+<path d="M41 74 Q60 88 79 74 L60 98 Z" fill="#2f5a3f"/><circle cx="54" cy="81" r="1.2" fill="#e3c583"/><circle cx="66" cy="81" r="1.2" fill="#e3c583"/><circle cx="60" cy="89" r="1.2" fill="#e3c583"/></g>
+<g class="dog-head">
+<path d="M33 37 L36 9 L55 26 Z" fill="#d48f4f"/><path d="M87 37 L84 9 L65 26 Z" fill="#d48f4f"/>
+<path d="M38 32 L39.5 16 L50 27 Z" fill="#a8652f"/><path d="M82 32 L80.5 16 L70 27 Z" fill="#a8652f"/>
+<path d="M29 48 C29 30 43 21 60 21 C77 21 91 30 91 48 C91 65 77 75 60 75 C43 75 29 65 29 48 Z" fill="#d48f4f"/>
+<path d="M37 53 C39 66 49 73 60 73 C71 73 81 66 83 53 C75 58 66 55 60 50 C54 55 45 58 37 53 Z" fill="#f4e4c8"/>
+<circle cx="50" cy="35" r="3" fill="#f4e4c8"/><circle cx="70" cy="35" r="3" fill="#f4e4c8"/>
+<g class="dog-eyes"><circle cx="49" cy="45" r="4.2" fill="#1a130b"/><circle cx="71" cy="45" r="4.2" fill="#1a130b"/><circle cx="50.4" cy="43.5" r="1.4" fill="#fff"/><circle cx="72.4" cy="43.5" r="1.4" fill="#fff"/>
+<ellipse class="lid" cx="49" cy="45" rx="5" ry="5" fill="#d48f4f"/><ellipse class="lid" cx="71" cy="45" rx="5" ry="5" fill="#d48f4f"/></g>
+<path class="dog-happy" d="M44 46 q5 -5 10 0 M66 46 q5 -5 10 0" fill="none" stroke="#1a130b" stroke-width="2" stroke-linecap="round"/>
+<ellipse cx="41" cy="58" rx="4.5" ry="2.6" fill="#e8907a" opacity=".4"/><ellipse cx="79" cy="58" rx="4.5" ry="2.6" fill="#e8907a" opacity=".4"/>
+<ellipse cx="60" cy="56" rx="4.6" ry="3.3" fill="#1a130b"/>
+<path class="dog-tongue" d="M56.5 62 q3.5 10 7 0 Z" fill="#e87a8a"/>
+<path d="M60 59.5 q-4 5 -8.5 2 M60 59.5 q4 5 8.5 2" fill="none" stroke="#1a130b" stroke-width="1.5" stroke-linecap="round"/>
+</g></svg>`;
+
+const PLANT_SVG = `<svg viewBox="0 0 70 110"><path d="M35 66 C30 46 14 40 8 26 C22 30 32 40 35 58 C36 36 44 18 58 10 C54 28 44 42 37 62 C42 48 54 42 66 44 C56 50 44 56 38 68" fill="#3f6b45"/><path d="M35 66 C33 52 26 44 18 38" fill="none" stroke="#2c4f33" stroke-width="1.4"/><path d="M18 66 H52 L48 104 H22 Z" fill="#9a5a3a"/><path d="M16 62 H54 V70 H16 Z" fill="#b8704a"/><path d="M22 70 H48" stroke="rgba(0,0,0,.25)" stroke-width="2"/></svg>`;
+const HOURGLASS_SVG = `<svg viewBox="0 0 50 100"><rect x="6" y="4" width="38" height="6" rx="2" fill="#c9a061"/><rect x="6" y="90" width="38" height="6" rx="2" fill="#c9a061"/><path d="M10 10v4c0 14 12 22 12 36s-12 22-12 36v4h30v-4c0-14-12-22-12-36s12-22 12-36v-4z" fill="rgba(243,234,216,.10)" stroke="rgba(243,234,216,.4)" stroke-width="1.2"/><path class="sand-top" d="M15 22 h20 c-2 8 -8 14 -10 22 c-2 -8 -8 -14 -10 -22z" fill="#e3c583"/><path class="sand-bot" d="M13 86 c2 -10 8 -14 12 -16 c4 2 10 6 12 16z" fill="#e3c583"/><path d="M8 10 V90 M42 10 V90" stroke="#a87b3b" stroke-width="2.4"/></svg>`;
 
 const ICONS = {
   play: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.5 4.6v14.8a1 1 0 0 0 1.52.85l12.1-7.4a1 1 0 0 0 0-1.7L9.02 3.75A1 1 0 0 0 7.5 4.6z"/></svg>',
@@ -539,6 +601,7 @@ const ICONS = {
   arrowL: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
   arrowR: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
   search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>',
+  sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path class="w1" d="M15.5 9.2a4 4 0 0 1 0 5.6"/><path class="w2" d="M18 6.8a7.5 7.5 0 0 1 0 10.4"/><path class="mute" d="M16 9.5l5 5M21 9.5l-5 5"/></svg>',
   books: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h4v16H4zM10 4h4v16h-4zM16.2 4.6l3.8 1 -3.6 14.8-3.8-1z"/></svg>',
 };
 const BRAND_MARK = '<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e8c2"/><stop offset=".55" stop-color="#c9a061"/><stop offset="1" stop-color="#f0d9a6"/></linearGradient></defs><rect x="5" y="6" width="5" height="20" rx="1" fill="url(#bm)"/><rect x="12" y="4" width="5" height="22" rx="1" fill="url(#bm)" opacity=".75"/><path d="M20 8.5c3 2 4.5 4.6 4.5 7.5s-1.5 5.5-4.5 7.5" fill="none" stroke="url(#bm)" stroke-width="2" stroke-linecap="round"/><path d="M20 12.5c1.4 1 2 2.2 2 3.5s-.6 2.5-2 3.5" fill="none" stroke="url(#bm)" stroke-width="2" stroke-linecap="round" opacity=".6"/></svg>';
@@ -626,14 +689,23 @@ export function buildIndexHtml(episodeEntries, config, languages) {
 
   const shelf = views.length === 0
     ? `  <p class="empty">まだエピソードはありません。<span class="lmuted">No episodes yet — try <code>node scripts/podcast/daily.mjs</code>.</span></p>`
-    : `  <div class="shelf-outer" data-reveal>
-    <div class="shelf" data-shelf>
-${shelfHtml(views, books, uiLang)}
-      <div class="bookend" aria-hidden="true"><i></i><b>No.1</b><span>The first volume</span></div>
+    : `  <div class="wrap">
+  <div class="cabinet" data-cabinet data-reveal>
+    <div class="cab-crown"><div class="cab-crown-trim"></div>
+      <button type="button" class="pet cat js-only" data-cat aria-label="司書猫のしおり">${CAT_SVG}<span class="zzz" aria-hidden="true"><i>z</i><i>z</i><i>Z</i></span></button>
+      <div class="bubble cat-bubble" data-cat-bubble role="status" aria-live="polite" hidden></div>
     </div>
-    <div class="shelf-board"></div><div class="shelf-glow"></div>
+    <div class="cab-frame">
+      <div class="cab-shelf" data-shelf>
+${shelfHtml(views, books, uiLang)}
+      </div>
+      <canvas class="cab-dust js-only" data-dust aria-hidden="true"></canvas>
+      <div class="cab-light" aria-hidden="true"></div>
+    </div>
+    <div class="cab-plinth"></div>
   </div>
-  <div class="wrap shelf-hint js-only"><span>← 新しい巻</span><span class="shelf-progress"><i data-shelf-thumb></i></span><span>古い巻 →</span></div>`;
+  <p class="shelf-hint js-only"><span>背表紙を<b>横にドラッグ</b>で傾ける</span><span><b>なでる</b>と揺れる</span><span><b>クリック</b>で本を取り出す</span></p>
+  </div>`;
 
   const feedCards = languages.map((lang) => `<div class="feed"><div class="feed-name">${escapeHtml(langLabel(config, lang))}<small>feed-${escapeHtml(lang)}.xml</small></div><div class="feed-actions"><button type="button" class="js-only" data-copy="feed-${escapeHtml(lang)}.xml" aria-label="${escapeHtml(`${langLabel(config, lang)} の RSS URL をコピー`)}">${ICONS.copy}</button><a href="feed-${escapeHtml(lang)}.xml" aria-label="${escapeHtml(LANG_DEFAULTS.rss[lang] ?? `RSS (${lang})`)}">${ICONS.rss}</a></div></div>`).join("\n      ");
 
@@ -665,6 +737,7 @@ ${LIB_CSS}</style>
     <a class="brand" href="#today" aria-label="${title}">${BRAND_MARK}<span class="brand-name">Phantom<em>research</em> Daily</span></a>
     <nav class="nav-links" aria-label="Sections"><a href="#today">今日</a><a href="#stacks">書架</a><a class="js-only" href="#catalog">目録</a><a href="#subscribe">購読</a></nav>
     ${navigation}
+    <button type="button" class="sfx-toggle js-only" data-sfx aria-pressed="true" aria-label="効果音">${ICONS.sound}</button>
   </div>
 </header>
 <main>
@@ -679,7 +752,7 @@ ${hero}
   <section class="section" id="stacks" aria-labelledby="stacks-title">
     <div class="wrap sec-head" data-reveal>
       <div><p class="sec-no">01 — The stacks</p><h2 class="sec-title" id="stacks-title">書架<small>Every morning, a new volume.</small></h2></div>
-      <div class="stacks-tools js-only"><button type="button" class="icon-btn" data-shelf-prev aria-label="新しい巻へ">${ICONS.arrowL}</button><button type="button" class="icon-btn" data-shelf-next aria-label="古い巻へ">${ICONS.arrowR}</button></div>
+      <p class="sec-lede">毎朝 6:30 に新しい一冊が棚に加わります。背表紙にふれると、本はちゃんとそこにあります。</p>
     </div>
 ${shelf}
   </section>
@@ -740,6 +813,11 @@ ${articles}
     <button type="button" class="pl-btn pl-rate" data-pl-rate aria-label="再生速度">1×</button>
     <button type="button" class="pl-btn pl-x" data-pl-close aria-label="プレーヤーを閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
+</div>
+<div class="dog-dock js-only" data-dog-dock>
+  <div class="bubble dog-bubble" data-dog-bubble role="status" aria-live="polite" hidden></div>
+  <button type="button" class="pet dog" data-dog aria-label="案内犬のこむぎ">${DOG_SVG}</button>
+  <button type="button" class="dog-call" data-dog-call aria-label="こむぎを呼ぶ" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="12" cy="15.5" rx="5" ry="4.2"/><circle cx="6.2" cy="10" r="2.2"/><circle cx="17.8" cy="10" r="2.2"/><circle cx="9.3" cy="5.8" r="2.1"/><circle cx="14.7" cy="5.8" r="2.1"/></svg></button>
 </div>
 <div class="toast" data-toast role="status" aria-live="polite"></div>
 

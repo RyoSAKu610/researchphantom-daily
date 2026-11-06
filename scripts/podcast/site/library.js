@@ -1,7 +1,9 @@
 /* Phantomresearch Daily — 音の図書館 client.
    Inlined into index.html by site.mjs. Reads the embedded #library-data JSON
    and upgrades the server-rendered page: sound-field hero, scroll-lit
-   statement, bookshelf, reading-room dialog, card catalog and mini player.
+   statement, a physical bookcase (springs, dominoes, dust, synthesised
+   sound), reading-room dialog, card catalog, mini player and two
+   assistants: しおり the cat and こむぎ the dog.
    Every storage access is wrapped: the page works with storage blocked. */
 (function () {
   "use strict";
@@ -58,6 +60,120 @@
     toastTimer = setTimeout(function () { el.classList.remove("is-on"); }, 2200);
   }
 
+  /* ---------------- event bus ---------------- */
+  var bus = (function () {
+    var h = {};
+    return {
+      on: function (n, f) { (h[n] = h[n] || []).push(f); },
+      emit: function (n) {
+        var a = Array.prototype.slice.call(arguments, 1);
+        (h[n] || []).forEach(function (f) { try { f.apply(null, a); } catch (e) { /* a listener must not break the page */ } });
+      }
+    };
+  })();
+  var gestured = false;
+  ["pointerdown", "keydown", "touchstart"].forEach(function (t) {
+    window.addEventListener(t, function () { gestured = true; }, { capture: true, passive: true });
+  });
+
+  /* ---------------- sound effects (synthesised: no audio files) ---------------- */
+  var sfx = (function () {
+    var on = store.get("sfx", true), ctx = null, master = null, last = 0;
+    var btn = $("[data-sfx]");
+    function sync() {
+      if (!btn) return;
+      btn.setAttribute("aria-pressed", String(on));
+      btn.setAttribute("aria-label", on ? "効果音をオフにする" : "効果音をオンにする");
+    }
+    sync();
+    if (btn) btn.addEventListener("click", function () {
+      on = !on; store.set("sfx", on); sync();
+      toast(on ? "効果音 ON — 本の手ざわりを音でも" : "効果音 OFF");
+      if (on) thud(0.5);
+    });
+    // The AudioContext is only created after a user gesture (autoplay rules).
+    function ensure() {
+      if (!on || !gestured) return null;
+      if (!ctx) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        try { ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.55; master.connect(ctx.destination); } catch (e) { ctx = null; return null; }
+      }
+      if (ctx.state === "suspended") ctx.resume();
+      return ctx;
+    }
+    function noise(c, dur) {
+      var n = Math.max(1, Math.floor(c.sampleRate * dur)), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0);
+      for (var k = 0; k < n; k++) d[k] = Math.random() * 2 - 1;
+      var src = c.createBufferSource(); src.buffer = b; return src;
+    }
+    function env(g, t, peak, a, r) {
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(Math.max(0.0002, peak), t + a);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + a + r);
+    }
+    // a book settling against wood: low body thump + short woody click
+    function thud(v) {
+      var c = ensure(); if (!c) return;
+      var now = performance.now();
+      if (now - last < 28) return;
+      last = now;
+      v = clamp(v, 0.04, 1);
+      var t = c.currentTime;
+      var o = c.createOscillator(), g = c.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(120 + 90 * v + Math.random() * 30, t);
+      o.frequency.exponentialRampToValueAtTime(58, t + 0.13);
+      env(g, t, 0.55 * v, 0.004, 0.16);
+      o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.2);
+      var n = noise(c, 0.05), f = c.createBiquadFilter(), ng = c.createGain();
+      f.type = "bandpass"; f.frequency.value = 1100 + 900 * v + Math.random() * 300; f.Q.value = 1.4;
+      env(ng, t, 0.3 * v, 0.002, 0.045);
+      n.connect(f); f.connect(ng); ng.connect(master); n.start(t);
+    }
+    // cloth sliding over wood
+    function slide(dur, v) {
+      var c = ensure(); if (!c) return;
+      var t = c.currentTime, n = noise(c, dur), f = c.createBiquadFilter(), g = c.createGain();
+      f.type = "bandpass"; f.Q.value = 0.8;
+      f.frequency.setValueAtTime(700, t); f.frequency.linearRampToValueAtTime(2400, t + dur);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.12 * (v || 1), t + dur * 0.3);
+      g.gain.linearRampToValueAtTime(0.0001, t + dur);
+      n.connect(f); f.connect(g); g.connect(master); n.start(t);
+    }
+    function purr(dur) {
+      var c = ensure(); if (!c) return;
+      var t = c.currentTime, n = noise(c, dur), f = c.createBiquadFilter(), g = c.createGain(), lfo = c.createOscillator(), lg = c.createGain();
+      f.type = "lowpass"; f.frequency.value = 180;
+      lfo.frequency.value = 23; lg.gain.value = 0.12;
+      lfo.connect(lg); lg.connect(g.gain);
+      g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.16, t + 0.25); g.gain.linearRampToValueAtTime(0.0001, t + dur);
+      n.connect(f); f.connect(g); g.connect(master); n.start(t); lfo.start(t); lfo.stop(t + dur);
+    }
+    function bark() {
+      var c = ensure(); if (!c) return;
+      [0, 0.17].forEach(function (d, k) {
+        var t = c.currentTime + d, o = c.createOscillator(), f = c.createBiquadFilter(), g = c.createGain();
+        o.type = "sawtooth";
+        o.frequency.setValueAtTime(k ? 560 : 620, t); o.frequency.exponentialRampToValueAtTime(k ? 330 : 380, t + 0.11);
+        f.type = "bandpass"; f.frequency.value = 1100; f.Q.value = 2.2;
+        env(g, t, 0.16, 0.008, 0.1);
+        o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t + 0.14);
+      });
+    }
+    function chime() {
+      var c = ensure(); if (!c) return;
+      [880, 1318.5, 1760].forEach(function (fr, k) {
+        var t = c.currentTime + k * 0.09, o = c.createOscillator(), g = c.createGain();
+        o.type = "sine"; o.frequency.value = fr;
+        env(g, t, 0.07, 0.01, 0.9);
+        o.connect(g); g.connect(master); o.start(t); o.stop(t + 1);
+      });
+    }
+    return { thud: thud, slide: slide, purr: purr, bark: bark, chime: chime };
+  })();
+
   /* ---------------- language ---------------- */
   var lang = store.get("lang", null);
   if (LANGS.indexOf(lang) < 0) {
@@ -95,15 +211,17 @@
       t.classList.toggle("is-active", on);
       t.setAttribute("aria-pressed", String(on));
     });
-    $$(".spine[data-i]").forEach(function (sp) {
-      var ep = EPS[byNo(sp.getAttribute("data-i"))];
+    $$(".slot[data-i]").forEach(function (sl) {
+      var ep = EPS[byNo(sl.getAttribute("data-i"))];
       if (!ep) return;
       var t = label(ep);
-      $(".spine-title", sp).textContent = t;
-      var cs = sp.style;
+      $(".spine-title", sl).textContent = t;
+      var cv = $(".cv-title", sl); if (cv) cv.textContent = t;
+      var cs = sl.style;
       cs.setProperty("--fs", String(spineFont(t, Number(cs.getPropertyValue("--h")) || 260, Number(cs.getPropertyValue("--w")) || 52)));
-      sp.setAttribute("aria-label", "No." + ep.no + " " + ep.date + " " + t);
+      sl.setAttribute("aria-label", "No." + ep.no + " " + ep.date + " " + t);
     });
+    bus.emit("lang", l);
     hero.refresh();
     catalog.render();
     if (room.index != null) room.render(room.index, { keep: true });
@@ -320,7 +438,7 @@
     audio.addEventListener("ended", function () {
       if (cur) store.del(key(cur));
       syncState();
-      toast("おしまい。また明日の巻で。");
+      bus.emit("ended", cur);
     });
     audio.addEventListener("error", function () { if (cur) toast("音声を読み込めませんでした"); });
     window.addEventListener("resize", drawWave);
@@ -331,8 +449,9 @@
       var t = $("[data-pl-toggle]");
       t.innerHTML = playing ? ICON.pause : ICON.play;
       t.setAttribute("aria-label", playing ? "一時停止" : "再生");
-      $$(".spine.is-playing").forEach(function (s) { s.classList.remove("is-playing"); });
-      if (playing) { var sp = spineEl(cur.i); if (sp) sp.classList.add("is-playing"); }
+      $$(".slot.is-playing").forEach(function (s) { s.classList.remove("is-playing"); });
+      if (playing) { var sp = slotEl(cur.i); if (sp) sp.classList.add("is-playing"); }
+      bus.emit("audio", !!playing, cur);
       document.title = (playing ? "▶ " + label(EPS[cur.i]) + " — " : "") + baseTitle;
       hero.sync();
       room.sync();
@@ -399,7 +518,8 @@
   })();
   var baseTitle = document.title;
 
-  function spineEl(i) { return EPS[i] ? $('.spine[data-i="' + EPS[i].no + '"]') : null; }
+  function slotEl(i) { return EPS[i] ? $('.slot[data-i="' + EPS[i].no + '"]') : null; }
+  function spineEl(i) { var sl = slotEl(i); return sl ? $(".spine", sl) : null; }
 
   /* ---------------- hero: sound field ---------------- */
   var hero = (function () {
@@ -647,83 +767,371 @@
     }
   })();
 
-  /* ---------------- shelf ---------------- */
-  (function () {
-    var shelf = $("[data-shelf]");
-    if (!shelf) return;
-    var thumb = $("[data-shelf-thumb]");
-    var prev = $("[data-shelf-prev]"), next = $("[data-shelf-next]");
-    function updateThumb() {
-      var max = shelf.scrollWidth - shelf.clientWidth;
-      var ratio = shelf.clientWidth / shelf.scrollWidth;
-      var prog = max > 0 ? shelf.scrollLeft / max : 0;
-      if (thumb) {
-        thumb.style.width = (ratio * 100).toFixed(1) + "%";
-        thumb.style.transform = "translateX(" + (prog * (1 - ratio) / ratio * 100).toFixed(1) + "%)";
-      }
-      if (prev) prev.disabled = shelf.scrollLeft < 4;
-      if (next) next.disabled = shelf.scrollLeft > max - 4;
+  /* ---------------- bookcase physics ----------------
+     Every object on the shelf (book, brass bookend, still life) is a body
+     with damped springs. Books can be pushed over sideways and lean on their
+     neighbours like dominoes, fall into place with gravity when the case
+     first comes into view, wobble when you stroke their spines, and slide
+     out (turning their front cover to you) when picked. Sound, dust and a
+     tiny shake of the case accompany every knock. */
+  var shelf = (function () {
+    var noop = function () {};
+    var shelfEl = $("[data-shelf]");
+    var cab = $("[data-cabinet]");
+    if (!shelfEl || !cab) return { pullOut: noop, putBack: noop, wiggle: noop };
+    var frame = $(".cab-frame", cab);
+    var dustCv = $("[data-dust]", cab);
+    var S = function () { return parseFloat(getComputedStyle(cab).getPropertyValue("--s")) || 1; };
+    var scale = S();
+
+    function spring(k, c) { return { x: 0, v: 0, t: 0, k: k, c: c }; }
+    var bodies = Array.prototype.slice.call(shelfEl.children).map(function (el) {
+      var isBook = el.classList.contains("slot");
+      return {
+        el: el,
+        book: isBook,
+        i: isBook ? byNo(el.getAttribute("data-i")) : -1,
+        piv: isBook ? $(".bk", el) : (el.firstElementChild || el),
+        inn: isBook ? $(".bk-in", el) : null,
+        heavy: !isBook,
+        tilt: spring(isBook ? 240 : 520, isBook ? 9 : 16),
+        pull: spring(210, 21),
+        turn: spring(170, 17),
+        lift: { x: 0, v: 0, t: 0 },
+        held: false, wait: false, hover: false, out: false,
+        sign: 1, lastKnock: 0, prev: null, next: null, h: 200, w: 40, row: 0,
+        drawn: ""
+      };
+    });
+    var books = bodies.filter(function (b) { return b.book; });
+
+    function measure() {
+      scale = S();
+      bodies.forEach(function (b) {
+        b.h = b.piv.offsetHeight || 200;
+        b.w = b.el.offsetWidth || 40;
+        b.row = b.el.offsetTop;
+      });
+      bodies.forEach(function (b, k) {
+        var p = bodies[k - 1], n = bodies[k + 1];
+        b.prev = p && p.row === b.row ? p : null;
+        b.next = n && n.row === b.row ? n : null;
+      });
+      sizeDust();
     }
-    shelf.addEventListener("scroll", updateThumb, { passive: true });
-    window.addEventListener("resize", updateThumb);
-    updateThumb();
-    function page(dir) { shelf.scrollBy({ left: dir * shelf.clientWidth * 0.7, behavior: reduce ? "auto" : "smooth" }); }
-    if (prev) prev.addEventListener("click", function () { page(-1); });
-    if (next) next.addEventListener("click", function () { page(1); });
 
-    // mouse drag with momentum (touch already scrolls natively)
-    var down = false, moved = false, sx = 0, sl = 0, lx = 0, lt = 0, vel = 0, mom = 0;
-    shelf.addEventListener("pointerdown", function (e) {
-      if (e.pointerType !== "mouse" || e.button !== 0) return;
-      down = true; moved = false; sx = lx = e.clientX; sl = shelf.scrollLeft; lt = performance.now(); vel = 0;
-      cancelAnimationFrame(mom);
-    });
-    window.addEventListener("pointermove", function (e) {
-      if (!down) return;
-      var dx = e.clientX - sx;
-      if (!moved && Math.abs(dx) > 5) { moved = true; shelf.classList.add("is-dragging"); }
-      if (!moved) return;
-      shelf.scrollLeft = sl - dx;
+    /* ---- render ---- */
+    function draw(b) {
+      var t = b.tilt.x;
+      var sign = t >= 0 ? 1 : -1;
+      if (sign !== b.sign) { b.sign = sign; b.piv.style.transformOrigin = sign > 0 ? "100% 100%" : "0% 100%"; }
+      var key = t.toFixed(2) + "|" + b.lift.x.toFixed(1) + "|" + b.pull.x.toFixed(1) + "|" + b.turn.x.toFixed(1);
+      if (key === b.drawn) return;
+      b.drawn = key;
+      if (b.book) {
+        b.piv.style.transform = "rotate(" + t.toFixed(2) + "deg)";
+        b.inn.style.transform = "translate3d(0," + (-b.lift.x).toFixed(1) + "px," + b.pull.x.toFixed(1) + "px) rotateY(" + b.turn.x.toFixed(1) + "deg)";
+        b.el.classList.toggle("is-active", b.held || b.out || b.pull.x > 3 || Math.abs(b.lift.x) > 3);
+      } else {
+        b.piv.style.transform = "translateY(" + (-b.lift.x).toFixed(1) + "px) rotate(" + t.toFixed(2) + "deg)";
+      }
+    }
+
+    /* ---- simulation ---- */
+    var running = false, lastT = 0, visible = false, shake = { x: 0, v: 0 };
+    function kick() { if (!running) { running = true; lastT = performance.now(); requestAnimationFrame(step); } }
+    function stepSpring(s, dt) {
+      var a = s.k * (s.t - s.x) - s.c * s.v;
+      s.v += a * dt; s.x += s.v * dt;
+      return Math.abs(s.v) > 0.02 || Math.abs(s.t - s.x) > 0.02;
+    }
+    function knock(b, speed, where) {
       var now = performance.now();
-      vel = (e.clientX - lx) / Math.max(1, now - lt);
-      lx = e.clientX; lt = now;
-    });
-    window.addEventListener("pointerup", function () {
-      if (!down) return;
-      down = false;
-      if (!moved) return;
-      setTimeout(function () { shelf.classList.remove("is-dragging"); }, 0);
-      var v = -vel * 16;
-      (function glide() {
-        if (Math.abs(v) < 0.4 || reduce) return;
-        shelf.scrollLeft += v; v *= 0.94;
-        mom = requestAnimationFrame(glide);
-      })();
-    });
-    shelf.addEventListener("click", function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+      if (now - b.lastKnock < 110) return;
+      b.lastKnock = now;
+      var v = clamp(speed, 0, 1);
+      if (v < 0.04) return;
+      sfx.thud(v);
+      shake.v += (Math.random() < 0.5 ? -1 : 1) * 40 * v;
+      puff(b, where, v);
+      bus.emit("shelf:knock", v);
+    }
+    function step(now) {
+      var dt = Math.min(1 / 30, (now - lastT) / 1000 || 0.016);
+      lastT = now;
+      var active = false;
+      for (var k = 0; k < bodies.length; k++) {
+        var b = bodies[k];
+        var before = b.tilt.x;
+        if (stepSpring(b.tilt, dt)) active = true;
+        // the case floor and the neighbours stop a book from leaning past ~32°
+        b.tilt.x = clamp(b.tilt.x, -32, 32);
+        // landing on the board / clicking back upright
+        if (!b.held && before !== 0 && (before > 0) !== (b.tilt.x > 0) && Math.abs(b.tilt.v) > 14) knock(b, Math.abs(b.tilt.v) / 260, "base");
+        if (b.book) {
+          var p0 = b.pull.x;
+          if (stepSpring(b.pull, dt)) active = true;
+          if (stepSpring(b.turn, dt)) active = true;
+          if (p0 > 6 && b.pull.x <= 1.5 && b.pull.v < -60 && !b.out) knock(b, Math.min(1, -b.pull.v / 500), "base");
+        }
+        // lift: spring while held, gravity + bounce otherwise
+        var L = b.lift;
+        if (b.held || b.wait) {
+          var a = 320 * (L.t - L.x) - 22 * L.v; L.v += a * dt; L.x += L.v * dt;
+          if (Math.abs(L.v) > 0.05 || Math.abs(L.t - L.x) > 0.05) active = true;
+        } else if (L.x > 0 || L.v !== 0) {
+          L.v -= 2600 * dt; L.x += L.v * dt;
+          if (L.x <= 0) {
+            var imp = -L.v;
+            L.x = 0;
+            if (imp > 90) { L.v = imp * 0.28; knock(b, imp / 900, "base"); } else L.v = 0;
+          }
+          active = true;
+        }
+      }
+      // dominoes: a leaning body pushes its neighbour in the same row
+      for (var r = 0; r < bodies.length; r++) {
+        var A = bodies[r];
+        if (A.tilt.x > 0.6 && A.next) push(A, A.next, 1);
+      }
+      for (var l = bodies.length - 1; l >= 0; l--) {
+        var Bq = bodies[l];
+        if (Bq.tilt.x < -0.6 && Bq.prev) push(Bq, Bq.prev, -1);
+      }
+      if (Math.abs(shake.x) > 0.02 || Math.abs(shake.v) > 0.02) {
+        shake.v += (-900 * shake.x - 24 * shake.v) * dt; shake.x += shake.v * dt;
+        frame.style.transform = "translateX(" + shake.x.toFixed(2) + "px)";
+        active = true;
+      }
+      for (var d = 0; d < bodies.length; d++) draw(bodies[d]);
+      var dusty = stepDust(dt);
+      running = active || (visible && dusty);
+      if (running) requestAnimationFrame(step);
+    }
+    function push(A, B, dir) {
+      // How far B must lean so A's top edge clears it, softened so a loose
+      // shelf absorbs some of the push (heavy bookends barely move).
+      var factor = B.heavy ? 0.28 : 0.82;
+      var need = (Math.abs(A.tilt.x) - 0.6) * factor * Math.min(1.15, A.h / Math.max(60, B.h));
+      if (need <= 0) return;
+      var cur = B.tilt.x * dir;
+      if (cur < need) {
+        var hit = (need - cur) > 1.5 && Math.abs(A.tilt.v) > 40 && cur < 0.5;
+        B.tilt.x = need * dir;
+        if (B.tilt.v * dir < A.tilt.v * dir * factor) B.tilt.v = A.tilt.v * factor;
+        if (hit) knock(B, Math.abs(A.tilt.v) / 500, dir > 0 ? "left" : "right");
+      }
+    }
 
-    $$(".spine", shelf).forEach(function (sp) {
-      var i = byNo(sp.getAttribute("data-i"));
-      sp.addEventListener("pointermove", function (e) {
-        var r = sp.getBoundingClientRect();
-        sp.style.setProperty("--mx", ((e.clientX - r.left) / r.width).toFixed(3));
+    /* ---- dust motes in the lamp light + puffs on every knock ---- */
+    var motes = [], puffs = [], dctx = dustCv ? dustCv.getContext("2d") : null, DW = 0, DH = 0, ddpr = 1;
+    function sizeDust() {
+      if (!dctx) return;
+      ddpr = Math.min(2, window.devicePixelRatio || 1);
+      DW = dustCv.clientWidth; DH = dustCv.clientHeight;
+      dustCv.width = Math.round(DW * ddpr); dustCv.height = Math.round(DH * ddpr);
+      if (!motes.length) for (var k = 0; k < 46; k++) motes.push({ x: Math.random(), y: Math.random(), r: 0.6 + Math.random() * 1.4, vx: (Math.random() - 0.5) * 0.006, vy: -0.002 - Math.random() * 0.006, p: Math.random() * 6 });
+    }
+    function puff(b, where, v) {
+      if (!dctx || reduce) return;
+      var fr = frame.getBoundingClientRect(), r = b.el.getBoundingClientRect();
+      var x = where === "left" ? r.left : where === "right" ? r.right : r.left + r.width / 2;
+      var y = r.bottom - parseFloat(getComputedStyle(cab).getPropertyValue("--board") || 18) - (where === "base" ? 0 : b.h * 0.85);
+      var n = Math.round(2 + v * 9);
+      for (var k = 0; k < n; k++) puffs.push({ x: x - fr.left, y: y - fr.top, vx: (Math.random() - 0.5) * 70 * (0.4 + v), vy: -10 - Math.random() * 50 * (0.4 + v), life: 0, max: 0.9 + Math.random() * 0.8, r: 0.8 + Math.random() * 1.8 });
+      kick();
+    }
+    var lightX = 0.6, lightY = 0.2;
+    function stepDust(dt) {
+      if (!dctx || !visible || reduce) return false;
+      dctx.setTransform(ddpr, 0, 0, ddpr, 0, 0);
+      dctx.clearRect(0, 0, DW, DH);
+      var lx = lightX * DW, ly = lightY * DH;
+      for (var k = 0; k < motes.length; k++) {
+        var m = motes[k];
+        m.p += dt; m.x += (m.vx + Math.sin(m.p * 0.7) * 0.002) * dt; m.y += m.vy * dt;
+        if (m.y < -0.02) { m.y = 1.02; m.x = Math.random(); }
+        if (m.x < -0.02) m.x = 1.02; if (m.x > 1.02) m.x = -0.02;
+        var px = m.x * DW, py = m.y * DH;
+        var d = Math.hypot(px - lx, (py - ly) * 1.3) / 420;
+        var a = Math.max(0, 0.55 - d) * (0.6 + 0.4 * Math.sin(m.p * 2));
+        if (a < 0.02) continue;
+        dctx.fillStyle = "rgba(255,226,170," + a.toFixed(3) + ")";
+        dctx.beginPath(); dctx.arc(px, py, m.r, 0, 6.283); dctx.fill();
+      }
+      for (var q = puffs.length - 1; q >= 0; q--) {
+        var p = puffs[q];
+        p.life += dt;
+        if (p.life > p.max) { puffs.splice(q, 1); continue; }
+        p.vx *= 0.96; p.vy = p.vy * 0.96 + 14 * dt; p.x += p.vx * dt; p.y += p.vy * dt;
+        var al = (1 - p.life / p.max) * 0.22;
+        dctx.fillStyle = "rgba(236,220,190," + al.toFixed(3) + ")";
+        dctx.beginPath(); dctx.arc(p.x, p.y, p.r * (1 + p.life * 0.6), 0, 6.283); dctx.fill();
+      }
+      return true;
+    }
+
+    /* ---- interaction ---- */
+    var drag = null;
+    books.forEach(function (b) {
+      var el = b.el;
+      el.addEventListener("dragstart", function (e) { e.preventDefault(); });
+      el.addEventListener("pointerenter", function (e) {
+        if (e.pointerType !== "mouse" || drag) return;
+        b.hover = true;
+        if (!b.out) { b.pull.t = 16 * scale; }
+        kick();
+        bus.emit("shelf:hover", b.i);
       });
-      sp.addEventListener("pointerenter", function () {
-        var a = sp.previousElementSibling, b = sp.nextElementSibling;
-        if (a && a.classList.contains("spine")) a.style.setProperty("--lean", "-1.6deg");
-        if (b && b.classList.contains("spine")) b.style.setProperty("--lean", "1.6deg");
+      el.addEventListener("pointermove", function (e) {
+        var r = el.getBoundingClientRect();
+        var mx = clamp((e.clientX - r.left) / r.width, 0, 1);
+        el.style.setProperty("--mx", mx.toFixed(3));
+        if (b.hover && !b.out && !b.held) { b.turn.t = (0.5 - mx) * 26; kick(); }
       });
-      sp.addEventListener("pointerleave", function () {
-        var a = sp.previousElementSibling, b = sp.nextElementSibling;
-        if (a && a.style) a.style.removeProperty("--lean");
-        if (b && b.style) b.style.removeProperty("--lean");
+      el.addEventListener("pointerleave", function () {
+        b.hover = false;
+        if (!b.held && !b.out) { b.pull.t = 0; b.turn.t = 0; kick(); }
       });
-      sp.addEventListener("click", function (e) { e.preventDefault(); room.open(i, sp); });
+      el.addEventListener("pointerdown", function (e) {
+        if (e.button !== 0 || b.out) return;
+        drag = { b: b, x: e.clientX, y: e.clientY, t: performance.now(), moved: false, id: e.pointerId, type: e.pointerType };
+        b.held = true; b.lift.t = 0;
+        try { el.setPointerCapture(e.pointerId); } catch (err) { /* old browsers */ }
+        el.classList.add("is-grab");
+        kick();
+      });
+      el.addEventListener("pointermove", function (e) {
+        if (!drag || drag.b !== b || e.pointerId !== drag.id) return;
+        var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+        if (!drag.moved && Math.hypot(dx, dy) > 6) { drag.moved = true; bus.emit("shelf:grab", b.i); }
+        if (!drag.moved) return;
+        // push the top of the spine: the angle follows the finger at the top
+        b.tilt.t = clamp(Math.atan2(dx, b.h * 0.9) * 57.3, -30, 30);
+        b.lift.t = drag.type === "mouse" ? clamp(-dy * 0.45, 0, 54 * scale) : 0;
+        b.pull.t = 10 * scale;
+        b.turn.t = 0;
+        kick();
+      });
+      function release(e) {
+        if (!drag || drag.b !== b) return;
+        var d = drag; drag = null;
+        b.held = false;
+        el.classList.remove("is-grab");
+        b.tilt.t = 0; b.lift.t = 0;
+        if (!b.hover) { b.pull.t = 0; b.turn.t = 0; } else b.pull.t = 16 * scale;
+        kick();
+        if (e.type === "pointercancel") return;
+        if (!d.moved || b.lift.x > 36 * scale) {
+          pullOut(b.i, true);
+        } else {
+          var tipped = bodies.filter(function (x) { return Math.abs(x.tilt.x) > 6; }).length;
+          bus.emit("shelf:drop", b.i, tipped);
+        }
+      }
+      el.addEventListener("pointerup", release);
+      el.addEventListener("pointercancel", release);
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        // keyboard activation (Enter) arrives as a click without a pointer
+        if (e.detail === 0) pullOut(b.i, true);
+      });
     });
-    $$("[data-open-book]").forEach(function (a) {
-      a.addEventListener("click", function (e) { e.preventDefault(); var i = byNo(a.getAttribute("data-open-book")); room.open(i, spineEl(i)); });
+
+    // stroking the spines makes them wobble (and click softly against each other)
+    var lastRiffle = 0;
+    shelfEl.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse" || drag) return;
+      var t = e.target.closest && e.target.closest(".slot");
+      var fr = frame.getBoundingClientRect();
+      lightX = clamp((e.clientX - fr.left) / fr.width, 0, 1);
+      lightY = clamp((e.clientY - fr.top) / fr.height, 0, 1);
+      cab.style.setProperty("--lx", (lightX * 100).toFixed(1) + "%");
+      cab.style.setProperty("--ly", (lightY * 100).toFixed(1) + "%");
+      if (!t) return;
+      var b = bodies.find(function (x) { return x.el === t; });
+      var mv = e.movementX || 0;
+      if (b && !b.out && Math.abs(mv) > 3) {
+        b.tilt.v += clamp(mv, -40, 40) * 3.2;
+        var now = performance.now();
+        if (Math.abs(mv) > 9 && now - lastRiffle > 70) { lastRiffle = now; sfx.thud(Math.min(0.12, Math.abs(mv) / 300)); bus.emit("shelf:stroke"); }
+        kick();
+      }
     });
+
+    /* ---- pull a book out, front cover turned to the reader ---- */
+    var outBook = null;
+    function pullOut(i, thenOpen) {
+      var b = books.find(function (x) { return x.i === i; });
+      if (!b) { if (thenOpen) room.open(i, null); return; }
+      if (outBook && outBook !== b) putBack();
+      outBook = b; b.out = true;
+      b.tilt.t = 0; b.lift.t = 0;
+      b.pull.t = 150 * scale; b.turn.t = -72;
+      sfx.slide(0.42, 0.8);
+      kick();
+      bus.emit("shelf:pull", i);
+      if (!thenOpen) return;
+      setTimeout(function () { room.open(i, $(".f-cover", b.el) || $(".spine", b.el)); }, reduce ? 0 : 430);
+    }
+    function putBack() {
+      var b = outBook;
+      if (!b) return;
+      outBook = null; b.out = false;
+      b.pull.t = 0; b.turn.t = 0;
+      sfx.slide(0.3, 0.5);
+      kick();
+    }
+    function wiggle(i) {
+      var b = books.find(function (x) { return x.i === i; });
+      if (!b) return;
+      b.tilt.v += 260; b.lift.v = 260; b.lift.x = 0.1;
+      kick();
+    }
+    bus.on("room:close", function () { setTimeout(putBack, 60); });
+
+    /* ---- the books fall into place the first time the case is seen ---- */
+    var dropped = false;
+    function dropIn() {
+      if (dropped) return;
+      dropped = true;
+      if (reduce) return;
+      var t0 = performance.now();
+      bodies.forEach(function (b, k) {
+        b.delay = 60 + k * 32;
+        b.wait = true;
+        b.lift.x = b.lift.t = 46 + (k % 3) * 12; b.lift.v = 0;
+        b.tilt.x = (Math.random() - 0.5) * 8;
+        b.el.style.opacity = '0';
+        draw(b);
+      });
+      (function tick() {
+        var el = performance.now() - t0, any = false;
+        bodies.forEach(function (b) {
+          if (b.wait && el >= b.delay) { b.wait = false; b.lift.v = 0; b.el.style.opacity = ''; }
+          if (b.wait) any = true;
+        });
+        kick();
+        if (any) requestAnimationFrame(tick); else setTimeout(function () { bus.emit('shelf:settled'); }, 700);
+      })();
+    }
+
+    measure();
+    window.addEventListener("resize", function () { measure(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) {
+        visible = en[0].isIntersecting;
+        if (visible) { if (en[0].intersectionRatio > 0.15) dropIn(); kick(); }
+      }, { threshold: [0, 0.15, 0.4] }).observe(cab);
+    } else { visible = true; kick(); }
+
+    return { pullOut: pullOut, putBack: putBack, wiggle: wiggle };
   })();
+
+  $$("[data-open-book]").forEach(function (a) {
+    a.addEventListener("click", function (e) { e.preventDefault(); var i = byNo(a.getAttribute("data-open-book")); room.open(i, spineEl(i)); });
+  });
 
   /* ---------------- reading room ---------------- */
   var room = (function () {
@@ -872,6 +1280,7 @@
         el.hidden = false;
         el.classList.add("is-open");
         root.style.overflow = "hidden";
+        bus.emit("room:open", i);
         try {
           if (!opts.fromHash) { history.pushState({ room: true }, "", "#book/" + EPS[i].date); state.pushed = true; }
         } catch (e) { state.pushed = false; }
@@ -906,6 +1315,7 @@
       if (!fromPop && state.pushed) { state.pushed = false; history.back(); return; }
       if (!fromPop) { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* sandboxed */ } }
       var finish = function () {
+        bus.emit("room:close", state.index);
         el.classList.remove("is-open", "is-in");
         el.hidden = true;
         root.style.overflow = "";
@@ -1063,6 +1473,307 @@
     });
     render();
     return { render: render, focus: function () { input.focus(); input.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" }); } };
+  })();
+
+  /* ---------------- assistants ----------------
+     しおり — a black cat, the librarian, lives on top of the bookcase.
+     こむぎ — a shiba, the guide, waits in the corner of the screen.
+     Both react to what happens on the page (books, playback, sections) and
+     talk through little speech bubbles. Everything they say is generated
+     from the library data, so it changes every day. */
+  (function () {
+    var catEl = $("[data-cat]"), catBubble = $("[data-cat-bubble]");
+    var dock = $("[data-dog-dock]"), dogEl = $("[data-dog]"), dogBubble = $("[data-dog-bubble]"), callBtn = $("[data-dog-call]");
+    if (!EPS.length) { if (dock) dock.hidden = true; return; }
+    var latest = EPS[0];
+    var totalHours = EPS.reduce(function (s, ep) { return s + Object.keys(ep.audio).reduce(function (t, l) { return t + (ep.audio[l].dur || 0); }, 0); }, 0) / 3600;
+
+    /* speech bubbles with a typewriter effect */
+    var narrow = window.matchMedia && matchMedia("(max-width: 720px)");
+    function say(bubble, who, text, opts) {
+      if (!bubble) return;
+      opts = opts || {};
+      if (narrow && narrow.matches) [catBubble, dogBubble].forEach(function (o) { if (o && o !== bubble) hide(o); });
+      clearTimeout(bubble._hide); clearInterval(bubble._type);
+      bubble.hidden = false;
+      bubble.innerHTML = '<button type="button" class="x" aria-label="閉じる">×</button><span class="who">' + esc(who) + '</span><span class="tx"></span>';
+      bubble.style.animation = "none"; void bubble.offsetWidth; bubble.style.animation = "";
+      var tx = $(".tx", bubble), k = 0;
+      var finish = function () {
+        tx.textContent = text;
+        if (opts.menu) {
+          var m = document.createElement("div");
+          m.className = "menu";
+          opts.menu.forEach(function (item) {
+            var b = document.createElement("button");
+            b.type = "button"; b.textContent = item[0];
+            b.addEventListener("click", function (e) { e.stopPropagation(); hide(bubble); item[1](); });
+            m.appendChild(b);
+          });
+          bubble.appendChild(m);
+        }
+        var ms = opts.stay || (opts.menu ? 14000 : 3600 + text.length * 70);
+        bubble._hide = setTimeout(function () { hide(bubble); }, ms);
+      };
+      $(".x", bubble).addEventListener("click", function (e) { e.stopPropagation(); hide(bubble); });
+      if (reduce) { finish(); return; }
+      bubble._type = setInterval(function () {
+        k += 1;
+        tx.textContent = text.slice(0, k);
+        if (k >= text.length) { clearInterval(bubble._type); finish(); }
+      }, 26);
+    }
+    function hide(bubble) {
+      if (!bubble) return;
+      clearTimeout(bubble._hide); clearInterval(bubble._type);
+      bubble.hidden = true;
+    }
+    function blinker(el) {
+      if (!el || reduce) return;
+      (function loop() {
+        setTimeout(function () {
+          if (!el.classList.contains("is-sleep")) {
+            el.classList.add("is-blink");
+            setTimeout(function () { el.classList.remove("is-blink"); }, 140);
+          }
+          loop();
+        }, 2200 + Math.random() * 4200);
+      })();
+    }
+    function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
+    function greeting() {
+      var h = new Date().getHours();
+      return h < 5 ? "夜ふかしさんだね" : h < 11 ? "おはよう" : h < 17 ? "こんにちは" : "こんばんは";
+    }
+
+    /* ---------- しおり (cat) ---------- */
+    var cat = (function () {
+      if (!catEl) return { say: function () {}, react: function () {} };
+      var head = $(".cat-head", catEl), pupils = $(".cat-pupils", catEl);
+      var idle = 0, sleeping = false, tipIndex = Math.floor(Math.random() * 3);
+      blinker(catEl);
+      function tips() {
+        var oldest = EPS[EPS.length - 1];
+        var rnd = EPS[Math.floor(Math.random() * EPS.length)];
+        return [
+          "今日の新刊は『" + label(latest) + "』。論文が" + latest.papers.length + "本、" + Object.keys(latest.audio).length + "つの声で読まれてるよ。",
+          "背表紙を横にドラッグしてみて。となりの本も押されて、ドミノみたいに傾くの。",
+          "本をクリックすると、表紙をこっちに向けて取り出せるよ。",
+          "この棚には" + EPS.length + "冊。いちばん古いのは No.1『" + label(oldest) + "』だよ。",
+          "ここには " + totalHours.toFixed(1) + " 時間ぶんの声が眠ってるんだ。",
+          "背表紙をそっとなでると、本がゆらゆらするの。わたしのお気に入り。",
+          "言語を切り替えると、背表紙も表紙もぜんぶその言葉になるよ。",
+          "おすすめは No." + rnd.no + "『" + label(rnd) + "』。気になったら取り出してみて。",
+          "/ キーを押すと目録の検索にとべるよ。カードから本がひらくの。"
+        ];
+      }
+      function wake(quiet) {
+        idle = 0;
+        if (!sleeping) return;
+        sleeping = false;
+        catEl.classList.remove("is-sleep");
+        if (!quiet && Math.random() < 0.35) say(catBubble, "しおり", pick(["…ふぁ。いらっしゃい。", "ん…寝てないよ、本の番をしてただけ。", "にゃ…あ、お客さんだ。"]));
+      }
+      setInterval(function () {
+        idle += 1;
+        if (!sleeping && idle > 28 && !catEl.classList.contains("is-listening")) { sleeping = true; catEl.classList.add("is-sleep"); hide(catBubble); }
+      }, 1000);
+      ["scroll", "keydown"].forEach(function (t) { window.addEventListener(t, function () { wake(true); }, { passive: true }); });
+
+      // eyes (and a little of the head) follow the pointer
+      var pending = false, px = 0, py = 0;
+      window.addEventListener("pointermove", function (e) {
+        px = e.clientX; py = e.clientY;
+        if (Math.abs(e.movementX || 0) + Math.abs(e.movementY || 0) > 2) wake(true);
+        if (pending || reduce) return;
+        pending = true;
+        requestAnimationFrame(function () {
+          pending = false;
+          var r = catEl.getBoundingClientRect();
+          if (r.bottom < -200 || r.top > window.innerHeight + 200) return;
+          var cx = r.left + r.width * 0.5, cy = r.top + r.height * 0.25;
+          var dx = px - cx, dy = py - cy, d = Math.hypot(dx, dy) || 1;
+          var m = Math.min(2.6, d / 60);
+          pupils.style.transform = "translate(" + (dx / d * m).toFixed(2) + "px," + (dy / d * m * 0.7).toFixed(2) + "px)";
+          if (!sleeping) head.style.transform = "rotate(" + clamp(dx / 60, -7, 7).toFixed(2) + "deg)";
+        });
+      });
+
+      catEl.addEventListener("click", function () {
+        var wasAsleep = sleeping;
+        wake(true);
+        catEl.classList.remove("is-purr"); void catEl.offsetWidth;
+        catEl.classList.add("is-purr");
+        sfx.purr(1.4);
+        setTimeout(function () { catEl.classList.remove("is-purr"); }, 1400);
+        hearts();
+        var list = tips();
+        var text = wasAsleep ? "…ん、にゃ？ 起こされちゃった。" + list[0] : list[tipIndex++ % list.length];
+        say(catBubble, "しおり · 司書", text);
+      });
+      function hearts() {
+        if (reduce) return;
+        for (var k = 0; k < 3; k++) {
+          var h = document.createElement("span");
+          h.className = "heart"; h.textContent = "♥";
+          h.style.left = (30 + Math.random() * 50) + "%"; h.style.top = "10%";
+          h.style.setProperty("--dx", ((Math.random() - 0.5) * 40).toFixed(0) + "px");
+          h.style.animationDelay = (k * 0.15) + "s";
+          catEl.appendChild(h);
+          setTimeout(function (n) { return function () { n.remove(); }; }(h), 1800);
+        }
+      }
+      function startle(text) {
+        wake(true);
+        catEl.classList.remove("is-startle"); void catEl.offsetWidth;
+        catEl.classList.add("is-startle");
+        setTimeout(function () { catEl.classList.remove("is-startle"); }, 600);
+        if (text) say(catBubble, "しおり", text);
+      }
+      return {
+        say: function (t) { wake(true); say(catBubble, "しおり · 司書", t); },
+        startle: startle,
+        listen: function (on) { catEl.classList.toggle("is-listening", on); if (on) wake(true); },
+        lookAt: function (el) {
+          if (!el || reduce || sleeping) return;
+          var r = catEl.getBoundingClientRect(), t = el.getBoundingClientRect();
+          var dx = t.left + t.width / 2 - (r.left + r.width / 2);
+          head.style.transform = "rotate(" + clamp(dx / 50, -9, 9).toFixed(2) + "deg) translateY(2px)";
+        }
+      };
+    })();
+
+    /* ---------- こむぎ (dog) ---------- */
+    var dog = (function () {
+      if (!dock || !dogEl) return { say: function () {}, happy: function () {}, fetch: function () {} };
+      blinker(dogEl);
+      var hidden = store.get("dogHidden", false);
+      function show() {
+        hidden = false; store.set("dogHidden", false);
+        dock.classList.remove("is-hidden"); dock.classList.add("is-in");
+        callBtn.hidden = true;
+      }
+      function goAway() {
+        hidden = true; store.set("dogHidden", true);
+        hide(dogBubble);
+        dock.classList.add("is-hidden");
+        setTimeout(function () { callBtn.hidden = false; }, 700);
+      }
+      function happy(ms) {
+        dogEl.classList.add("is-happy");
+        clearTimeout(dogEl._h);
+        dogEl._h = setTimeout(function () { dogEl.classList.remove("is-happy"); }, ms || 1600);
+      }
+      function talk(text, opts) {
+        if (hidden) return;
+        happy(1200);
+        say(dogBubble, "こむぎ · 案内係", text, opts);
+      }
+      function menu(text) {
+        talk(text || "なにする？ワン！", { menu: [
+          ["▶ 今日の巻を聴く", function () { player.play(0, lang); talk("再生したよ！『" + label(latest) + "』"); }],
+          ["🎲 おまかせで1冊", fetchBook],
+          ["🔎 論文をさがす", function () { catalog.focus && catalog.focus(); talk("キーワードを入れてね。カードを押すと本がひらくワン"); }],
+          ["💤 またね", function () { talk("またね！左下の足あとを押すと、すぐ戻ってくるワン", { stay: 1800 }); setTimeout(goAway, 1900); }]
+        ] });
+      }
+      // run to the shelf and bring back a random book
+      function fetchBook() {
+        var cur = player.current();
+        var choices = EPS.map(function (_, k) { return k; }).filter(function (k) { return !cur || k !== cur.i; });
+        var i = pick(choices);
+        var ep = EPS[i];
+        sfx.bark();
+        talk("とってくるワン！", { stay: 2000 });
+        var stacks = $("#stacks");
+        if (stacks) stacks.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        if (!reduce && dogEl.animate) {
+          dogEl.classList.add("is-run");
+          var far = Math.min(window.innerWidth * 0.55, 520);
+          var a = dogEl.animate([
+            { transform: "translateX(0)" },
+            { transform: "translateX(" + far + "px)", offset: 0.45 },
+            { transform: "translateX(" + far + "px) scaleX(-1)", offset: 0.55 },
+            { transform: "translateX(0) scaleX(-1)", offset: 0.98 },
+            { transform: "translateX(0)" }
+          ], { duration: 1900, easing: "ease-in-out" });
+          setTimeout(function () { shelf.wiggle(i); }, 900);
+          a.onfinish = function () {
+            dogEl.classList.remove("is-run");
+            talk("これはどう？ No." + ep.no + "『" + label(ep) + "』", { stay: 4200 });
+            setTimeout(function () { shelf.pullOut(i, true); }, 700);
+          };
+        } else {
+          talk("これはどう？ No." + ep.no + "『" + label(ep) + "』", { stay: 4200 });
+          shelf.pullOut(i, true);
+        }
+      }
+      dogEl.addEventListener("click", function () { sfx.bark(); menu(); });
+      callBtn.addEventListener("click", function () { show(); sfx.bark(); talk("呼んだ？ワン！"); });
+
+      // entrance + first words
+      if (hidden) { dock.classList.add("is-hidden"); callBtn.hidden = false; }
+      else setTimeout(function () {
+        dock.classList.add("is-in");
+        var met = store.get("met", false), seen = store.get("seen", "");
+        setTimeout(function () {
+          if (!met) {
+            store.set("met", true); store.set("seen", latest.date);
+            sfx.bark();
+            talk("ワン！ぼくはこむぎ、案内係だよ。困ったらぼくを押してね。", { stay: 5200 });
+          } else if (seen !== latest.date) {
+            store.set("seen", latest.date);
+            sfx.chime();
+            talk("新刊が届いたワン！ No." + latest.no + "『" + label(latest) + "』", { menu: [
+              ["▶ 聴く", function () { player.play(0, lang); }],
+              ["📖 棚で見る", function () { var s = $("#stacks"); if (s) s.scrollIntoView({ behavior: "smooth" }); setTimeout(function () { shelf.pullOut(0, true); }, 900); }]
+            ] });
+          }
+        }, 900);
+      }, 1500);
+
+      // one hint per section per visit
+      var hinted = {};
+      var hints = {
+        stacks: "本の背表紙を横にドラッグしてみて！となりの本も一緒に傾くワン",
+        catalog: "ここは目録。/ キーでも検索できるワン",
+        subscribe: "RSS をコピーしてアプリに入れると、毎朝6:30に新刊が届くワン"
+      };
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (en) {
+          en.forEach(function (x) {
+            var id = x.target.id;
+            if (!x.isIntersecting || hinted[id] || !dogBubble.hidden) return;
+            hinted[id] = true;
+            setTimeout(function () { if (dogBubble.hidden) talk(hints[id]); }, 600);
+          });
+        }, { threshold: 0.35 });
+        Object.keys(hints).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+      }
+      return { say: talk, happy: happy, fetch: fetchBook };
+    })();
+
+    /* ---------- reactions ---------- */
+    var greeted = false, stroked = false, grabs = 0;
+    bus.on("shelf:settled", function () {
+      if (greeted) return;
+      greeted = true;
+      cat.say(greeting() + "。今朝の新刊は『" + label(latest) + "』だよ。ゆっくり見ていってね。");
+    });
+    bus.on("shelf:hover", function (i) { cat.lookAt(spineEl(i)); });
+    bus.on("shelf:grab", function (i) { grabs += 1; cat.lookAt(spineEl(i)); if (grabs === 1) cat.say("そっと、そっとね…"); });
+    bus.on("shelf:drop", function (i, tipped) {
+      if (tipped >= 5) cat.startle(pick(["にゃっ！ドミノはほどほどにね。", "にゃっ！…ちゃんと元に戻ってよかった。", "わっ、棚が揺れた。本たちはみんな無事だよ。"]));
+    });
+    bus.on("shelf:knock", function (v) { if (v > 0.75) cat.startle(); });
+    bus.on("shelf:stroke", function () { if (!stroked) { stroked = true; setTimeout(function () { cat.say("背表紙をなでるの、気持ちいいでしょ。"); }, 400); } });
+    bus.on("shelf:pull", function (i) {
+      if (Math.random() < 0.35) setTimeout(function () { cat.say(pick(["『" + label(EPS[i]) + "』、いい本を選んだね。", "その巻は No." + EPS[i].no + "。論文" + EPS[i].papers.length + "本入り。", "読み終わったら、ちゃんと棚に戻すからね。"])); }, 200);
+    });
+    bus.on("audio", function (on) { cat.listen(on); if (on) dog.happy(1000); });
+    bus.on("ended", function () {
+      dog.say("おしまい！明日の朝6:30に、また新しい巻が届くワン", { menu: [["🎲 おまかせで次の1冊", function () { dog.fetch(); }]] });
+    });
   })();
 
   /* ---------------- keyboard ---------------- */
