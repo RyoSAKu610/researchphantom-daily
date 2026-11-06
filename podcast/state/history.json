@@ -74,5 +74,9 @@
   {
     "date": "2026-11-05",
     "topicId": "neural-decoding"
+  },
+  {
+    "date": "2026-11-06",
+    "topicId": "llm-safety"
   }
 ]

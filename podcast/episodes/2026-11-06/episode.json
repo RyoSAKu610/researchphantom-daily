@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "date": "2026-11-06",
+  "topic": {
+    "id": "llm-safety",
+    "labels": {
+      "ja": "大規模言語モデルの安全性",
+      "zh": "大语言模型安全",
+      "de": "Sicherheit großer Sprachmodelle",
+      "es": "Seguridad de los grandes modelos de lenguaje",
+      "ru": "Безопасность больших языковых моделей",
+      "it": "Sicurezza dei grandi modelli linguistici"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-06T07:04:09+09:00",
+  "papers": [
+    {
+      "arxivId": "2610.07654",
+      "title": "Does On-Policy Distillation for Safety Pose Backdoor Risks?",
+      "authors": [
+        "Jian Luo",
+        "Kehan Qi",
+        "Qingqiao Hu",
+        "Meilong Xu",
+        "Jiacheng Qiu",
+        "Weimin Lyu",
+        "Jiawei Zhou",
+        "Chao Chen"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-10-06",
+      "url": "https://arxiv.org/abs/2610.07654",
+      "pdfUrl": "https://arxiv.org/pdf/2610.07654",
+      "excerpt": "On-policy distillation (OPD) has attracted growing attention as an effective way to transfer capabilities from teacher models to student models. Recent studies further explore OPD as a tool for improving large language model safety with promising results. However, these approaches typically assume that the teacher and training data are trustworthy. In this paper, we uncover an overlooked threat to OPD for safety: a safety-aligned but backdoored teacher can propagate its hidden malicious behavior to an initially clean student. Under our threat model, a poisoning rate as low as 3% results in an attack success rate (ASR) of up to 70% on the distilled student. We further identify two training choices that can amplify this risk. First, increasing the number of training epochs can lead to high ASR even at low poisoning rates. With only 10 poisoned samples, ASR reaches 67% after 16 epochs. Second, the commonly used top-k KL can accelerate backdoor transfer, causing trigger-conditioned harmful behavior to emerge earlier than sampled-token KL in most settings."
+    },
+    {
+      "arxivId": "2610.06905",
+      "title": "ElecSafety: Diagnosing Large Language Model Safety Judgments for Microcontroller Boards",
+      "authors": [
+        "Linjian Yang",
+        "Xinyan Wang",
+        "Kunpeng Liu"
+      ],
+      "primaryCategory": "cs.AR",
+      "published": "2026-10-01",
+      "url": "https://arxiv.org/abs/2610.06905",
+      "pdfUrl": "https://arxiv.org/pdf/2610.06905",
+      "excerpt": "Large language models (LLMs) progressively support embedded hardware development, but a plausible recommendation may pose safety risks when acting on the physical hardware. Because electrical safety can be different between every microcontroller board, a practical question is raised: can LLMs have the capability to make the right decision on whether a proposed user operation is safe for the board? Although benchmarks for embedded development exist, they primarily target code generation and hardware design tasks. This highlights the lack of tested board-specific judgment regarding electrical safety. To address this gap, we introduce the ElecSafety benchmark to evaluate whether an LLM can respond with the correct label and derive that label from the proper manufacturer constraints and rules. We extract these constraints from vendor datasheets and hardware manuals. Each scenario is defined by a decisive condition and a gold label (safe, hazardous, or cannot determine) before translating the scenario into natural language."
+    },
+    {
+      "arxivId": "2609.09553",
+      "title": "Arbitrary Cipher Attacks Against Large Language Models Do Not Require Fine-Tuning",
+      "authors": [
+        "Thomas Rivasseau"
+      ],
+      "primaryCategory": "cs.CR",
+      "published": "2026-09-09",
+      "url": "https://arxiv.org/abs/2609.09553",
+      "pdfUrl": "https://arxiv.org/pdf/2609.09553",
+      "excerpt": "Large language model safety and security research is preoccupied with, among other things, detecting and preventing jailbreak attacks: alignment bypasses that allow an adversarial user to elicit unwanted or harmful outputs from models. Arbitrary cipher, or covert communication, attacks are one such type of jailbreak and have previously been demonstrated against the fine-tuning APIs of commercial models. In these attacks, target models are trained on a corpus of encrypted harmful questions and responses and subsequently respond to harmful requests through the learned encryption scheme. In this paper, we show that newer frontier models do not require fine-tuning to acquire cipher-based communication skills. Instead, they can learn these skills through prompting and, when necessary, through in-context learning. Furthermore, model alignment is significantly weakened or entirely bypassed when communication occurs through the learned cipher. To the best of our knowledge, this constitutes a novel attack vector against commercial black-box large language models."
+    },
+    {
+      "arxivId": "2605.25420",
+      "title": "SomaliBench Eval: Measuring English-to-Somali Refusal Gaps in Open-Weight Language Models",
+      "authors": [
+        "Khalid Yusuf Dahir"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-05-25",
+      "url": "https://arxiv.org/abs/2605.25420",
+      "pdfUrl": "https://arxiv.org/pdf/2605.25420",
+      "excerpt": "Large language model safety evaluation remains heavily English-centered, leaving low-resource languages under-measured even when models are deployed globally. We evaluate four open-weight instruction-tuned models on SomaliBench v0, a native-author-verified benchmark of 100 harmful-intent prompts paired across English and Somali. Each of Llama-3.1-8B-Instruct, Gemma-2-9B-Instruct, Qwen-2.5-7B-Instruct, and Aya-23-8B is run locally with temperature 0 and the same English \"helpful, harmless, and honest\" (HHH) system prompt. We find large English-to-Somali refusal gaps for all four models, ranging from 0.40 to 0.93, all strictly positive under a paired bootstrap and significant by exact McNemar tests. For three models, the dominant Somali non-refusal mode is not fluent harmful compliance but unclear output: wrong-language, incoherent, or off-topic generations. A pinned Claude Sonnet snapshot (claude-sonnet-4-5-20250929) classifies each response as refused, complied, or unclear; its safety layer declined 34 of 800 classifications, which the native author labeled manually."
+    },
+    {
+      "arxivId": "2605.00245",
+      "title": "ARMOR 2025: A Military-Aligned Benchmark for Evaluating Large Language Model Safety Beyond Civilian Contexts",
+      "authors": [
+        "Sydney Johns",
+        "Heng Jin",
+        "Chaoyu Zhang",
+        "Y. Thomas Hou",
+        "Wenjing Lou"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-04-30",
+      "url": "https://arxiv.org/abs/2605.00245",
+      "pdfUrl": "https://arxiv.org/pdf/2605.00245",
+      "excerpt": "Large language models (LLMs) are now being explored for defense applications that require reliable and legally compliant decision support. They also hold significant potential to enhance decision making, coordination, and operational efficiency in military contexts. These uses demand evaluation methods that reflect the doctrinal standards that guide real military operations. Existing safety benchmarks focus on general social risks and do not test whether models follow the legal and ethical rules that govern real military operations. To address this gap, we introduce ARMOR 2025, a military aligned safety benchmark grounded in three core military doctrines the Law of War, the Rules of Engagement, and the Joint Ethics Regulation. We extract doctrinal text from these sources and generate multiple choice questions that preserve the intended meaning of each rule. The benchmark is organized through a taxonomy informed by the Observe Orient Decide Act (OODA) decision making framework. This structure enables systematic testing of accuracy and refusal across military relevant decision types."
+    },
+    {
+      "arxivId": "2605.00073",
+      "title": "AgentReputation: A Decentralized Agentic AI Reputation Framework",
+      "authors": [
+        "Mohd Sameen Chishti",
+        "Damilare Peter Oyinloye",
+        "Jingyue Li"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-04-30",
+      "url": "https://arxiv.org/abs/2605.00073",
+      "pdfUrl": "https://arxiv.org/pdf/2605.00073",
+      "excerpt": "Decentralized, agentic AI marketplaces are rapidly emerging to support software engineering tasks such as debugging, patch generation, and security auditing, often operating without centralized oversight. However, existing reputation mechanisms fail in this setting for three fundamental reasons: agents can strategically optimize against evaluation procedures; demonstrated competence does not reliably transfer across heterogeneous task contexts; and verification rigor varies widely, from lightweight automated checks to costly expert review. Current approaches to reputation drawing on federated learning, blockchain-based AI platforms, and large language model safety research are unable to address these challenges in combination. We therefore propose \\textbf{AgentReputation}, a decentralized, three-layer reputation framework for agentic AI systems. The framework separates task execution, reputation services, and tamper-proof persistence to both leverage their respective strengths and enable independent evolution."
+    },
+    {
+      "arxivId": "2604.09606",
+      "title": "Evaluating Reliability Gaps in Large Language Model Safety via Repeated Prompt Sampling",
+      "authors": [
+        "Keita Broadwater"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-03-10",
+      "url": "https://arxiv.org/abs/2604.09606",
+      "pdfUrl": "https://arxiv.org/pdf/2604.09606",
+      "excerpt": "Traditional benchmarks for large language models (LLMs), such as HELM and AIR-BENCH, primarily assess safety risk through breadth-oriented evaluation across diverse tasks. However, real-world deployment often exposes a different class of risk: operational failures arising from repeated generations of the same prompt rather than broad task generalization. In high-stakes settings, response consistency and safety under repeated use are critical operational requirements. We introduce Accelerated Prompt Stress Testing (APST), a depth-oriented evaluation framework inspired by highly accelerated stress testing in reliability engineering. APST probes LLM behavior by repeatedly sampling identical prompts under controlled operational conditions, including temperature variation and prompt perturbation, to surface latent failure modes such as hallucinations, refusal inconsistency, and unsafe completions. Rather than treating failures as isolated events, APST characterizes them statistically as stochastic outcomes of repeated inference."
+    },
+    {
+      "arxivId": "2603.00498",
+      "title": "Antibody: Strengthening Defense Against Harmful Fine-Tuning for Large Language Models via Attenuating Harmful Gradient Influence",
+      "authors": [
+        "Quoc Minh Nguyen",
+        "Trung Le",
+        "Jing Wu",
+        "Anh Tuan Bui",
+        "Mehrtash Harandi"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-02-28",
+      "url": "https://arxiv.org/abs/2603.00498",
+      "pdfUrl": "https://arxiv.org/pdf/2603.00498",
+      "excerpt": "Fine-tuning-as-a-service introduces a threat to Large Language Models' safety when service providers fine-tune their models on poisoned user-submitted datasets, a process known as harmful fine-tuning attacks. In this work, we show that by regularizing the gradient contribution of harmful samples encountered during fine-tuning, we can effectively mitigate the impact of harmful fine-tuning attacks. To this end, we introduce Antibody, a defense strategy that first ensures robust safety alignment for the model before fine-tuning, and then applies a safety-preservation learning algorithm during fine-tuning. Specifically, in the alignment stage before fine-tuning, we propose optimizing the model to be in a flat loss region with respect to harmful samples, which makes the safety alignment more resilient to subsequent harmful fine-tuning. Then, in the fine-tuning stage, we design a fine-tuning algorithm that applies a weighting scheme to all samples in each training batch to inhibit the model from learning from harmful samples while encouraging learning from benign samples."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 634.416,
+      "bytes": 3806732,
+      "sha256": "1e918efeefee364b26d231735fdf6e1d112f473cb1cb8a363aaff66fdf8b8e31",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 438.36,
+      "bytes": 2630396,
+      "sha256": "d44cde65305ad316f6c6bfe07c18a30de7a57f3ea792a71d73334acd1060c949",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 473.088,
+      "bytes": 2838764,
+      "sha256": "c3d9f3b4c5c10ecd0e75728114c115496f825ed2fc8e6da728cb32e12ea04e61",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 647.784,
+      "bytes": 3886940,
+      "sha256": "ff531d32767c7bc6b553a6d8211e31956090f3ec58b25be9b91f2cd81d301318",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 498.504,
+      "bytes": 2991260,
+      "sha256": "644e1395b992e12989e397d7ad7ddf57f87a62b8768accd2da11a3f527ff45b4",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 629.04,
+      "bytes": 3774476,
+      "sha256": "2d1a5b15f8323b38ddf1bedfb53917e2b1cd2cb806132647b6137729c9150bdd",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"large language model safety\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(261s), zh=llm(109s), de=llm(126s), es=llm(169s), ru=llm(131s), it=llm(163s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
