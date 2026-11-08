@@ -726,6 +726,10 @@ function libraryScript() {
   var dock = document.getElementById("dock");
   var scrubbing = false;
   var painting = false;
+  var pendingSeek = null;
+  var loadingFor = "";
+  var blobFor = "";
+  var blobUrl = "";
 
   function nodes() {
     return [].slice.call(document.querySelectorAll("[data-lang]"));
@@ -813,7 +817,7 @@ function libraryScript() {
     if (!player) return;
     painting = true;
     var dur = player.duration;
-    var cur = player.currentTime || 0;
+    var cur = pendingSeek !== null ? pendingSeek : (player.currentTime || 0);
     if (nowEl) nowEl.textContent = fmt(cur);
     if (durEl) durEl.textContent = isFinite(dur) ? fmt(Math.round(dur)) : "0:00";
     if (range) {
@@ -826,11 +830,76 @@ function libraryScript() {
     markCurrent();
     painting = false;
   }
+  function position() {
+    if (!player) return 0;
+    return pendingSeek !== null ? pendingSeek : (player.currentTime || 0);
+  }
+  function isSeekable(at) {
+    var ranges = player.seekable;
+    for (var i = 0; i < ranges.length; i++) {
+      if (at >= ranges.start(i) && at <= ranges.end(i)) return true;
+    }
+    return false;
+  }
+  function dropBlob() {
+    if (blobUrl) URL.revokeObjectURL(blobUrl);
+    blobUrl = "";
+    blobFor = "";
+  }
+  // Servers that ignore Range requests (python -m http.server, some CDNs)
+  // leave the media element unseekable, so the slider would snap back to 0.
+  // Fetching the whole file once and playing it from a blob makes it seekable.
+  function loadWhole() {
+    var src = player.getAttribute("data-src");
+    if (!src || loadingFor === src || !window.fetch || !window.URL || !URL.createObjectURL) return;
+    loadingFor = src;
+    if (dock) dock.classList.add("is-busy");
+    if (statusEl) statusEl.textContent = "音声を読み込み中…";
+    fetch(src).then(function (res) {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.blob();
+    }).then(function (blob) {
+      if (player.getAttribute("data-src") !== src) return;
+      var wasPlaying = !player.paused;
+      var fallback = player.currentTime || 0;
+      dropBlob();
+      blobUrl = URL.createObjectURL(blob);
+      blobFor = src;
+      player.addEventListener("loadedmetadata", function () {
+        var at = pendingSeek !== null ? pendingSeek : fallback;
+        pendingSeek = null;
+        try { player.currentTime = at; } catch (err) {}
+        if (wasPlaying) {
+          var resumed = player.play();
+          if (resumed && resumed.catch) resumed.catch(function () {});
+        }
+        paintTimes();
+      }, { once: true });
+      player.src = blobUrl;
+    }).catch(function () {
+      pendingSeek = null;
+      if (statusEl) statusEl.textContent = "この位置へ移動できませんでした。";
+      paintTimes();
+    }).then(function () {
+      if (loadingFor === src) loadingFor = "";
+      if (dock) dock.classList.remove("is-busy");
+    });
+  }
   function seekTo(at) {
-    if (typeof at !== "number" || !isFinite(at) || !player) return;
+    if (typeof at !== "number" || !isFinite(at) || !player || !player.getAttribute("data-src")) return;
     var dur = player.duration;
     var next = isFinite(dur) ? Math.min(Math.max(0, at), Math.max(0, dur - 0.05)) : Math.max(0, at);
-    try { player.currentTime = next; } catch (err) {}
+    var src = player.getAttribute("data-src");
+    if (blobFor === src && player.readyState === 0) {
+      pendingSeek = next;
+    } else if (blobFor === src || isSeekable(next)) {
+      pendingSeek = null;
+      try { player.currentTime = next; } catch (err) {}
+    } else {
+      pendingSeek = next;
+      loadWhole();
+    }
+    paintTimes();
   }
   function publishSession() {
     if (!player || !("mediaSession" in navigator) || !currentArticle) return;
@@ -859,8 +928,12 @@ function libraryScript() {
       paintTimes();
       publishSession();
     };
-    if (!same) player.addEventListener("loadedmetadata", applyTime, { once: true });
-    if (!same) player.src = src;
+    if (!same) {
+      pendingSeek = null;
+      dropBlob();
+      player.addEventListener("loadedmetadata", applyTime, { once: true });
+      player.src = src;
+    }
     if (shouldPlay !== false) {
       var pending = player.play();
       if (pending && pending.catch) pending.catch(function () {
@@ -908,7 +981,7 @@ function libraryScript() {
     if (!lang || lang === currentLang) return;
     var anchor = anchorCard();
     var anchorTop = anchor ? anchor.getBoundingClientRect().top : null;
-    var time = player && player.getAttribute("data-src") ? (player.currentTime || 0) : 0;
+    var time = player && player.getAttribute("data-src") ? position() : 0;
     var wasPlaying = !!(player && player.getAttribute("data-src") && !player.paused);
     var article = currentArticle;
     apply(lang);
@@ -1018,13 +1091,10 @@ function libraryScript() {
     var back = document.getElementById("dock-back");
     var fwd = document.getElementById("dock-fwd");
     if (back) back.addEventListener("click", function () {
-      if (!player.getAttribute("data-src")) return;
-      player.currentTime = Math.max(0, (player.currentTime || 0) - 15);
+      seekTo(position() - 15);
     });
     if (fwd) fwd.addEventListener("click", function () {
-      if (!player.getAttribute("data-src")) return;
-      var dur = isFinite(player.duration) ? player.duration : (player.currentTime || 0) + 15;
-      player.currentTime = Math.min(dur, (player.currentTime || 0) + 15);
+      seekTo(position() + 15);
     });
     if (range) {
       range.addEventListener("pointerdown", function () { scrubbing = true; });
@@ -1033,8 +1103,7 @@ function libraryScript() {
       range.addEventListener("input", function () {
         if (painting) return;
         if (!isFinite(player.duration) || !player.duration) return;
-        player.currentTime = (Number(range.value) / 1000) * player.duration;
-        paintTimes();
+        seekTo((Number(range.value) / 1000) * player.duration);
       });
     }
     if ("mediaSession" in navigator && navigator.mediaSession.setActionHandler) {
