@@ -1338,9 +1338,36 @@
         toggleEpisode(ep, l);
         break;
       }
+      case "air": drawAir(); break;
       default: break;
     }
   });
+
+  function drawAir() {
+    const node = doc.getElementById("air-catalog");
+    if (!node) return;
+    let list;
+    try { list = JSON.parse(node.textContent); } catch (err) { return; }
+    if (!list.length) return;
+    const cur = root.dataset.air;
+    let next = list[Math.floor(Math.random() * list.length)];
+    if (list.length > 1) {
+      let guard = 0;
+      while (next.id === cur && guard < 8) {
+        next = list[Math.floor(Math.random() * list.length)];
+        guard += 1;
+      }
+    }
+    root.dataset.air = next.id;
+    try { sessionStorage.setItem("oto:air", next.id); } catch (err) { /* private mode */ }
+    const name = doc.getElementById("air-name");
+    const note = doc.getElementById("air-note");
+    if (name) name.textContent = next.name;
+    if (note) note.textContent = `${next.note} — ${next.source}`;
+    const meta = doc.querySelector('meta[name="theme-color"]');
+    if (meta && next.bg) meta.setAttribute("content", next.bg);
+    toast(`${next.name}`);
+  }
 
   function openShortcuts() {
     const d = $("#shortcuts");
