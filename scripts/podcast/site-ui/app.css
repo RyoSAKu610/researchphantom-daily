@@ -489,6 +489,38 @@ html:not(.js) .dock{display:none}
 .ch-btn time{font:500 12px/1.7 var(--mono);color:var(--ink-3)}
 .ch-btn.is-now{background:var(--accent-soft);color:var(--ink)}
 body.dock-open{overflow:hidden}
+/* ---- tea rooms: a separate viewing mode ---- */
+.tea-entry{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.08em}
+.tea-entry:hover{color:var(--ink);border-color:var(--line-3)}
+.tearoom{display:none}
+.tearoom:target,.tearoom.is-on{display:block;position:fixed;z-index:45;inset:0;overflow:auto;background:#14110e;color:#f4efe6;padding:22px 22px calc(var(--dock-h) + 28px)}
+.tea-bar{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px 18px;max-width:1180px;margin:0 auto 16px}
+.tea-bar h2{margin:0;font:500 36px/1 var(--serif);letter-spacing:-.03em}
+.tea-kicker{margin:0;font-size:11px;font-weight:700;letter-spacing:.18em;color:#e8c27a}
+.tea-lead{margin:0;flex:1;color:#cfc4b4;font-size:13px}
+.tea-back{color:#e8c27a;text-decoration:none;font-weight:600}
+.tea-list{display:flex;gap:8px;overflow:auto;padding-bottom:8px;margin:0 auto 16px;max-width:1180px}
+.tea-jump{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:108px;padding:10px 12px;border-radius:14px;border:1px solid rgba(244,239,230,.14);color:#d9d0c2;text-align:left}
+.tea-jump small{color:#a3988a;font-size:10px}
+.tea-jump.is-on,.tea-jump[aria-current="true"]{background:#e8c27a;color:#1c160b;border-color:#e8c27a}
+.tea-jump.is-on small,.tea-jump[aria-current="true"] small{color:#5c4a2a}
+.tea-stage{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+.tea-room{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(240px,.7fr);gap:18px;align-items:start}
+.tea-plate{width:100%;height:auto;display:block;border-radius:18px;background:#1c1814;font-family:var(--serif)}
+.tea-room figcaption h3{margin:8px 0 0;font:500 32px/1.2 var(--serif)}
+.tea-room figcaption h3 span{display:block;margin-top:4px;font:500 13px/1.4 var(--sans);letter-spacing:.08em;color:#a3988a}
+.tea-meta{margin:4px 0 0;color:#cfc4b4;font-size:13px}
+.tea-room figcaption p{color:#e6ded2;font-size:14px;line-height:1.75}
+.tea-room ul{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.tea-room li{padding:4px 8px;border-radius:999px;border:1px solid rgba(244,239,230,.16);font-size:12px;color:#d9d0c2}
+.js .tearoom.is-on{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);overflow:hidden}
+.js .tearoom.is-on .tea-stage{min-height:0;overflow:auto}
+.js .tearoom.is-on .tea-room{display:none}
+.js .tearoom.is-on .tea-room.is-on{display:grid}
+@media (max-width:760px){
+  .tea-room,.js .tearoom.is-on .tea-room.is-on{grid-template-columns:1fr}
+  .tea-bar h2{font-size:28px}
+}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .feature{transform:none}

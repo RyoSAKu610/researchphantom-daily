@@ -4,6 +4,7 @@
 import { readFileSync } from "node:fs";
 import { icon, iconSprite } from "./icons.mjs";
 import { ATMOSPHERES, atmosphereCatalog, atmosphereCss } from "./atmospheres.mjs";
+import { teaRoomSection } from "./tearoom.mjs";
 
 const STYLE = `${readFileSync(new URL("./app.css", import.meta.url), "utf8")}${atmosphereCss()}`;
 const SCRIPT = readFileSync(new URL("./app.js", import.meta.url), "utf8");
@@ -421,6 +422,7 @@ ${iconSprite()}
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand" href="#top" aria-label="音の図書館 トップへ">${icon("audio-lines")}<span>音の図書館</span></a>
+    <a class="tea-entry" href="#tearoom">茶室</a>
     <button type="button" class="search-trigger" data-action="search" aria-label="検索 (/)">${icon("search")}<span>検索</span><kbd aria-hidden="true">/</kbd></button>
     ${navigation}
   </div>
@@ -470,6 +472,7 @@ ${main}
   </div>
   <p class="credits">Icons: <a href="https://lucide.dev" target="_blank" rel="noopener">Lucide</a> (ISC License)</p>
 </footer>
+${teaRoomSection()}
 ${model.episodes.length ? dockHtml() : ""}
 ${model.episodes.length ? sheetHtml() : ""}
 ${shortcutsHtml()}
