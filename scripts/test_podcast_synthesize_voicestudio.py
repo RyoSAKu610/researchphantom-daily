@@ -79,8 +79,7 @@ class RequestPayloadTests(unittest.TestCase):
         self.assertEqual(voicestudio.engine_language(voices, "es")["voice"], "Phantom-ES")
         self.assertEqual(voicestudio.engine_language(voices, "ru")["voice"], "Phantom-RU")
         self.assertEqual(voicestudio.engine_language(voices, "it")["voice"], "Phantom-IT")
-        with self.assertRaises(ValueError):
-            voicestudio.engine_language(voices, "ja")  # ja stays on irodori
+        self.assertEqual(voicestudio.engine_language(voices, "ja")["voice"], "Phantom-JA")
         with self.assertRaises(ValueError):
             voicestudio.engine_language(voices, "en")  # en left the lineup
 
@@ -345,9 +344,9 @@ class CliTests(unittest.TestCase):
 
     def test_unsupported_language_fails_without_requests(self):
         with FakeServer([]) as server:
-            arguments = ["--text-file", str(self.text), "--language", "ja",
-                         "--out", str(Path(self.directory.name) / "ja.mp3"),
-                         "--metrics", str(Path(self.directory.name) / "ja.metrics.json"),
+            arguments = ["--text-file", str(self.text), "--language", "en",
+                         "--out", str(Path(self.directory.name) / "en.mp3"),
+                         "--metrics", str(Path(self.directory.name) / "en.metrics.json"),
                          "--url", server.url()]
             result = subprocess.run([sys.executable, str(MODULE_PATH)] + arguments,
                                     capture_output=True, text=True, cwd=str(ROOT), timeout=60)

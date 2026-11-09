@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 import { poolOrder, pickTopic, pickFallback, planCatchupDates, loadHistory, saveHistory, writeJsonAtomic, parseISODate } from "../select.mjs";
 import { buildQueryUrl, fetchPapers, parseAtom } from "../arxiv.mjs";
 import { buildScript, cleanAbstract, DURATION_MAX_SECONDS, DURATION_MIN_SECONDS, DURATION_TARGET_SECONDS, estimateSpokenSeconds, trimExcerpt } from "../script.mjs";
-import { buildTtsEnv, engineForLang, engineVoiceFor, exitCodeFor, localIso, parseCliArgs, parseTtsEnv, resolvePython, resolveTtsPython, runTts, shouldSkip, verifyAudio, voiceFor } from "../daily.mjs";
+import { buildTtsEnv, engineForLang, engineVoiceFor, enginesToTry, exitCodeFor, localIso, parseCliArgs, parseTtsEnv, resolvePython, resolveTtsPython, runTts, shouldSkip, verifyAudio, voiceFor } from "../daily.mjs";
 import { auditEpisode, recentDates } from "../audit.mjs";
 
 const moduleDir = fileURLToPath(new URL("../", import.meta.url));
@@ -548,6 +548,14 @@ test("engineForLang lets PODCAST_TTS_MAP override PODCAST_TTS_ENGINE per languag
   assert.equal(engineForLang(null, "ja"), "qwen");
 });
 
+test("VoiceStudio is tried first and Japanese can fall back to irodori", () => {
+  const voices = { irodori: { languages: { ja: { caption: "kanade" } } } };
+  const tts = parseTtsEnv({ PODCAST_TTS_MAP: "ja:voicestudio,de:voicestudio" });
+  assert.deepEqual(enginesToTry(tts, "ja", voices), ["voicestudio", "irodori"]);
+  assert.deepEqual(enginesToTry(tts, "de", voices), ["voicestudio"]);
+  assert.deepEqual(enginesToTry(parseTtsEnv({ PODCAST_TTS_MAP: "ja:irodori" }), "ja", voices), ["irodori"]);
+});
+
 test("resolveTtsPython picks the engine venv and honors PODCAST_PYTHON", () => {
   assert.equal(resolveTtsPython("qwen", {}), resolvePython({}));  // .venv-tts must win for qwen
   assert.equal(resolveTtsPython("irodori", {}), "python3");  // stdlib-only engine
@@ -567,7 +575,7 @@ test("engineVoiceFor maps voices.json engine sections with safe fallbacks", asyn
   assert.equal(engineVoiceFor(voices, "voicestudio", "es"), "Phantom-ES");
   assert.equal(engineVoiceFor(voices, "voicestudio", "ru"), "Phantom-RU");
   assert.equal(engineVoiceFor(voices, "voicestudio", "it"), "Phantom-IT");
-  assert.equal(engineVoiceFor(voices, "voicestudio", "ja"), "none");  // ja stays on irodori
+  assert.equal(engineVoiceFor(voices, "voicestudio", "ja"), "Phantom-JA");
   assert.equal(engineVoiceFor(voices, "voicestudio", "en"), "none");  // en left the lineup
   assert.equal(engineVoiceFor(null, "voicestudio", "it"), "none");
 });

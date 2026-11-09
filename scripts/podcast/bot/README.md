@@ -134,7 +134,7 @@ Grok Bot に貼る Skill / Routine は、「**`daily.sh` を実行 → exit code
 
 1. `flock` による二重起動防止（flock 無い環境は即 exit）。
 2. `git pull --ff-only`（失敗は warning のみ。手元を真実として reset --hard 等はしない）。
-3. `TZ=Asia/Tokyo PODCAST_TTS_MAP="ja:irodori,zh:voicestudio,de:voicestudio,
+3. `TZ=Asia/Tokyo PODCAST_TTS_MAP="ja:voicestudio,zh:voicestudio,de:voicestudio,
    es:voicestudio,ru:voicestudio,it:voicestudio" node scripts/podcast/daily.mjs --catchup`。
    **`--catchup` が常に
    付く**（週末等に漏れた日付欠落は default backfillDays=3 で自動バックフィル）。
