@@ -8,8 +8,9 @@
 // incremental, and zero episodes must produce empty-but-valid output (empty
 // index, empty feeds, empty episodes.json).
 //
-// No dependencies beyond Node builtins. The generated HTML embeds all CSS and
-// the tiny language switcher, so the page has zero external dependencies.
+// No dependencies beyond Node builtins. The library UI (音の図書館) lives in
+// site-ui/ and is inlined into index.html, so the page has zero external
+// requests and the deploy output set stays index + feeds + JSON.
 // Base URL contract (pickBaseUrl): absolute URLs are used in RSS enclosures
 // and episodes.json; index.html always writes relative paths so a local
 // preview straight off the filesystem simply works.
@@ -18,6 +19,7 @@ import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { loadConfig } from "./daily.mjs";
 import { isValidISODate, readJson, writeJsonAtomic } from "./select.mjs";
+import { renderLibraryPage } from "./site-ui/render.mjs";
 
 const LANG_DEFAULTS = {
   labels: { ja: "日本語", zh: "中文", de: "Deutsch", es: "Español", ru: "Русский", it: "Italiano" },
@@ -301,171 +303,147 @@ export function buildEpisodesJson(episodeEntries, config, baseUrl, languages) {
 }
 
 // ---- index.html -------------------------------------------------------------------
+// The Pages site is this file's output. podcast-site/ is wiped on every
+// deploy, so the library UI (scripts/podcast/site-ui) is inlined by
+// renderLibraryPage. RSS, episodes.json and the relative audio paths stay
+// on the same contract as before. Engine names that are just "edge"
+// (retired third-party TTS) are omitted; irodori / voicestudio / qwen still
+// show as quiet metadata when the episode recorded them.
 
-function paperListHtml(view) {
-  if (view.papers.length === 0) {
-    return `<p class="papers-empty">${escapeHtml("この回の収録論文データはありません / No paper metadata.")}</p>`;
+const REPO_URL = "https://github.com/RyoSAKu610/researchphantom-daily";
+
+function formatClock(seconds) {
+  const value = Number(seconds);
+  if (!Number.isFinite(value) || value <= 0) return "";
+  const total = Math.round(value);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const remain = String(total % 60).padStart(2, "0");
+  return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${remain}` : `${minutes}:${remain}`;
+}
+
+function enginesFromNotes(notes) {
+  const map = {};
+  const text = (Array.isArray(notes) ? notes : []).join("\n");
+  const match = text.match(/TTS engines:\s*([^\n]+)/i);
+  if (!match) return map;
+  for (const part of match[1].split(",")) {
+    const eq = part.indexOf("=");
+    if (eq <= 0) continue;
+    const lang = part.slice(0, eq).trim();
+    const engine = part.slice(eq + 1).trim();
+    if (!lang || !engine || /edge/i.test(engine)) continue;
+    map[lang] = engine;
   }
-  const items = view.papers.map((paper) => {
-    const title = String(paper?.title ?? "").trim();
-    const url = typeof paper?.url === "string" && paper.url ? paper.url : paper?.arxivId ? `https://arxiv.org/abs/${paper.arxivId}` : null;
-    const meta = [
-      paper?.arxivId ? `arXiv:${escapeHtml(paper.arxivId)}` : "",
-      paper?.published ? escapeHtml(paper.published) : "",
-    ].filter(Boolean).join(" · ");
-    const titleHtml = url
-      ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(title)}</a>`
-      : escapeHtml(title);
-    return `<li>${titleHtml}${meta ? `<span class="meta">${meta}</span>` : ""}</li>`;
+  return map;
+}
+
+function secondSubtitle(config) {
+  if (typeof config?.subtitle?.de === "string" && config.subtitle.de.trim()) return { lang: "de", text: config.subtitle.de.trim() };
+  if (typeof config?.subtitle?.es === "string" && config.subtitle.es.trim()) return { lang: "es", text: config.subtitle.es.trim() };
+  if (typeof config?.subtitle?.zh === "string" && config.subtitle.zh.trim()) return { lang: "zh", text: config.subtitle.zh.trim() };
+  return { lang: "en", text: "" };
+}
+
+function paperModel(paper) {
+  const id = typeof paper?.arxivId === "string" && paper.arxivId.trim()
+    ? paper.arxivId.trim()
+    : typeof paper?.id === "string" ? paper.id.trim() : "";
+  const title = String(paper?.title ?? "").trim();
+  const url = typeof paper?.url === "string" && paper.url.trim()
+    ? paper.url.trim()
+    : id ? `https://arxiv.org/abs/${id}` : "";
+  const pdf = typeof paper?.pdfUrl === "string" && paper.pdfUrl.trim()
+    ? paper.pdfUrl.trim()
+    : typeof paper?.pdf === "string" ? paper.pdf.trim() : "";
+  const authors = Array.isArray(paper?.authors) ? paper.authors.map((name) => String(name).trim()).filter(Boolean) : [];
+  const category = typeof paper?.primaryCategory === "string" && paper.primaryCategory.trim()
+    ? paper.primaryCategory.trim()
+    : typeof paper?.category === "string" ? paper.category.trim() : "";
+  const published = typeof paper?.published === "string" ? paper.published.trim() : "";
+  const abstract = typeof paper?.excerpt === "string" && paper.excerpt.trim()
+    ? paper.excerpt.trim()
+    : typeof paper?.abstract === "string" ? paper.abstract.trim() : "";
+  return { id, title, url, pdf, authors, category, published, abstract };
+}
+
+function synopsisOf(papers) {
+  const paper = papers.find((item) => item.abstract);
+  if (paper) {
+    let text = paper.abstract.replace(/\s+/g, " ").trim();
+    const max = 200;
+    if (text.length > max) {
+      const slice = text.slice(0, max);
+      const stop = Math.max(slice.lastIndexOf(". "), slice.lastIndexOf("。"));
+      text = `${(stop > 90 ? slice.slice(0, stop + 1) : slice).trim()}…`;
+    }
+    return text;
+  }
+  return papers.map((item) => item.title).filter(Boolean).slice(0, 2).join(" / ");
+}
+
+function voiceOf(audio, engine) {
+  const parts = [];
+  if (engine && !/edge|neural/i.test(engine)) parts.push(engine);
+  const voice = typeof audio?.voice === "string" ? audio.voice.trim() : "";
+  if (voice && !/edge|neural/i.test(voice)) parts.push(voice);
+  return parts.join(" · ");
+}
+
+function libraryModel(episodeEntries, config, languages) {
+  const views = episodeEntries.map((entry) => episodeView(entry, config, languages));
+  const episodes = views.map((view, index) => {
+    const papers = (Array.isArray(view.papers) ? view.papers : []).map(paperModel);
+    const engines = enginesFromNotes(view.notes);
+    const audio = {};
+    for (const lang of languages) {
+      const item = view.audio[lang];
+      if (!item) continue;
+      const duration = Number.isFinite(Number(item.durationSeconds)) ? Number(item.durationSeconds) : null;
+      audio[lang] = {
+        src: item.path,
+        bytes: item.bytes,
+        size: formatBytes(item.bytes),
+        duration,
+        clock: formatClock(duration),
+        script: item.scriptPath || "",
+        file: audioFileName(config, view.date, lang),
+        voice: voiceOf(item, engines[lang]),
+      };
+    }
+    return {
+      date: view.date,
+      no: index + 1,
+      latest: index === 0,
+      source: view.source || "",
+      topicId: view.topicId,
+      topic: view.topicLabels,
+      papers,
+      synopsis: synopsisOf(papers),
+      audio,
+    };
   });
-  return `<ul>${items.join("")}</ul>`;
-}
-
-function langBlockHtml(view, lang, config) {
-  if (!view.audio[lang]) return ""; // unavailable language: render nothing at all
-  const audio = view.audio[lang];
-  const details = [formatBytes(audio.bytes), formatDuration(audio.durationSeconds) ? `${formatDuration(audio.durationSeconds)}s` : ""]
-    .filter(Boolean).join(" · ");
-  return [
-    `      <div class="lang-block" data-lang="${escapeHtml(lang)}">`,
-    `        <p class="lang-label">${escapeHtml(langLabel(config, lang))}</p>`,
-    `        <audio controls preload="none" src="${escapeHtml(audio.path)}"></audio>`,
-    `        <p class="dl-row">`,
-    `          <a class="btn" href="${escapeHtml(audio.path)}" download="${escapeHtml(audioFileName(config, view.date, lang))}">${escapeHtml(LANG_DEFAULTS.download[lang] ?? "Download (MP3)")}</a>`,
-    audio.scriptPath ? `          <a class="link" href="${escapeHtml(audio.scriptPath)}">${escapeHtml(LANG_DEFAULTS.transcript[lang] ?? "Transcript")}</a>` : null,
-    details ? `          <span class="dl-meta">${escapeHtml(details)}</span>` : null,
-    `        </p>`,
-    `      </div>`,
-  ].filter((line) => line !== null).join("\n");
-}
-
-function episodeArticleHtml(entry, config, languages, latest) {
-  const view = episodeView(entry, config, languages);
-  const topicSpans = languages
-    .map((lang) => `<span class="topic-label" data-lang="${escapeHtml(lang)}">${escapeHtml(view.topicLabels[lang])}</span>`)
-    .join("");
-  const blocks = languages.map((lang) => langBlockHtml(view, lang, config)).join("\n");
-  const badge = view.source === "curated" ? "curated" : view.source === "arxiv" ? "arXiv" : escapeHtml(view.source || "—");
-  return [
-    `  <article class="episode${latest ? " latest" : ""}" id="ep-${escapeHtml(view.date)}">`,
-    "    <header class=\"ep-head\">",
-    `      <h2 class="topic">${topicSpans}</h2>`,
-    `      <p class="when"><time datetime="${escapeHtml(view.date)}">${escapeHtml(view.date)}</time> <span class="badge">${badge}</span></p>`,
-    "    </header>",
-    blocks,
-    `    <details class="papers"${latest ? " open" : ""}>`,
-    `      <summary>${escapeHtml("収録論文")}</summary>`,
-    `      ${paperListHtml(view)}`,
-    "    </details>",
-    "  </article>",
-  ].join("\n");
+  return {
+    title: String(config?.title ?? "Phantomresearch Daily").trim() || "Phantomresearch Daily",
+    subtitleJa: typeof config?.subtitle?.ja === "string" ? config.subtitle.ja.trim() : "",
+    second: secondSubtitle(config),
+    repoUrl: REPO_URL,
+    languages: languages.map((lang) => ({
+      code: lang,
+      label: langLabel(config, lang),
+      covered: episodes.some((episode) => episode.audio[lang]),
+      rss: `feed-${lang}.xml`,
+      rssLabel: LANG_DEFAULTS.rss[lang] ?? `RSS (${lang})`,
+      downloadLabel: LANG_DEFAULTS.download[lang] ?? "Download (MP3)",
+      transcriptLabel: LANG_DEFAULTS.transcript[lang] ?? "Transcript",
+    })),
+    episodes,
+  };
 }
 
 export function buildIndexHtml(episodeEntries, config, languages) {
   languages = (languages ?? (config?.languages ?? [])).filter(Boolean);
-  const title = escapeHtml(config?.title ?? "Phantomresearch Daily");
-  const subtitleJa = escapeHtml(config?.subtitle?.ja ?? "");
-  // Secondary hero line: prefer German (first European lineup language), then
-  // any remaining subtitle entry, so removed-lineup keys (en) are not required.
-  const subtitleSecond = escapeHtml(config?.subtitle?.de ?? config?.subtitle?.es ?? config?.subtitle?.zh ?? "");
-  const views = episodeEntries.map((entry) => episodeView(entry, config, languages));
-
-  // A language tab exists only when at least one episode ships that language.
-  const covered = languages.filter((lang) => views.some((view) => view.audio[lang]));
-  const tabs = covered
-    .map((lang) => `<button type="button" class="tab" data-lang-tab="${escapeHtml(lang)}">${escapeHtml(langLabel(config, lang))}</button>`)
-    .join("\n      ");
-  const feedRows = languages
-    .map((lang) => `<a href="feed-${escapeHtml(lang)}.xml">${escapeHtml(LANG_DEFAULTS.rss[lang] ?? `RSS (${lang})`)}</a>`)
-    .join(`<span class="dot">·</span>`);
-  const articles = views.map((view, index) => episodeArticleHtml(episodeEntries[index], config, languages, index === 0)).join("\n");
-  const navigation = covered.length > 0 ? `<nav class="tabs" aria-label="Language">\n      ${tabs}\n    </nav>\n` : "";
-  const body = views.length === 0
-    ? `  <p class="empty">まだエピソードはありません。<span class="lmuted">No episodes yet — try <code>node scripts/podcast/daily.mjs</code>.</span></p>`
-    : articles;
-
-  return `<!doctype html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="${subtitleJa}">
-<title>${title}</title>
-<style>
-:root{--ink:#15100c;--line:rgba(227,197,131,.22);--cream:#f6efdf;--muted:#b8a98d;--gold:#e3c583;--dark:#1a1410;--radius:14px}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background-color:var(--ink);color:var(--cream);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Noto Sans SC","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}
-main{max-width:760px;margin:0 auto;padding:32px 20px 56px}
-header.hero{padding-bottom:24px;border-bottom:1px solid var(--line)}
-.hero h1{margin:0;font-size:clamp(28px,6vw,40px);font-weight:800;letter-spacing:.01em;background:linear-gradient(115deg,#f5e5bd 0%,#e3c583 38%,#b58a45 72%,#ecd8a4 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero .sub{margin:8px 0 0;color:var(--muted);font-size:14px}
-.hero .sub-en{margin:2px 0 0;color:#8e8168;font-size:13px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--muted)}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
-.tab{cursor:pointer;font:inherit;font-size:13px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 14px}
-.tab:hover{color:var(--cream);border-color:rgba(227,197,131,.45)}
-.tab.is-active{background:linear-gradient(135deg,#f0d9a6 0%,#e3c583 45%,#c99b52 100%);color:var(--dark);border-color:transparent;font-weight:600}
-.feeds{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 0;font-size:13px;color:var(--muted)}
-.feeds a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px}
-.feeds a:hover{color:var(--gold)}
-.feeds .dot{color:#5b4f3c}
-h2.section{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin:28px 0 8px}
-article.episode{margin:18px 0;padding:20px 20px 16px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(160deg,rgba(255,255,255,.04),rgba(255,255,255,.015))}
-article.episode.latest{border-color:rgba(227,197,131,.35)}
-.ep-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
-.ep-head .topic{margin:0;font-size:19px;font-weight:700}
-.topic-label+.topic-label::before{content:"·";margin:0 6px 0 2px;color:#5b4f3c;font-weight:400}
-.ep-head .when{margin:0;color:var(--muted);font-size:13px;display:flex;gap:10px;align-items:center}
-.badge{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--muted)}
-.lang-block{margin-top:18px}
-.lang-label{margin:0 0 6px;font-size:12px;color:var(--muted);letter-spacing:.08em}
-audio{display:block;width:100%;height:40px}
-.dl-row{display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;margin:10px 0 0}
-.btn{display:inline-block;text-decoration:none;background:linear-gradient(135deg,#f0d9a6 0%,#e3c583 45%,#c99b52 100%);color:var(--dark);font-size:13px;font-weight:600;border-radius:10px;padding:8px 16px;transition:transform .3s cubic-bezier(.22,1,.36,1)}
-.btn:hover{transform:translateY(-1px)}
-.link{font-size:13px;color:var(--muted)}
-.dl-meta{font-size:12px;color:#8e8168}
-details.papers{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
-details.papers summary{cursor:pointer;color:var(--muted);font-size:13px}
-details.papers ul{list-style:none;margin:12px 0 0;padding:0}
-details.papers li{margin:10px 0;font-size:14px}
-details.papers a{color:var(--cream);text-decoration:none;border-bottom:1px solid var(--line)}
-details.papers a:hover{color:var(--gold);border-color:var(--gold)}
-details.papers .meta{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-.papers-empty{color:var(--muted);font-size:13px;margin:10px 0 0}
-p.empty{border:1px dashed var(--line);border-radius:var(--radius);padding:32px 20px;text-align:center;color:var(--muted)}
-p.empty .lmuted{display:block;font-size:13px;color:#8e8168;margin-top:6px}
-p.empty code{font-size:11px}
-footer{max-width:760px;margin:0 auto;padding:0 20px 48px;color:var(--muted);font-size:12px;line-height:1.9}
-footer a{color:var(--muted)}
-@media (max-width:560px){
-  main{padding:24px 14px 40px}
-  footer{padding-left:14px;padding-right:14px}
-  article.episode{padding:16px 14px 12px}
-  .dl-row{gap:10px}
-}
-</style>
-</head>
-<body>
-<main>
-  <header class="hero">
-    <h1>${title}</h1>
-    <p class="sub">${subtitleJa}</p>
-    <p class="sub-en">${subtitleSecond}</p>
-    <div class="chips"><span class="chip">毎日テーマが変わる</span><span class="chip">${languages.length} languages</span><span class="chip">ローカル生成音声</span></div>
-    ${navigation}<nav class="feeds" aria-label="RSS feeds">${feedRows}</nav>
-  </header>
-  <h2 class="section">エピソード / Episodes</h2>
-${body}
-</main>
-<footer>出典: arXiv（各論文のライセンスに従います）・音声はローカル生成です。機械可読一覧: <a href="episodes.json">episodes.json</a></footer>
-<script>(function(){var html=document.documentElement;if(!html||!html.classList)return;html.classList.add("js");var tabs=[].slice.call(document.querySelectorAll(".tab[data-lang-tab]"));if(!tabs.length)return;function apply(lang){tabs.forEach(function(tab){tab.classList.toggle("is-active",tab.getAttribute("data-lang-tab")===lang)});[].slice.call(document.querySelectorAll("[data-lang]")).forEach(function(el){var active=el.getAttribute("data-lang")===lang;el.classList.toggle("is-active",active);el.hidden=!active;});if(!document.querySelector("[data-lang].is-active")){tabs[0]&&tabs[0].classList.add("is-active")}}for(var i=0;i<tabs.length;i++)tabs[i].addEventListener("click",function(){apply(this.getAttribute("data-lang-tab"))});apply(tabs[0].getAttribute("data-lang-tab"));})();</script>
-</body>
-</html>
-`;
+  return renderLibraryPage(libraryModel(episodeEntries, config, languages));
 }
 
 // ---- audio/transcript copying --------------------------------------------------------
