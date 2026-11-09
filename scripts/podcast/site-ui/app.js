@@ -1312,6 +1312,8 @@
       openSheet(host && BY_DATE.get(host.dataset.date));
       return;
     }
+    const teaJump = target.closest("[data-tea-jump]");
+    if (teaJump) { showTea(teaJump.dataset.teaJump); return; }
     const copyBtn = target.closest("[data-copy]");
     if (copyBtn) { copy(new URL(copyBtn.dataset.copy, location.href).toString(), "RSS の URL をコピーしました"); return; }
     const seekBtn = target.closest(".dock [data-seek-frac]");
@@ -1342,6 +1344,39 @@
       default: break;
     }
   });
+
+  const tea = $("#tearoom");
+  let teaIndex = 0;
+  function teaOpen() {
+    return Boolean(tea && (tea.classList.contains("is-on") || location.hash === "#tearoom"));
+  }
+  function showTea(id) {
+    if (!tea) return;
+    const rooms = $$(".tea-room", tea);
+    const jumps = $$("[data-tea-jump]", tea);
+    let index = rooms.findIndex((room) => room.dataset.tea === id);
+    if (index < 0) index = 0;
+    teaIndex = index;
+    rooms.forEach((room, i) => room.classList.toggle("is-on", i === index));
+    jumps.forEach((button, i) => {
+      const on = i === index;
+      button.classList.toggle("is-on", on);
+      button.setAttribute("aria-current", on ? "true" : "false");
+    });
+  }
+  function setTeaMode(on) {
+    if (!tea) return;
+    tea.classList.toggle("is-on", on);
+    doc.body.classList.toggle("tea-open", on);
+    if (on) showTea(($$(".tea-room.is-on", tea)[0] || $$(".tea-room", tea)[0] || {}).dataset?.tea);
+  }
+  function stepTea(dir) {
+    const rooms = $$(".tea-room", tea);
+    if (!rooms.length) return;
+    showTea(rooms[(teaIndex + dir + rooms.length) % rooms.length].dataset.tea);
+  }
+  window.addEventListener("hashchange", () => setTeaMode(location.hash === "#tearoom"));
+  if (location.hash === "#tearoom") setTeaMode(true);
 
   function drawAir() {
     const node = doc.getElementById("air-catalog");
@@ -1388,6 +1423,11 @@
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const typing = t.closest("textarea, select, [contenteditable=true]") || (t.matches("input") && t.type !== "range");
     if (typing) return;
+    if (teaOpen()) {
+      if (key === "Escape") { e.preventDefault(); location.hash = "top"; return; }
+      if (key === "ArrowLeft") { e.preventDefault(); stepTea(-1); return; }
+      if (key === "ArrowRight") { e.preventDefault(); stepTea(1); return; }
+    }
     if (key === "Escape" && dock.classList.contains("is-expanded")) { setExpanded(false); return; }
     const onControl = t.closest("button, a, summary, [role=tab], input[type=range]");
     switch (key) {

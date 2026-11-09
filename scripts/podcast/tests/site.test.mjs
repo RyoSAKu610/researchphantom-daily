@@ -285,6 +285,8 @@ test("index.html: play + download per available language, unavailable languages 
     assert.equal(new Set(ATMOSPHERES.map((room) => room.id)).size, 100);
     assert.ok(html.includes('id="air-catalog"'), "room catalog is on the page");
     assert.ok(html.includes("VoiceStudio"), "VoiceStudio is named as the first voice");
+    assert.ok(html.includes('id="tearoom"'), "tea-room mode is a separate section");
+    assert.ok(html.includes("待庵") && html.includes("如庵") && html.includes("密庵席") && html.includes("黄金の茶室"));
   } finally {
     await rm(tmp, { recursive: true, force: true });
   }
