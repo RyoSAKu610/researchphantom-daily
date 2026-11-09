@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "date": "2026-11-09",
+  "topic": {
+    "id": "graph-neural-networks",
+    "labels": {
+      "ja": "グラフニューラルネットワーク",
+      "zh": "图神经网络",
+      "de": "Graph-neuronale Netze",
+      "es": "Redes neuronales de grafos",
+      "ru": "Графовые нейронные сети",
+      "it": "Reti neurali a grafo"
+    }
+  },
+  "source": "curated",
+  "generatedAt": "2026-11-09T10:45:45+09:00",
+  "papers": [
+    {
+      "arxivId": "2006.11239",
+      "title": "Denoising Diffusion Probabilistic Models",
+      "authors": [
+        "Jonathan Ho",
+        "Ajay Jain",
+        "Pieter Abbeel"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2020-06-19",
+      "url": "https://arxiv.org/abs/2006.11239",
+      "pdfUrl": "https://arxiv.org/pdf/2006.11239",
+      "excerpt": "画像へ徐々にノイズを加える過程に対応して、ノイズを除く逆過程を学習する拡散確率モデルを研究した論文。ノイズ予測を使った学習とスコアマッチングの関係を示し、無条件のCIFAR-10やLSUNの画像生成で高いサンプル品質を報告した。"
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 429.84,
+      "bytes": 2579276,
+      "sha256": "cae2abf71fea573fd381442b9c456e595c0c458a54a729e2bcdc15c5a6f4d044",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 421.896,
+      "bytes": 2531612,
+      "sha256": "e075a8bdd83a392bb1d8fe3087d821af016ef263f37d5467e02e3e080c6ea6ec",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 405.24,
+      "bytes": 2431676,
+      "sha256": "93ed19d47418af168c2e0a33d85a639f80cbf15cec4f5320e20a03d6c5128649",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 451.392,
+      "bytes": 2708588,
+      "sha256": "73da68a6f0232326fa3814416d23e13c2eb83464379f6ed31a25d41be420ca43",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 412.584,
+      "bytes": 2475740,
+      "sha256": "efe7dfd3d5662118fc5ce1e165869ff24571af5e56c45578263d224dd7285dcf",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 488.712,
+      "bytes": 2932508,
+      "sha256": "b2bf7e0cb159c335039f11715c0a4b6125238ee6907019c4ea0e3062a9e956b7",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "arXiv returned no usable papers: curated catalog entry used",
+    "curated excerpt is our edited Japanese summary of the paper, not the original abstract",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(257s), zh=llm(176s), de=llm(625s), es=llm(661s), ru=llm(503s), it=llm(149s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}

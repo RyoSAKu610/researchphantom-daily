@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "date": "2026-11-08",
+  "topic": {
+    "id": "federated-learning",
+    "labels": {
+      "ja": "連合学習",
+      "zh": "联邦学习",
+      "de": "Föderiertes Lernen",
+      "es": "Aprendizaje federado",
+      "ru": "Федеративное обучение",
+      "it": "Apprendimento federato"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-09T09:09:34+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.08383",
+      "title": "FedReason: Large Language Models as Weight-Space Meta-Aggregators for Heterogeneous Federated Learning",
+      "authors": [
+        "Ali Mohammadi Ruzbahani",
+        "Abbas Yazdinejad",
+        "Hadis Karimipour"
+      ],
+      "primaryCategory": "cs.CR",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08383",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08383",
+      "excerpt": "Federated learning servers combine client models with a fixed aggregation rule, and each rule in common use is designed for one kind of heterogeneity. We study whether a large language model (LLM) that inspects the client models can choose the rule itself, without any training on the server. In FedReason, the LLM is called every ten rounds. It analyses the weights by running code in a restricted server-side sandbox, sees only the printed results, may score a few candidates on a 500-image proxy set, and submits a short Python aggregation program. The server applies the program until the next call and falls back to FedAvg whenever its output is invalid. Full weight tensors never leave the server. We evaluated FedReason with Claude Opus 5.5 on CIFAR-10 and CIFAR-100 with ResNet-18 under Dirichlet label skew, width-heterogeneous sub-models and Byzantine clients, in 168 runs against 14 baselines."
+    },
+    {
+      "arxivId": "2611.08021",
+      "title": "GTAFL: Addressing Test-Agnostic Long-Tailed Federated Learning in Medical Image",
+      "authors": [
+        "Guangyu Chen",
+        "Jingyun Zeng",
+        "Hui Jiang"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08021",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08021",
+      "excerpt": "In healthcare, protecting patient privacy is crucial due to the sensitivity of medical data and its extensive accessibility. Federated Learning (FL) offers a decentralized and privacy-preserving training paradigm, making it an ideal solution for healthcare applications. A critical challenge in healthcare is that real-world medical data often exhibits long-tailed distributions in local and global views. Existing methods addressing long-tailed FL problem typically assume that the model will be evaluated on uniform test data distribution. However, practical test data in healthcare systems is often agnostic and unpredictable, leading to potential model failures in real-world scenarios. In this paper, we introduce a novel task termed Test-Agnostic Long-Tailed Federated Learning and propose GTAFL, a comprehensive framework to address this challenge. During the training stage, GTAFL employs adaptive re-sampling, expert classifier retraining, and self-supervised learning to correct biased classifiers and distorted feature spaces caused by long-tailed training distributions."
+    },
+    {
+      "arxivId": "2611.07093",
+      "title": "Server-Side Sparse Assignment for Federated Mixture-of-Experts",
+      "authors": [
+        "Xue Zheng",
+        "Aylin Yener"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-04",
+      "url": "https://arxiv.org/abs/2611.07093",
+      "pdfUrl": "https://arxiv.org/pdf/2611.07093",
+      "excerpt": "Large language models (LLMs) are increasingly recognized for their remarkable capabilities; federated learning (FL) offers a promising framework for collaboratively fine-tuning LLMs on edge devices while achieving data privacy. However, edge devices are inherently heterogeneous: clients may exhibit diverse data distributions and resource constraints, including limited memory and computation budgets. Recent federated Mixture-of-Experts (MoE) approaches address these challenges by using sparse expert activation or partial expert loading. However, existing partial-expert methods rely on heuristic full-pool observations or prioritize system-wide load balance, without guarantees for recovering client-specific relevant experts from partial observations. We propose -MoE, a server-side sparse expert assignment framework that estimates client-specific expert relevance from partial observations and refines assignments through an exploit--explore mechanism. We also establish relevance-estimation error and exact Top- recovery guarantees."
+    },
+    {
+      "arxivId": "2611.06783",
+      "title": "FedFiOT: Fisher-Weighted Optimal Transport for Model Merging in One-Shot and Few-Round Federated Learning",
+      "authors": [
+        "Quan Minh Nguyen",
+        "Hoang M. Ngo",
+        "Bhakti Chowkwale",
+        "Yasaman Keshtkarjahromi",
+        "My T. Thai"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-04",
+      "url": "https://arxiv.org/abs/2611.06783",
+      "pdfUrl": "https://arxiv.org/pdf/2611.06783",
+      "excerpt": "One-shot and few-round federated learning (FL) reduce communication burden by constructing a global model within one or a few communication rounds, but often achieve lower performance than conventional multi-round FL. Without frequent synchronization, client models may drift apart, causing neurons that learn similar features to occupy different positions across clients. At the same time, local data heterogeneity can cause corresponding parameters to differ in their importance to each client's predictions. Together, these challenges cause direct averaging to combine mismatched neurons and assign equal weight to parameters despite differences in their importance. We propose FedFiOT, a Fisher-weighted optimal transport framework for one-shot and few-round FL that leverages Fisher information to quantify parameter importance and guide neuron alignment and model aggregation. FedFiOT jointly optimizes neuron correspondences and global model parameters through alternating minimization of a shared Fisher-weighted objective."
+    },
+    {
+      "arxivId": "2611.06251",
+      "title": "Transversal Passivity: Dissipation Relative to Input and Output Manifolds",
+      "authors": [
+        "Feng-Yu Yue",
+        "Daniel Zelazo"
+      ],
+      "primaryCategory": "eess.SY",
+      "published": "2026-11-04",
+      "url": "https://arxiv.org/abs/2611.06251",
+      "pdfUrl": "https://arxiv.org/pdf/2611.06251",
+      "excerpt": "This paper introduces transversal passivity, a local dissipation property for regulating input and output signals to prescribed manifolds. Its supply rate is built from the transverse port errors induced by nearest-point projections, so that motion along the manifolds is not penalized. We give a necessary condition and a constructive sufficient condition for the property and relate it to existing passivity notions. For feedback interconnections through negative-adjoint linear channels, power conservation no longer cancels the transverse supply. The residual is governed by compatibility defects that depend only on the channels and the prescribed manifolds, so it can be assessed before any closed-loop analysis, and it falls into a hierarchy of exact compatibility, quadratic cancellation, and nonzero quadratic residuals."
+    },
+    {
+      "arxivId": "2611.06221",
+      "title": "FedXCrop: Privacy-Preserving Crop Disease Detection via Federated Learning with Post-Aggregation Explainability under Non-IID Farm Distributions",
+      "authors": [
+        "Kriti Saini",
+        "Manikandan P"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-04",
+      "url": "https://arxiv.org/abs/2611.06221",
+      "pdfUrl": "https://arxiv.org/pdf/2611.06221",
+      "excerpt": "Deep learning can classify crop diseases accurately from benchmark leaf images, but centralized training requires farms to share raw data, and predictions without explanations offer limited support for treatment decisions. We present FedXCrop, a federated crop disease classification pipeline that quantitatively evaluates explanations of the aggregated global model. A MobileNetV2 model trained centrally on PlantVillage achieved 99.38% test accuracy (standard deviation 0.05 over three seeds) on a fixed test set of 5,428 images across 38 classes. Federated models initialized with ImageNet weights were trained for 30 rounds across five clients. FedAvg achieved 98.81% accuracy with identically distributed clients and 98.81%, 98.59%, and 97.78% under Dirichlet label skew (alpha = 1, 0.5, and 0.1, respectively). FedProx was not significantly different from FedAvg at any heterogeneity level (McNemar p > 0.3). Grad-CAM and SmoothGrad explanations were evaluated on 380 test images."
+    },
+    {
+      "arxivId": "2611.06064",
+      "title": "Learning From Static Context in Federated Time Series Forecasting",
+      "authors": [
+        "Viktor Walter",
+        "Andreas Wagner",
+        "Fabian Stricker"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-04",
+      "url": "https://arxiv.org/abs/2611.06064",
+      "pdfUrl": "https://arxiv.org/pdf/2611.06064",
+      "excerpt": "Time series forecasting is shifting from locally trained, per-series models to global models trained across many heterogeneous series, which requires learning what sets the series apart. When the raw data cannot be centralized, such a global model is trained with federated learning (FL), one client per data owner. State-of-the-art forecasters such as the Temporal Fusion Transformer (TFT) tell series apart through a static input that describes each series and does not change over time. In the special case of a federated setting where each client holds a single series, this static input is constant within each client and varies only across clients. We ask whether a federated TFT can learn from it. Per-batch FedAdam, which aggregates gradients after every batch, uses the static input almost as well as central training, whereas communication-efficient schemes with local epochs (FedAvg, FedAdam+Prox) extract far less from it and gain nothing significant on either application dataset."
+    },
+    {
+      "arxivId": "2611.05546",
+      "title": "FedSharp: Byzantine Robust Decentralized Federated Learning Under Noisy Channel",
+      "authors": [
+        "Ojaswi Sinha",
+        "Amin Farajzadeh",
+        "Animesh Yadav",
+        "Melike Erol-Kantarci"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-03",
+      "url": "https://arxiv.org/abs/2611.05546",
+      "pdfUrl": "https://arxiv.org/pdf/2611.05546",
+      "excerpt": "Decentralized federated learning (DFL) eliminates the central aggregation server but remains vulnerable to data heterogeneity, Byzantine attacks, and channel noise. We show that noise accumulates as models propagate across nodes, becoming increasingly significant as the learning rate decays. Moreover, accumulated noise enables Byzantine attackers to exploit loss-based model selection by mimicking honest model averages. To address these challenges, we propose screened, hop-aware, ranked, proximal averaging, a robust DFL framework (FedSharp). In this approach, each node maintains models from its 2b predecessors, ensuring at least b honest candidates when at most b nodes are Byzantine. FedSharp screens suspicious models using coordinate-wise median deviations, averages the b lowest-loss candidates to reduce fresh channel-noise variance by a factor of b, and applies noise-adaptive gradient-norm regularization and proximal training to mitigate accumulated noise and non-IID drift."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 606.048,
+      "bytes": 3636524,
+      "sha256": "2af1c3124f6062cf02bd93473d468ccb88f547e7ec5f1ac52570b322c4e1fda0",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 466.584,
+      "bytes": 2799740,
+      "sha256": "bff4bf0746b0c86c00a9d477d5e0acceb170e50c055391f013ef9c64cf645a8f",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 507.216,
+      "bytes": 3043532,
+      "sha256": "8edcd54be7428a8da7e8a1ee6e208464f9f502758bf0b43cf13473a39e38fd23",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 711.192,
+      "bytes": 4267388,
+      "sha256": "253454d4e611765c99468ff30b2f8315589290bec747fe3dfa034a955cc7b971",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 517.704,
+      "bytes": 3106460,
+      "sha256": "3a7fbd017b19920a23910fbcf83f824c7b972196076ee8b84ab881a0da5a7dab",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 691.704,
+      "bytes": 4150460,
+      "sha256": "3662e455c8db9abe223a3f7584335b6af00095fd5f096eebb780957f795c5e6d",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"federated learning\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(201s), zh=llm(153s), de=llm(165s), es=llm(219s), ru=llm(145s), it=llm(452s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}

@@ -78,5 +78,17 @@
   {
     "date": "2026-11-06",
     "topicId": "llm-safety"
+  },
+  {
+    "date": "2026-11-07",
+    "topicId": "vision-language-models"
+  },
+  {
+    "date": "2026-11-08",
+    "topicId": "federated-learning"
+  },
+  {
+    "date": "2026-11-09",
+    "topicId": "graph-neural-networks"
   }
 ]

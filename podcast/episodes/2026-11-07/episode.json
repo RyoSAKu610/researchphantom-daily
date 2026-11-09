@@ -1,0 +1,233 @@
+{
+  "version": 1,
+  "date": "2026-11-07",
+  "topic": {
+    "id": "vision-language-models",
+    "labels": {
+      "ja": "視覚言語モデル",
+      "zh": "视觉语言模型",
+      "de": "Vision-Language-Modelle",
+      "es": "Modelos de visión y lenguaje",
+      "ru": "Визуально-языковые модели",
+      "it": "Modelli visione-linguaggio"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-09T07:14:54+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.08449",
+      "title": "VFlash: Fast, Accurate Visual Planning via Flash Primitive Decoding",
+      "authors": [
+        "Yu-Cheng Chou",
+        "Shihao Wang",
+        "Jin Huang",
+        "Chi-Pin Huang",
+        "Chiao-An Yang",
+        "Xianzhe Fan",
+        "Jing Wang",
+        "Zhiqi Li"
+      ],
+      "primaryCategory": "cs.RO",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08449",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08449",
+      "excerpt": "Models for physical AI tasks, such as robotics and autonomous driving, need not reason solely in language. They can use visual plans--points, bounding boxes, and trajectories--to represent spatial goals and anticipate motion. However, autoregressive vision-language models generate these plans one coordinate token at a time, making richer predictions increasingly costly. We introduce VFlash, a method for fast, accurate visual planning through Flash Primitive Decoding. VFlash exploits the known structure of visual primitives to predict their coordinates jointly, using a lightweight drafter that generates an entire primitive in one forward pass. The layout adapts to the primitive's type, dimensionality, and length, supporting compact boxes and long, variable-length trajectories. Crucially, spatial accuracy need not require reproducing an autoregressive model's exact token sequence. VFlash therefore trains on annotated primitives and directly accepts structurally valid predictions without target-token agreement."
+    },
+    {
+      "arxivId": "2611.08441",
+      "title": "Edge-Assisted Crowdsensing for Explainable Cyclist Safety Perception",
+      "authors": [
+        "Hongsen Cao",
+        "Chia-Yen Chiang",
+        "Mona Jaber",
+        "Meihui Wang",
+        "Yasmin Fathy"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08441",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08441",
+      "excerpt": "Cyclist fatality rates remain high despite policy support for active travel, and autonomous vehicles add complexity to mixed traffic. Neither crash statistics nor multi-model detection pipelines scale to continuous monitoring of perceived safety along a route. We present an edge-assisted crowdsensing system: handlebar cameras supply street-level frames, a vision-language model (VLM) turns each frame into structured traffic attributes through a single prompt, and an explainable boosting machine (EBM) combines them with OpenStreetMap road infrastructure and on-bike kinematics to predict a crowdsourced 1-9 safety score. Extraction belongs at the network edge: the fastest self-hosted model needs 2.49 s per frame and scoring takes 0.4 ms on a CPU. On 1,362 annotated frames from two London routes, the EBM regressor reaches 72.2 percent binary accuracy and a mean absolute error of 1.011 under five-fold cross-validation. It is within one accuracy point of black-box ensembles."
+    },
+    {
+      "arxivId": "2611.08308",
+      "title": "RM-VLM: From Natural-Language Task Descriptions to Vision-Grounded Reward Machines",
+      "authors": [
+        "Roko Parac",
+        "Christos Ziakas",
+        "Leo Ardon",
+        "Alessandra Russo"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08308",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08308",
+      "excerpt": "Reward machines (RMs) have been proposed as a reward formulation in reinforcement learning (RL) to capture non-Markovian tasks where credit assignment depends on history. By representing reward functions as automata, RMs expose the task's temporal structure and allow such rewards to be handled within a Markovian framework. However, they assume a labelling function, a proposition-grounding oracle for observations, which must be manually engineered for each environment, limiting their wider applicability. In this work, we address this limitation by proposing RM-VLM, a novel approach in which a large language model (LLM) generates an RM from a natural-language task description, and a vision-language model (VLM) acts as the labelling function, grounding the RM's propositions over image-based observations during RM-guided policy learning. A VLM-based value function estimator is used to assess the agent's progress towards each RM transition and derive a dense reward signal."
+    },
+    {
+      "arxivId": "2611.08185",
+      "title": "Multimodal Hierarchical Mixture-of-Experts for 3D Medical Vision-Language Modeling",
+      "authors": [
+        "Gizem Mert",
+        "Szymon Płotka",
+        "Pedro R. A. S. Bassi",
+        "Wenxuan Li",
+        "Zongwei Zhou",
+        "Jarosław B. Ćwikła",
+        "Arkadiusz Sitek",
+        "Ewa Szczurek"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08185",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08185",
+      "excerpt": "Medical 3D scans and reports are inherently hierarchical, with diagnostic cues concentrated in specific anatomical regions across multiple levels of organization. Yet, most medical vision-language models ignore this structure and fail to focus on clinically relevant anatomy. We introduce MedHiVE, which combines hierarchical vision-language Soft Mixture-of-Experts (SMoE) with contrastive learning to jointly model fine-grained anatomy and global scan context. To our knowledge, MedHiVE is the first framework to route both vision and text tokens through a two-level SMoE hierarchy organized by anatomical scale, coupling this with report-derived anatomy-level contrastive alignment for 3D medical imaging. This replaces the direct region-text alignment of statically pooled features and vision-only hierarchical routing of prior work with dynamic, slot-based cross-modal information flow across anatomical scales."
+    },
+    {
+      "arxivId": "2611.08091",
+      "title": "ATHAAR: A Medieval Scientific Arabic Manuscript Dataset for Handwritten Text Recognition",
+      "authors": [
+        "Ismail El Jamiy",
+        "Khadija Msalek",
+        "Guillaume Loizelet",
+        "Farah Benamara",
+        "Nabil Hathout"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08091",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08091",
+      "excerpt": "Despite recent progress in handwritten text recognition, medieval Arabic scientific manuscripts remain an open challenge for current vision-language models (VLMs) due to cursive ligatures, variable diacritization, and more importantly the lack of training data. This paper aims to address this gap, by proposing the first annotation guidelines dedicated to the transcription of scientific Arabic manuscripts inspired by textual criticism, a well-established approach to historical text editing. We then propose, ATHAAR, a new dataset manually annotated following this guideline. Unlike previous resources in the field, ATHAAR varies both witnesses of the same text, calligraphic styles, and content to deal with texts but also numerals. Relying on state-of-the-art VLMs, we finally design a set of experiments to study models transfer across scripts, chapters, and treatises. Our findings highlight the limitations of current systems when faced with the specificities of ancient scientific texts."
+    },
+    {
+      "arxivId": "2611.08054",
+      "title": "NutriVisRAG: Multimodal Exemplar Grounding for Nutrient Estimation with Vision-Language Models",
+      "authors": [
+        "Lubnaa Abdur Rahman",
+        "Ioannis Papathanail",
+        "Maria Panagiotou",
+        "Nefeli Dimitropoulou",
+        "Margret Harðardóttir",
+        "Elisabeth J. den Brok",
+        "Bastiaan E. de Galan",
+        "Stavroula Georgia Mougiakakou"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08054",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08054",
+      "excerpt": "Diet is a major determinant of health, yet accurate dietary assessment from free-living meal images remains challenging. Existing retrieval-based Vision-Language Model (VLM) approaches to nutrient estimation typically rely on textual food representations, while, to our knowledge, direct grounding on visually similar annotated meals has not been investigated. We present NutriVisRAG, a retrieval-augmented generation framework that uses a vision encoder to retrieve similar meals with known nutritional annotations and provide them as multimodal in-context exemplars for VLM nutrient estimation at inference time, without task-specific fine-tuning. We evaluate NutriVisRAG across four datasets, four VLMs, three retrieval encoders, and two prompting strategies, including free-living meals from adults with insulin-treated diabetes, where carbohydrate estimates are compared against two dietitians' annotations."
+    },
+    {
+      "arxivId": "2611.08039",
+      "title": "HITCH: Teaching a Vision-Language Model to Operate a Humanoid through a Whole-Body Harness",
+      "authors": [
+        "Qingzhou Lu",
+        "Chenxin Liu",
+        "Xinming Wang",
+        "Liu Cao",
+        "Yanjiang Guo",
+        "Mengdi Xu",
+        "Jianyu Chen"
+      ],
+      "primaryCategory": "cs.RO",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08039",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08039",
+      "excerpt": "Enabling vision-language models (VLMs) to control humanoid robots requires both reliable whole-body interfaces and knowledge of how to use the body that carries over across tasks. We present HITCH (Harness Interfaces To Command Humanoids), a harness in which perception returns the 3D position of any point the VLM selects in its image, and execution turns commands for the pelvis, torso, hands, walking, and gaze into whole-body motion with a learned tracker. We find that both measuring the scene and executing commands accurately raise task success. We then fine-tune a VLM on trajectories in which teacher policies solve five base tasks through HITCH, so that it learns how to operate the humanoid. Without task-specific trajectories, the fine-tuned model completes 51% of SIMPLE episodes and 42.5% of HumanoidArena episodes, and adding five trajectories per SIMPLE task raises its SIMPLE success to 95%. On a real G1, it carries a box and walks to a goal without real training data."
+    },
+    {
+      "arxivId": "2611.07939",
+      "title": "WAM-Sim0.1: World Anchored Memory Meets Online RL for Consistent and Realistic Driving Simulation",
+      "authors": [
+        "Jiahao Cui",
+        "Jiaye Li",
+        "Wenhao Zhang",
+        "Yaoyi Li",
+        "Shan Luan",
+        "Quanhui Tang",
+        "Jianhua Han",
+        "Lin Cheng"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.07939",
+      "pdfUrl": "https://arxiv.org/pdf/2611.07939",
+      "excerpt": "Autoregressive driving world models systematically suffer from structural drift, identity drift, and quality decay over long rollout horizons due to transient conditioning signals that lack persistent state. We present WAM-Sim, a driving world model anchored by a persistent hierarchical memory and optimized via online flow-matching RL. WAM-Sim structures persistent context across three temporal and semantic scales: pose-aligned structural tokens encoding persistent road topology, read-only scene tokens supplying geolocated background appearance, and write-once instance tokens preserving individual traffic participant identities across occlusions and chunk boundaries. To restore visual sharpness and physical plausibility degraded by multi-scale conditioning, we introduce an online post-training framework that optimizes self-generated rollouts via flow-matching RL guided by hierarchy-aligned visual rewards and a vision-language model physical judge."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 521.76,
+      "bytes": 3130796,
+      "sha256": "0701cee1ad122a8d689dd0926b688225f43a7fe13222e13208cb0a252d12fd5d",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 495.048,
+      "bytes": 2970524,
+      "sha256": "1a4439dc248486d4180c756b00742e0c51e354fc571b413989f4863015e7a989",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 499.896,
+      "bytes": 2999612,
+      "sha256": "199dc0e0061efd4366c8fd5ae66c06eafcd8236a1d946d7879acc8e2d302537f",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 678.648,
+      "bytes": 4072124,
+      "sha256": "1ec2bd6b9c660021e6c19cc9c0480632e4ad0bd3439cd8c71ce0bbd435c993b5",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 567.888,
+      "bytes": 3407564,
+      "sha256": "eafa6b5ac461fa9e05de9b819c7141dc55c93a19521b1ea242da2b69b66ed2eb",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 657.552,
+      "bytes": 3945548,
+      "sha256": "d277359a568cae0bee0d81412f43560121a7b109b424187e50bf84745d87efee",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"vision-language models\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(213s), zh=llm(184s), de=llm(196s, 1 quoted), es=llm(236s), ru=llm(185s), it=llm(302s, 2 quoted)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}

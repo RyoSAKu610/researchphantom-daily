@@ -1,8 +1,32 @@
 {
-  "lastRunAt": "2026-11-06T07:06:18+09:00",
+  "lastRunAt": "2026-11-09T10:45:54+09:00",
   "results": [
     {
-      "date": "2026-11-06",
+      "date": "2026-11-07",
+      "ok": true,
+      "audioLanguages": [
+        "ja",
+        "zh",
+        "de",
+        "es",
+        "ru",
+        "it"
+      ]
+    },
+    {
+      "date": "2026-11-08",
+      "ok": true,
+      "audioLanguages": [
+        "ja",
+        "zh",
+        "de",
+        "es",
+        "ru",
+        "it"
+      ]
+    },
+    {
+      "date": "2026-11-09",
       "ok": true,
       "audioLanguages": [
         "ja",
@@ -14,5 +38,5 @@
       ]
     }
   ],
-  "siteBuiltAt": "2026-11-06T07:06:18+09:00"
+  "siteBuiltAt": "2026-11-09T10:45:54+09:00"
 }
