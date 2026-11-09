@@ -74,8 +74,17 @@
     "url": "http://127.0.0.1:3900/v1/audio/speech",
     "bitrate": "48k",
     "channels": 1,
-    "note": "charsPerSecond for de/es/ru/it are provisional [2.5..20.0] style bounds (not yet measured from real runs); recalibrate against actual synthesize_voicestudio.py output before trusting the pacing gate.",
+    "note": "VoiceStudio (OmniVoice) is the first voice for every lineup language. charsPerSecond bounds are provisional until measured from real runs. ja uses the Phantom-JA profile; if that profile is missing, daily.mjs falls back to irodori for Japanese only.",
     "languages": {
+      "ja": {
+        "label": "日本語",
+        "voice": "Phantom-JA",
+        "filters": "highpass=f=75,lowpass=f=11000,loudnorm=I=-18:TP=-2:LRA=11",
+        "charsPerSecond": [
+          2.0,
+          14.0
+        ]
+      },
       "zh": {
         "label": "中文",
         "voice": "Phantom-ZH",

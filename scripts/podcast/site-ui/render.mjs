@@ -3,8 +3,9 @@
 // app.js upgrades it into the shelf, sheet and persistent player.
 import { readFileSync } from "node:fs";
 import { icon, iconSprite } from "./icons.mjs";
+import { ATMOSPHERES, atmosphereCatalog, atmosphereCss } from "./atmospheres.mjs";
 
-const STYLE = readFileSync(new URL("./app.css", import.meta.url), "utf8");
+const STYLE = `${readFileSync(new URL("./app.css", import.meta.url), "utf8")}${atmosphereCss()}`;
 const SCRIPT = readFileSync(new URL("./app.js", import.meta.url), "utf8");
 if (/<\/style/i.test(STYLE) || /<\/script/i.test(SCRIPT)) {
   throw new Error("site-ui assets must not contain closing style/script tags");
@@ -408,10 +409,13 @@ export function renderLibraryPage(model) {
 <meta property="og:type" content="website">
 <title>${title} — 音の図書館</title>
 ${alternates}
+<script type="application/json" id="air-catalog">${jsonForScript(atmosphereCatalog())}</script>
 <style>${STYLE}</style>
 <script>document.documentElement.classList.add("js");try{var l=JSON.parse(localStorage.getItem("oto:lang")||"null");document.documentElement.dataset.uiLang=(typeof l==="string"&&l)||"ja"}catch(e){document.documentElement.dataset.uiLang="ja"}</script>
+<script>(function(){try{var list=JSON.parse(document.getElementById("air-catalog").textContent);var ids=list.map(function(item){return item.id});var saved="";try{saved=sessionStorage.getItem("oto:air")||""}catch(e){}var id=ids.indexOf(saved)>=0?saved:ids[Math.floor(Math.random()*ids.length)];try{sessionStorage.setItem("oto:air",id)}catch(e){}document.documentElement.dataset.air=id;var theme=list[0];for(var i=0;i<list.length;i++)if(list[i].id===id)theme=list[i];var meta=document.querySelector('meta[name="theme-color"]');if(meta&&theme&&theme.bg)meta.setAttribute("content",theme.bg)}catch(e){}})();</script>
 </head>
 <body>
+<div class="air" id="air" aria-hidden="true"></div>
 ${iconSprite()}
 <a class="skip" href="#library">書架へスキップ</a>
 <header class="topbar">
@@ -430,6 +434,15 @@ ${iconSprite()}
       <p class="lede">毎日の arXiv を、<br>六つの言語で聴く。</p>
       <p class="sub">${esc(model.subtitleJa)}</p>
       ${model.second.text ? `<p class="sub-alt" lang="${esc(model.second.lang)}">${esc(model.second.text)}</p>` : ""}
+      <div class="air-card">
+        <button type="button" class="air-draw" id="air-chip" data-action="air" aria-describedby="air-note">
+          <span class="air-kicker">この部屋</span>
+          <span class="air-name" id="air-name">${esc(ATMOSPHERES[0].name)}</span>
+          <span class="air-swap">別の空気</span>
+        </button>
+        <p class="air-note" id="air-note">${esc(`${ATMOSPHERES[0].note} — ${ATMOSPHERES[0].source}`)}</p>
+      </div>
+      <script>(function(){try{var list=JSON.parse(document.getElementById("air-catalog").textContent);var id=document.documentElement.dataset.air;var theme=list[0];for(var i=0;i<list.length;i++)if(list[i].id===id)theme=list[i];var name=document.getElementById("air-name");var note=document.getElementById("air-note");if(name)name.textContent=theme.name;if(note)note.textContent=theme.note+" — "+theme.source}catch(e){}})();</script>
       <div class="hero-actions">${latest ? `<button type="button" class="primary-btn" id="hero-play" data-action="hero-play">${icon("play")}<span class="hero-play-label">最新回を再生</span><span class="hero-play-meta"></span></button>` : ""}<a class="secondary-btn" href="#library">${icon("book-open")}<span>書架を見る</span></a></div>
       <dl class="stats">
         <div><dt>エピソード</dt><dd>${model.episodes.length}</dd></div>
@@ -447,7 +460,7 @@ ${main}
   <div class="footer-grid">
     <div>
       <p class="footer-brand">${icon("audio-lines")}<span>音の図書館</span></p>
-      <p>出典は arXiv。各論文のライセンスに従います。台本は抄録をもとにローカルで要約し、音声もローカルで生成しています。音声と台本は非商用の研究発信として公開しています。</p>
+      <p>出典は arXiv。各論文のライセンスに従います。台本は抄録をもとにローカルで要約し、音声もローカルで生成しています。これからの収録は <a href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener">VoiceStudio</a>（OmniVoice）を最初に使い、日本語の声が届かないときだけ、これまでのローカル音声へ戻します。部屋の名前は環境心理学の知見にちなみます。画面そのものが学習効果を保証するものではありません。</p>
       <p class="footer-links"><a href="episodes.json">episodes.json</a><a href="${esc(model.repoUrl)}" target="_blank" rel="noopener">GitHub ${icon("external-link")}</a><button type="button" class="link-btn" data-action="shortcuts">${icon("keyboard")}キーボード操作</button></p>
     </div>
     <div>

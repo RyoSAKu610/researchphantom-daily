@@ -176,6 +176,15 @@ export function engineForLang(tts, lang) {
   return tts?.map?.[lang] ?? tts?.engine ?? "qwen";
 }
 
+// VoiceStudio (OmniVoice) is the first voice. If that profile is missing for a
+// language that irodori can still speak, try irodori once so the episode is
+// not lost. Other languages stay on the engine the map names.
+export function enginesToTry(tts, lang, voices = null) {
+  const primary = engineForLang(tts, lang);
+  if (primary === "voicestudio" && voices?.irodori?.languages?.[lang]) return [primary, "irodori"];
+  return [primary];
+}
+
 // Interpreter for one engine: PODCAST_PYTHON wins, then the engine venv, then
 // python3. irodori is stdlib-only, so it runs on whichever interpreter exists.
 export function resolveTtsPython(engine, env = process.env) {
@@ -564,21 +573,33 @@ async function generateEpisode(date, context) {
   // Pass 1: every script first (optional local LLM narration, template
   // fallback), so the LLM server is stopped before TTS needs the CPU/RAM.
   const scripts = await buildScripts(date, { config, topic, papers, source, env, log, verbose, notes });
+  const spoken = [];
   for (const lang of config.languages) {
     const label = typeof config.languageLabels?.[lang] === "string" ? config.languageLabels[lang] : lang;
-    const engine = engineForLang(tts, lang);
-    const voice = engineVoiceFor(voices, engine, lang);
+    const chain = enginesToTry(tts, lang, voices);
+    let engine = chain[0];
+    let voice = engineVoiceFor(voices, engine, lang);
     const script = scripts[lang];
     if (script.papersUsed < papers.length && !script.llm) trimmedLanguages.push(lang);
     verbose && log.detail(`  ${lang}: ~${script.estimatedSeconds}s, papers=${script.papersUsed}, excerptLimit=${script.excerptLimit}${script.llm ? " (llm)" : ""}`);
     const scriptName = `script-${lang}.txt`;
     await writeFile(join(episodeDir, scriptName), script.text.endsWith("\n") ? script.text : `${script.text}\n`, "utf8");
     if (args.noTts) {
+      spoken.push(`${lang}=${engine}`);
       languages[lang] = { label, status: "failed", text: scriptName, audio: null, durationSeconds: null, bytes: null, sha256: null, voice, error: "skipped (--no-tts)" };
       continue;
     }
-    verbose && log.detail(`  ${lang}: synthesizing (${engine}: ${voice})`);
-    const result = await runTts(lang, { episodeDir, env, voice, engine });
+    let result = null;
+    for (let attempt = 0; attempt < chain.length; attempt += 1) {
+      engine = chain[attempt];
+      voice = engineVoiceFor(voices, engine, lang);
+      verbose && log.detail(`  ${lang}: synthesizing (${engine}: ${voice})`);
+      result = await runTts(lang, { episodeDir, env, voice, engine });
+      if (result.status === "ok" || attempt === chain.length - 1) break;
+      notes.push(`${lang}: ${engine} failed (${short(result.error, 80)}); trying ${chain[attempt + 1]}`);
+      log.info(`${lang}: ${engine} failed, falling back to ${chain[attempt + 1]}`);
+    }
+    spoken.push(`${lang}=${engine}`);
     languages[lang] = {
       label,
       status: result.status,
@@ -606,9 +627,8 @@ async function generateEpisode(date, context) {
   if (trimmedLanguages.length > 0) {
     notes.push(`audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ${trimmedLanguages.join(", ")} (full paper links and abstracts remain in this episode data)`);
   }
-  const enginesUsed = [...new Set(config.languages.map((lang) => engineForLang(tts, lang)))];
-  if (enginesUsed.some((engine) => engine !== "qwen")) {
-    notes.push(`TTS engines: ${config.languages.map((lang) => `${lang}=${engineForLang(tts, lang)}`).join(", ")}`);
+  if (spoken.some((item) => !item.endsWith("=qwen"))) {
+    notes.push(`TTS engines: ${spoken.join(", ")}`);
   }
   if (args.noTts) notes.push("audio generation skipped (--no-tts); statuses are recorded as failed on purpose");
 

@@ -9,6 +9,7 @@ import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promis
 import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { ATMOSPHERES } from "../site-ui/atmospheres.mjs";
 import {
   availableLanguages,
   audioFileName,
@@ -280,6 +281,10 @@ test("index.html: play + download per available language, unavailable languages 
     assert.ok(html.includes('href="episodes.json"'), "episodes.json linked");
     assert.ok(html.includes("<audio"), "audio element rendered");
     assert.ok(html.includes('aria-label="Language"'), "language switch UI present");
+    assert.equal(ATMOSPHERES.length, 100, "one hundred study rooms");
+    assert.equal(new Set(ATMOSPHERES.map((room) => room.id)).size, 100);
+    assert.ok(html.includes('id="air-catalog"'), "room catalog is on the page");
+    assert.ok(html.includes("VoiceStudio"), "VoiceStudio is named as the first voice");
   } finally {
     await rm(tmp, { recursive: true, force: true });
   }

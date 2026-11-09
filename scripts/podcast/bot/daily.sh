@@ -8,7 +8,7 @@
 #   2. git pull --ff-only for updates from the remote (warning only on failure;
 #      the working tree here is the source of truth, never reset --hard)
 #   3. run node scripts/podcast/daily.mjs --catchup with TZ=Asia/Tokyo and
-#      PODCAST_TTS_MAP="ja:irodori,zh:voicestudio,
+#      PODCAST_TTS_MAP="ja:voicestudio,zh:voicestudio,
 #      de:voicestudio,es:voicestudio,ru:voicestudio,it:voicestudio"
 #      (daily.mjs is idempotent: existing episode dates are skipped; missed
 #      dates back within config.backfillDays=3 are refilled by --catchup)
@@ -76,10 +76,12 @@ fi
 
 # ------------------------------------------------------------ pod. pipeline ----
 export TZ=Asia/Tokyo
-# Per-language servers on this VM. PODCAST_TTS_ENGINE stays unset, so any
-# language missing from the map would fall back to the historical qwen default
+# VoiceStudio (OmniVoice, k2-fsa) is the first voice for every language.
+# Japanese still has an irodori profile: daily.mjs tries VoiceStudio first and,
+# only if that synthesis fails, speaks ja with irodori. PODCAST_TTS_ENGINE
+# stays unset, so a language missing from the map would fall back to qwen
 # (that can never happen while config.languages is exactly ja/zh/de/es/ru/it).
-export PODCAST_TTS_MAP="${PODCAST_TTS_MAP:-ja:irodori,zh:voicestudio,de:voicestudio,es:voicestudio,ru:voicestudio,it:voicestudio}"
+export PODCAST_TTS_MAP="${PODCAST_TTS_MAP:-ja:voicestudio,zh:voicestudio,de:voicestudio,es:voicestudio,ru:voicestudio,it:voicestudio}"
 unset PODCAST_TTS_ENGINE || true
 # All engines route through the local tts-hub (127.0.0.1:3901) unless overridden.
 export VOICESTUDIO_URL="${VOICESTUDIO_URL:-http://127.0.0.1:3901/v1/audio/speech}"
