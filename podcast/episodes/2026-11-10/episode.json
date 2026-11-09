@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "date": "2026-11-10",
+  "topic": {
+    "id": "retrieval-augmented-generation",
+    "labels": {
+      "ja": "検索拡張生成（RAG）",
+      "zh": "检索增强生成",
+      "de": "Retrieval-Augmented Generation",
+      "es": "Generación aumentada por recuperación",
+      "ru": "Генерация с дополнением поиском (RAG)",
+      "it": "Generazione aumentata dal recupero (RAG)"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-10T07:02:52+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.09807",
+      "title": "Compaction, decay and reinforcement in a two-tier conversational memory: a paired evaluation against retrieval-augmented generation",
+      "authors": [
+        "Osamudiamen Edogun",
+        "Joshua Obigwe",
+        "Irfan Mehmood"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09807",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09807",
+      "excerpt": "A conversational agent that remembers has to decide what to keep. Retrieval-augmented generation keeps the transcript and searches it; the alternative is to compact each turn into atomic facts and search those. We compare the two on LoCoMo, with both arms answering all 1,985 questions in one window, against the same stores, with the same generator and judge, and both predictions on one row, which licenses McNemar's exact test on the 512 questions where they disagree. On the four categories comparable work reports, compaction scores 71.4 per cent against 64.6, a lead of 6.8 points (p = 5.5e-08) at 34 per cent fewer prompt tokens. On all five, including the adversarial set comparable work drops, the lead falls to 2.0 and stops being significant, because the baseline leads adversarial by 14.6. That loss has a structure. Our lead falls as the reference answer demands more source wording, 9.6 points ahead at one or two reference words and 3.1 behind past eight, with token overlap moving the same way, so the judge is not the cause."
+    },
+    {
+      "arxivId": "2611.09791",
+      "title": "Assessing the Impact of Retrieval-Augmented Generation on Algorithmic Problem-Solving",
+      "authors": [
+        "Gabriel Souza Baggio",
+        "Gabriel Machado Lunardi",
+        "Guilherme Medeiros Machado",
+        "Subhankar Maity",
+        "Faiza Belbachir",
+        "José Palazzo Moreira de Oliveira"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09791",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09791",
+      "excerpt": "Competitive programming problems pose distinctive challenges for Large Language Models, as they demand not only proficient code generation but also advanced algorithmic reasoning. This study presents a Retrieval-Augmented Generation approach specifically designed to enhance the capacity of Large Language Models to address such problems. Our approach integrates an embedding-based retrieval mechanism and a similarity search algorithm to identify analogous problems within a knowledge database, employing a dynamically adjusted threshold to mitigate retrieval noise. We conducted an evaluation using the CodeContests dataset, focusing on the test split problems that exhibit similarity to instances from the training split. The experimental framework considered three conditions: (i) problems provided solely with their original descriptions, (ii) problems supplemented with randomly selected examples from the training split, and (iii) problems augmented with similar examples retrieved through the proposed method."
+    },
+    {
+      "arxivId": "2611.09658",
+      "title": "Differentially Private GraphRAG: Protecting Relation Connectivity and Semantics",
+      "authors": [
+        "Jie Fu",
+        "Yuan Hong",
+        "Yue Ning",
+        "Wendy Hui Wang"
+      ],
+      "primaryCategory": "cs.CR",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09658",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09658",
+      "excerpt": "Graph Retrieval-Augmented Generation (GraphRAG) connects information across documents through entity relationships to support relational reasoning. However, black-box access to GraphRAG systems can enable adversaries to reconstruct knowledge graphs and recover both structural connectivity between entities and the semantics of their relationships. Existing defenses lack formal privacy guarantees and provide limited protection against such reconstruction attacks. We propose RelGuard, the first differentially private framework for GraphRAG, which provides formal privacy guarantees by mitigating connectivity leakage and protecting relations and their semantic meaning through relation removal. We formalize relation differential privacy (relation-DP), which bounds the distinguishability of mechanism outputs according to the semantic distance between alternative relations while accounting for relation removal."
+    },
+    {
+      "arxivId": "2611.09474",
+      "title": "Nebula: Distributed Position-Independent Caching for LLM Serving",
+      "authors": [
+        "Yifei Liu",
+        "Junbin Pan",
+        "Junhao Hu",
+        "Yang Liu",
+        "Junyi Chen",
+        "Juntong Wu",
+        "Chen Chen",
+        "Haiyuan Zhao"
+      ],
+      "primaryCategory": "cs.DC",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09474",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09474",
+      "excerpt": "Modern LLM workflows, such as retrieval-augmented generation (RAG) and LLM agents, build long prompts from multiple independent text segments, making prefill a major source of computation. Reusing KV caches is therefore important for reducing serving costs and latency: distributed caching systems spread KV cache across a cluster to increase aggregate capacity, while position-independent caching (PIC) enables reuse of recurring segments under different prefixes. However, existing systems distribute KV caches but still rely on prefix caching (PC), while existing PIC methods enable position-independent reuse without cluster-wide resource management. We present Nebula, the first distributed LLM serving framework to treat PIC segments as first-class citizens, enabling remote PIC reuse and parallel prefill. To track PIC's fine-grained, asynchronous state changes, Nebula combines optimistic accounting with event-driven updates to provide a timely and truthful cluster view for cache management and prefill scheduling."
+    },
+    {
+      "arxivId": "2611.09423",
+      "title": "Agentic AI for Healthcare Claim Denial Analysis: A Policy-Grounded Framework for Privacy Preservation",
+      "authors": [
+        "Sofia Campos",
+        "Carlos Martins",
+        "Pedro Pires",
+        "João Gama",
+        "Bruno Veloso",
+        "Pedro Santos"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09423",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09423",
+      "excerpt": "In the healthcare sector, claim denials impose significant financial and administrative burdens, emphasizing the need for automated and trustworthy decision-support systems. This paper proposes a modular Agentic Artificial Intelligence (AI) framework for healthcare claim denial analysis, integrating specialized agents for denial risk prediction, risk factor identification, diagnosis-procedure-medication code relationship analysis, and counterfactual analysis. The framework integrates predictive analytics, graph-based learning, a Hybrid Contextual Retrieval-Augmented Generation (RAG) pipeline grounded in healthcare policy documents, and a dedicated HIPAA Compliance Agent to support privacy protection. Evaluated on a synthetic healthcare claims dataset, the framework achieved 98% traceability of reported numerical findings, validated 214 of 216 policy citations, and removed all 280 identified sensitive identifiers without modifying the underlying analysis."
+    },
+    {
+      "arxivId": "2611.09414",
+      "title": "Typed-Centrality Grounding for Agentic GraphRAG: A Symbolic Approach for Agentic Reasoning",
+      "authors": [
+        "Rosario Napoli",
+        "Antonio Celesti",
+        "Massimo Villari",
+        "Maria Fazio"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09414",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09414",
+      "excerpt": "Knowledge Graphs (KGs) and Large Language Models (LLMs) represent two approaches for knowledge representation and reasoning over heterogeneous data. Recent research has explored their integration through Graph Retrieval-Augmented Generation (GraphRAG) systems, which use KGs to provide structured context to LLMs. However, existing GraphRAG approaches treat KGs as homogeneous graphs and rely on textual similarity between the input prompt and the context, rather than using it as a source of deterministic knowledge. This work proposes an agent-based GraphRAG system that introduces a symbolic layer to integrate deterministic reasoning alongside text similarities. This approach is based on the definition of typed centralities for KGs, where centrality measures are computed separately for each specific KG's class. This information is used to construct a symbolic representation that is provided to the LLM as a deterministic source."
+    },
+    {
+      "arxivId": "2611.09298",
+      "title": "Towards an Autonomous AI Steward for Large-Scale Physics Experiments: Integrating Causal Diagnostics, RAG, and Conformal Prediction",
+      "authors": [
+        "Oliver Noll",
+        "Nicholas Tan Jerome",
+        "Alexander Lehnen",
+        "Frank Simon",
+        "Frank Maas"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09298",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09298",
+      "excerpt": "Long-term particle physics experiments face critical operational challenges: monitoring non-stationary machine data streams and preserving tacit expert knowledge. We present the \"Helmholtz Co-Pilot,\" a hybrid Multi-Agent System (MAS) acting as an autonomous experiment steward. The system can be triggered interactively by human operators or autonomously by an asynchronous causal diagnostics engine that runs independently of the MAS reasoning core. Continuously monitoring live hardware streams such as data acquisition and slow control, this engine performs dynamic causal discovery to trace cascading alarms back to their root causes and applies adaptive model selection to keep forecasts reliable across shifting machine states; upon detecting an anomaly, it hands a structured diagnostic report to the MAS. The reasoning layer itself relies on a high-throughput C++ core and a Python edge architecture orchestrating a directed acyclic graph (DAG) of specialized ReAct workers."
+    },
+    {
+      "arxivId": "2611.09232",
+      "title": "RAG-Enhanced LLMs for Interactive Explainability in Clinical Decision Support Systems",
+      "authors": [
+        "Lorenzo Mannocci",
+        "Francesca Naretto",
+        "Lucia Passaro",
+        "Anna Monreale"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09232",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09232",
+      "excerpt": "Artificial Intelligence (AI) is increasingly embedded in high-risks decision-making systems across domains such as healthcare, finance, and the judicial system. As reliance on predictive models grows, so does the demand for Explainable AI (XAI) to ensure transparency, trust, and interpretability. However, existing XAI approaches often fail to present explanations in a format accessible to domain experts, limiting their practical utility. Large Language Models (LLMs) have recently emerged as a bridge between complex models and end-users, offering natural language explanations. Yet, their use introduces new risks, including hallucinated outputs and lack of source traceability. To address these challenges, we propose a Clinical Decision Support System (CDSS) that not only combines standard predictive models with XAI techniques but also incorporates a Retrieval-Augmented Generation module as an interactive enhancer."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 544.152,
+      "bytes": 3265148,
+      "sha256": "29e32033eb74dc1198ea2367ee33bfdadadadecaac73a43cf43baffdf7f01e5d",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 498.648,
+      "bytes": 2992124,
+      "sha256": "8f8a888483203de70cfc528d31b0824ded1024e209b2bedec45429214b4a7f9f",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 504.096,
+      "bytes": 3024812,
+      "sha256": "caa7483edbddb3c1f6cf68c3c7eabdc7035baf698b5844cd6029f669aebe7b4c",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 687.048,
+      "bytes": 4122524,
+      "sha256": "723dbcafcadcff5b8353d37e2b027fe7154382860a3ed59535b5cc75d4dfcaeb",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 540.024,
+      "bytes": 3240380,
+      "sha256": "51ec1ba8ba31ce2003da5243456d5662c9886ee816ceb733c7bfef0b96bebbb5",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 665.976,
+      "bytes": 3996092,
+      "sha256": "5c4a65de9362ba99efa28644ab86f6b18c0fafa544fa0d20dd30c4e9629daacd",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"retrieval-augmented generation\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(186s), zh=llm(162s), de=llm(145s), es=llm(189s), ru=llm(150s), it=llm(173s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
