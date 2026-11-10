@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "date": "2026-11-11",
+  "topic": {
+    "id": "speech-synthesis",
+    "labels": {
+      "ja": "音声合成",
+      "zh": "语音合成",
+      "de": "Sprachsynthese",
+      "es": "Síntesis de voz",
+      "ru": "Синтез речи",
+      "it": "Sintesi vocale"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-11T06:55:32+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.12501",
+      "title": "Text Grouping Changes Completion-Time Comparisons in Long-Form Simultaneous Speech Translation",
+      "authors": [
+        "Hieu Minh Truong",
+        "Dung D. Le"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-11-09",
+      "url": "https://arxiv.org/abs/2611.12501",
+      "pdfUrl": "https://arxiv.org/pdf/2611.12501",
+      "excerpt": "Does grouping translation updates before speech synthesis change the measured completion gap between two translators? We compare StreamAtt with its fixed-audio-history baseline on ten English-German talks. For each translation, we keep the intended text and its availability times fixed and vary how updates are grouped for synthesis. Four-second grouping increases StreamAtt's mean completion lead from 106.6 to 229.1 seconds with XTTS-v2, but reduces it from 169.5 to 146.5 seconds with Piper. Both produce shorter audio; different changes in playback idle account for the opposite effects. These directions recur on a separately selected twenty-talk panel. In continuing CosyVoice 3 sessions, grouping instead leaves paired audio unchanged and delays completion on nineteen of twenty blocks. A speech-timing comparison therefore needs to specify how text enters synthesis, not just which synthesizer is used. Recognition and automatic word timing describe the outputs, but do not establish translation accuracy or intelligibility."
+    },
+    {
+      "arxivId": "2611.09057",
+      "title": "Real-Time Short-Response Selection for Spoken Dialogue Systems",
+      "authors": [
+        "Hien Ohnaka",
+        "Kazuyo Onishi",
+        "Koichiro Yoshino"
+      ],
+      "primaryCategory": "cs.SD",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09057",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09057",
+      "excerpt": "To realize spoken dialogue systems that can interact naturally with users, it is important for the system to respond to user utterances at appropriate timings. To achieve such natural turn-taking, the system needs not only to predict appropriate response timings but also to mask delays caused by language generation and speech synthesis so that they are not perceived by the user. We propose a real-time short-response selection task that can be integrated with existing turn-taking models to mask generation delay. To address this task, the proposed model learns the mapping between dialogue context and short responses using contrastive learning. When a turn-taking event is detected, the system selects a response from a set of pre-generated candidates. The selected response is played while the main response is being generated. Experimental results show that the proposed method learns to select short responses based on dialogue context, outperforming random and LLM-based baselines."
+    },
+    {
+      "arxivId": "2611.10035",
+      "title": "Ninada: Sub-Clause Split-Graph VITS Streaming and Capability-Routed 24 kHz Speech Synthesis Across Twelve Scripts",
+      "authors": [
+        "Hemanth HM"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.10035",
+      "pdfUrl": "https://arxiv.org/pdf/2611.10035",
+      "excerpt": "End-to-end VITS text-to-speech models synthesize natural speech in a single forward pass, yet standard ONNX exports execute monolithically over an entire clause, delaying Time-To-First-Audio (TTFA) to several seconds and spiking activation memory. Client-side deployment across Indic scripts faces four further bottlenecks: 138.8 MB float32 checkpoints per language strain browser caches, mobile WebGPU stalls for 6-14 s compiling convolution shaders while still running slower than real time ( RTF), small WebAssembly pthread pools stall at barriers on big.LITTLE mobile CPUs, and mobile Web Audio pipelines drop frames or mute output under AudioWorklet contention and iOS WKWebView rules."
+    },
+    {
+      "arxivId": "2611.04511",
+      "title": "Detector-Guided Vocoder Training for Adversarial Text-to-Speech Synthesis",
+      "authors": [
+        "Jiayan Cui",
+        "Davide Salvi",
+        "Paolo Bestagini",
+        "Stefano Tubaro"
+      ],
+      "primaryCategory": "cs.SD",
+      "published": "2026-11-03",
+      "url": "https://arxiv.org/abs/2611.04511",
+      "pdfUrl": "https://arxiv.org/pdf/2611.04511",
+      "excerpt": "In this paper, we propose a novel Text-to-Speech (TTS) framework designed to perform adversarial attacks against speech deepfake detection systems. Given a TTS model and a detector capable of classifying its outputs as synthetic, our approach fine-tunes the vocoder by integrating the detector into the TTS training loop. Unlike traditional adversarial methods that rely on post-hoc perturbations or external noise injection, our approach enables the generation of synthetic speech that is intrinsically adversarial, capable of lowering the target detector's reliability without requiring additional post-processing steps. We evaluate the framework in both white-box and black-box settings, showing its effectiveness against known and unseen detectors. We also propose a multi-detector strategy that allows the system to simultaneously learn to deceive multiple detectors, showcasing the scalability of the method. Experimental results confirm the efficacy of our approach, which has the potential to impact forensic security and detection countermeasures."
+    },
+    {
+      "arxivId": "2610.40970",
+      "title": "Nedimo: An Evidence-Grounded Multilingual Pipeline for AI-Generated Sleep Stories",
+      "authors": [
+        "Georgios Makridis",
+        "Stefanos Kampouris"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.40970",
+      "pdfUrl": "https://arxiv.org/pdf/2610.40970",
+      "excerpt": "Generative audio systems can produce large libraries of personalized bedtime content, but ordinary media objectives (retention, completion, and novelty) are poorly aligned with the goal of supporting a transition toward sleep. Direct evidence for narrated bedtime audio in adults is mixed, and a recent active-controlled trial did not support such audio as a standalone treatment for sleep disturbance. We translate this uncertain evidence into conservative engineering requirements and present a multilingual pipeline for generating and narrating low-arousal sleep stories. The implemented prototype separates deterministic planning from large language model generation, represents content and delivery parameters explicitly, shapes each script through a four-phase attention taper, validates structural and lexical constraints, performs a bounded error-aware retry, and quarantines unresolved outputs."
+    },
+    {
+      "arxivId": "2610.39168",
+      "title": "Reading-Level Verification of Kanji Words in Japanese Financial Speech Synthesis",
+      "authors": [
+        "Cheng Zhang"
+      ],
+      "primaryCategory": "cs.SD",
+      "published": "2026-10-29",
+      "url": "https://arxiv.org/abs/2610.39168",
+      "pdfUrl": "https://arxiv.org/pdf/2610.39168",
+      "excerpt": "Few-shot voice cloning makes it cheap to produce daily Japanese financial commentary with several synthetic speakers, but kanji words with more than one reading, such as the word for \"market\" (shijo vs. ichiba) or \"overall trend\" (taisei vs. oze), are still misread. A common quality gate transcribes each synthesized sentence with automatic speech recognition (ASR), converts both the input and the transcript to kana, and regenerates on mismatch. We show that this gate is unreliable in both directions: when the audio contains a misreading, the ASR language model frequently writes the expected kanji back, hiding the error, and when the audio is correct, ordinary recognition errors trigger needless regeneration. We propose a reading-level check that scores the expected reading and its confusable alternatives with a connectionist temporal classification (CTC) hiragana recognizer and flags a word when an alternative explains the audio better."
+    },
+    {
+      "arxivId": "2610.38384",
+      "title": "Pronunciation-Supervised Text-to-Speech for Irish (Gaeilge)",
+      "authors": [
+        "William Lane"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-10-28",
+      "url": "https://arxiv.org/abs/2610.38384",
+      "pdfUrl": "https://arxiv.org/pdf/2610.38384",
+      "excerpt": "Speech technology for Irish must be built from very little transcribed speech, yet the language's pronunciation is thoroughly documented in dictionaries and dialect descriptions. We ask whether that documentation can supervise the adaptation of a large pretrained text-to-speech model to a language it was never trained on. We adapt Qwen3-TTS to Irish using 12.8 hours of crowdsourced Common Voice speech, correcting two defects in the vendor fine-tuning script that training loss does not reveal (Appendix A), and reach character error rate (CER) 0.225 on held-out cross-corpus text, against 0.397 for an exhaustively tuned from-scratch system and 0.437 for zero-shot cloning. We then compile the Wiktionary pronunciation record into a lexicon and a phoneme critic, and use that critic as the verifier in one round of rejection fine-tuning: CER 0.159 cross-corpus and 0.067 in-domain, with the voice still anonymous across all 202 training speakers. The same critic explains why the voice cannot yet be steered to a minority dialect: 229 of 12,311 training clips lean Ulster against 8,451 Munster."
+    },
+    {
+      "arxivId": "2610.38316",
+      "title": "DRC-TTS: A Dual-Resolution Codec-Based Architecture for Lexicon-Free Malay Speech Synthesis",
+      "authors": [
+        "Tianhui Su",
+        "Tien-Ping Tan"
+      ],
+      "primaryCategory": "eess.AS",
+      "published": "2026-10-28",
+      "url": "https://arxiv.org/abs/2610.38316",
+      "pdfUrl": "https://arxiv.org/pdf/2610.38316",
+      "excerpt": "Modern discrete neural audio codecs facilitate speech synthesis by replacing continuous acoustic representations with low-frame-rate discrete token sequences. For Malay speech synthesis, character-level input reduces reliance on pronunciation lexicons. However, combining character-level inputs with low-frame-rate discrete codecs introduces a temporal alignment challenge. When predicted character durations are quantized into frame counts at 12.5 Hz, durations shorter than one codec frame may be assigned zero frames. Consequently, the corresponding character representations may be lost during length regulation, potentially leading to pronunciation omissions. This study proposes DRC-TTS, a dual-resolution codec-based architecture for lexicon-free Malay speech synthesis. The model expands character representations at a temporal resolution of 50 Hz and subsequently downsamples them through strided convolution to 12.5 Hz for discrete codec-token prediction."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 608.184,
+      "bytes": 3649340,
+      "sha256": "673907d14e8b6dd139c0992baf23b429cc9b73807f50a704ca2987813ac69d9f",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 463.224,
+      "bytes": 2779580,
+      "sha256": "6905e82754b932790b2d1b3bc310f1524691b2560b57a9167658952475dedf42",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 511.152,
+      "bytes": 3067148,
+      "sha256": "1c19483d02b7092089789dcbdc7e8cbc4ac3a834f91c6e2697e13497f8fabcf6",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 617.616,
+      "bytes": 3705932,
+      "sha256": "1b88182d38162588f48d5224f42374157e4b7ac96add2954843f205f37112816",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 526.344,
+      "bytes": 3158300,
+      "sha256": "81847de628b7103b6a66cdea574bf22e6205947a1d75c20ade2123fccd6e2bcc",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 666.72,
+      "bytes": 4000556,
+      "sha256": "2258154e060d8c9a15f0817a2d9e799643e1715335c40c1cefb17d49156b7626",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"speech synthesis\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(247s), zh=llm(145s), de=llm(158s), es=llm(252s, 1 quoted), ru=llm(232s), it=llm(207s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
