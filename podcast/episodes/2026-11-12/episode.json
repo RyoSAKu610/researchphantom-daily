@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "date": "2026-11-12",
+  "topic": {
+    "id": "materials-discovery",
+    "labels": {
+      "ja": "新素材の探索",
+      "zh": "材料发现",
+      "de": "Entdeckung neuer Materialien",
+      "es": "Descubrimiento de materiales",
+      "ru": "Поиск новых материалов",
+      "it": "Scoperta di nuovi materiali"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-12T06:51:58+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.12491",
+      "title": "Out-of-the-Box Tabular Foundation Models for Bayesian Optimization in Materials Discovery",
+      "authors": [
+        "Klemens Flöge",
+        "Simon Bing",
+        "Leo Grinsztajn",
+        "Eliott Kalfon",
+        "Lennart Purucker",
+        "Noah Hollmann",
+        "Frank Hutter"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-09",
+      "url": "https://arxiv.org/abs/2611.12491",
+      "pdfUrl": "https://arxiv.org/pdf/2611.12491",
+      "excerpt": "Bayesian optimization is widely used in active learning loops for materials science. Gaussian processes serve as the de-facto surrogate model family, but require task-dependent kernel choices and can lack the modeling capacity for complex relationships. Tabular foundation models (TFMs) have recently emerged as the state-of-the-art for predictive tasks on structured data, without requiring bespoke kernels or hyperparameter tuning. We evaluate two TFMs, TabPFN and TabICL, as out-of-the-box surrogate models on two standard materials science benchmarks, comparing against a large field of baselines encompassing Gaussian processes, random forests, and CatBoost. Our findings indicate that TFMs are highly competitive surrogate models across the two benchmarks, without task-specific training for active learning or GP kernel selection. Our results motivate developing TFMs further as surrogates for active learning in materials discovery."
+    },
+    {
+      "arxivId": "2611.12014",
+      "title": "Benchmarking language models and agents for scientific reasoning in evolving materials laboratories",
+      "authors": [
+        "Xuyu Dong",
+        "Yixuan Li",
+        "Jianguo Huang",
+        "Feng Chen",
+        "Yiyun Zhou",
+        "Bo An",
+        "Zheng Liu",
+        "Da Shu"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-09",
+      "url": "https://arxiv.org/abs/2611.12014",
+      "pdfUrl": "https://arxiv.org/pdf/2611.12014",
+      "excerpt": "Large language models and the multi-agent systems built around them could accelerate materials discovery by connecting scientific knowledge with experimental decisions. Existing benchmarks establish capabilities in domain knowledge, multimodal interpretation and scientific tool use. As language models increasingly support materials research workflows, their ability to distinguish closely related material states and reason accurately with quantitative evidence remains insufficiently evaluated. These abilities are essential for comparing material responses, assessing mechanisms and maintaining reliable judgements as experimental evidence accumulates. We introduce MatScope to evaluate three connected capabilities. M1 tests unaided, condition-specific reasoning through 200 tasks spanning ten research functions, using aluminium and high-entropy alloys as representative material systems. M2 tests agent-assisted transfer of related knowledge to unresolved materials questions."
+    },
+    {
+      "arxivId": "2611.11070",
+      "title": "Learning Electronic Band Structures Across the s, p, d Blocks with an Empirical Pseudopotential Network",
+      "authors": [
+        "Qiang Zhu"
+      ],
+      "primaryCategory": "cond-mat.mtrl-sci",
+      "published": "2026-11-08",
+      "url": "https://arxiv.org/abs/2611.11070",
+      "pdfUrl": "https://arxiv.org/pdf/2611.11070",
+      "excerpt": "Electronic band structures govern how crystals conduct electrons and absorb light. Density-functional theory (DFT) computes them through costly self-consistent iterations, while existing machine-learning models either predict isolated scalar properties or output Hamiltonians that still require DFT solvers. Here we present EpNet, a learned empirical pseudopotential for crystals spanning 63 elements across the \\textit{s}, \\textit{p} and \\textit{d} blocks. An equivariant neural network builds its Hamiltonian from physics-motivated local potentials and nonlocal projectors. Trained solely on band energies, EpNet predicts complete band structures directly from atomic coordinates. On unseen chemical systems, its median errors are \\winAll\\ eV for band energies and \\gapAll\\ eV for band gaps. On 600,000 structures from an independent database, its band-gap errors are overall less than half those of existing models, at about 1\\% of DFT cost. EpNet thus enables fast screening of electronic properties for materials discovery and electronic-structure simulations of large systems."
+    },
+    {
+      "arxivId": "2611.09880",
+      "title": "ZeoBench: A Benchmark for Self-Supervised Learning on 3D Zeolite Representations",
+      "authors": [
+        "Aaron Sun",
+        "Yachan Liu",
+        "Ping Yang",
+        "Peng Bai",
+        "Subhransu Maji"
+      ],
+      "primaryCategory": "cs.CV",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09880",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09880",
+      "excerpt": "Zeolites are an important class of porous crystalline materials with broad applications in gas storage, separations, and catalysis. Although hundreds of thousands of experimentally realized and hypothetical zeolite structures are known, identifying materials optimized for a target application remains challenging because property labels are expensive to obtain and available only for limited structure-molecule pairs. While prior work has demonstrated that 3D neural representations can predict zeolite properties effectively, it remains unclear which representation-learning strategies are most effective in the low-data regime relevant to materials discovery. We present ZeoBench, a benchmark for self-supervised learning on dense 3D representations of all-silica zeolites, and evaluate the resulting features on six existing downstream adsorption-property prediction tasks, across a range of training set sizes."
+    },
+    {
+      "arxivId": "2611.03767",
+      "title": "Quantifying out-of-distribution data severity with Wasserstein distances: benchmarking large language models for alloy property prediction",
+      "authors": [
+        "YuJie Liu",
+        "Dezhen Xue",
+        "Jun Sun",
+        "Xiangdong Ding",
+        "Zhibin Gao",
+        "Turab Lookman"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.03767",
+      "pdfUrl": "https://arxiv.org/pdf/2611.03767",
+      "excerpt": "As general-purpose Large Language Models (LLMs), such as Gemini and DeepSeek, exhibit increasingly advanced reasoning capabilities, a critical question arises: how do their property prediction abilities compare to those of domain-specific pretrained materials models? In this study, we evaluate predictions for Ti, steels, high-entropy alloy (HEA) and Al, demonstrating that general-purpose LLMs surprisingly outperform SteelBERT, MatSciBERT, and SciBERT. To further enhance performance, we introduce a hybrid approach that utilizes numerical priors from a prior model, such as CatBoost or SteelBERT, to guide the general LLMs (Deepseek V3.1, Gemini-2.5-Flash). By inputting these initial estimates from a prior model as prompts, the LLM acts as a reasoning corrector, achieving accuracy superior to the prior model and \"unguided mode\"."
+    },
+    {
+      "arxivId": "2611.02906",
+      "title": "Site-orbit masked twin-branch Transformer for symmetry-constrained crystal generation",
+      "authors": [
+        "Junchi Liu",
+        "Haoran Si",
+        "Luo Yan",
+        "Sergei Tretiak",
+        "Liujiang Zhou"
+      ],
+      "primaryCategory": "physics.comp-ph",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.02906",
+      "pdfUrl": "https://arxiv.org/pdf/2611.02906",
+      "excerpt": "Generative models for crystal structure prediction (CSP) have expanded the search space for novel materials and improved screening efficiency. However, simultaneously generating stable and novel structures remains challenging because of the complex structural and physical constraints governing crystals. To address this challenge, we propose site-orbit masked twin-branch Transformer model (ST2M), a symmetry-guided discrete--continuous diffusion framework incorporating degree-of-freedom masks and conditioned on Wyckoff patterns. ST2M represents crystal structures as sequences of independent occupied Wyckoff orbits and employs a twin-branch Transformer to jointly denoise discrete and continuous variables. In our experiments, ST2M achieves a structural validity of 96.37\\%. For known patterns in dataset, 23.86\\% of generated structures simultaneously satisfy stability, uniqueness, and novelty criteria, representing a relative improvement of 68.15\\% over the best-performing baseline."
+    },
+    {
+      "arxivId": "2611.02584",
+      "title": "Data-driven candidate structure ensemble generation beyond the convex hull with crystALL approach",
+      "authors": [
+        "Adam M. Krajewski",
+        "Ricardo Amaral",
+        "Jonathan W. Siegel",
+        "Luke A. Myers",
+        "Rushi Gong",
+        "Shun-Li Shang",
+        "Zi-Kui Liu"
+      ],
+      "primaryCategory": "cond-mat.mtrl-sci",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.02584",
+      "pdfUrl": "https://arxiv.org/pdf/2611.02584",
+      "excerpt": "Real materials consist of multiple stable or metastable states under real-world conditions, existing as statistical ergodic ensembles of configurations rather than ideal crystals. Yet, data-driven computational materials discovery increasingly biases itself toward finding \"new stable structures\" from ground-state DFT calculations alone. This limits our long-term ability to discover materials whose properties emerge from metastable phases, to explain experimental observations, or to model thermodynamic behavior comprehensively. Predicting ergodic sets of atomic configurations of known and hypothetical solids is a fundamental challenge in theoretical crystallography, approached via many complementary methods. We discuss this conceptually and introduce crystALL, a pragmatic and powerful data-driven approach to discovering ensembles beyond the convex hull, embracing structural diversity over stability alone, enabling robust experiment matching in cases evading traditional methods."
+    },
+    {
+      "arxivId": "2611.02571",
+      "title": "Organizational Learning in Materials Discovery Campaigns: Which Databases, Calculations, and Agent Teams Pay Off",
+      "authors": [
+        "Kinston Ackölf",
+        "Taylor D. Sparks"
+      ],
+      "primaryCategory": "cs.MA",
+      "published": "2026-11-02",
+      "url": "https://arxiv.org/abs/2611.02571",
+      "pdfUrl": "https://arxiv.org/pdf/2611.02571",
+      "excerpt": "More databases can make a materials campaign worse. Through an organizational lens, we trace each source's contribution. One band-gap campaign ranks seven anion families from archived measured gaps, one vote per source. In the first half of its budget, all seven pooled rank worse (rank agreement 0.737; 1 = measured order) than the best pool of three (0.851). As a stability check, choosing the pool on half the runs and testing on the rest kept the gap. Splitting Materials Project afterwards points to its transition-metal oxides and fluorides. Two databases from one pipeline add nothing over one, but pooling gives their shared ordering two votes. New calculations repay their cost early only when two or three campaigns reuse them. Flat language-model agent teams trailed a random-pick baseline (mean 0.876, sd 0.096, 20 searches). An adaptive Al-Mg-Si team, mostly interatomic potentials, was scored on unseen HSE06 calculations. In its first quarter of compute it found 49% of the ten lowest-formation-energy compounds, against at most 40% for fixed teams and 73% for MACE-MP-0 alone."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 588.168,
+      "bytes": 3529244,
+      "sha256": "2bcfbf93a0d683831cb234088e693a58c859e40b60d99e0f290c917b92a73656",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 512.352,
+      "bytes": 3074348,
+      "sha256": "bb3a346f438e9a1549e3379ae35cd7fe352cc7ede7a35cd01f924b9726aa2420",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 479.568,
+      "bytes": 2877644,
+      "sha256": "d2bc83f57afd2c7696e9dcf1e58784763e309e98c67e1d6dd57e0c031040516c",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 655.704,
+      "bytes": 3934460,
+      "sha256": "960f7842d6372f3c26cc7258a85ef848f3f1215522673535592b4f2f12fde7f5",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 522.384,
+      "bytes": 3134540,
+      "sha256": "66ef6ed95011ab6094167e65c244a0543434bf98e196bf6f8a5204898bb10bca",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 647.328,
+      "bytes": 3884204,
+      "sha256": "8ee03a974a4f2b8251ed88d6a4e78204942a707a106e2014ec4d51a4225cd488",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"materials discovery\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(228s), zh=llm(206s), de=llm(133s), es=llm(252s), ru=llm(144s), it=llm(205s, 1 quoted)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
