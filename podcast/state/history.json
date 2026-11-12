@@ -102,5 +102,9 @@
   {
     "date": "2026-11-12",
     "topicId": "materials-discovery"
+  },
+  {
+    "date": "2026-11-13",
+    "topicId": "language-model-agents"
   }
 ]

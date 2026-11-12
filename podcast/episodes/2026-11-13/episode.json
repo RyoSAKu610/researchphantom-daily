@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "date": "2026-11-13",
+  "topic": {
+    "id": "language-model-agents",
+    "labels": {
+      "ja": "言語モデルエージェント",
+      "zh": "语言模型智能体",
+      "de": "Sprachmodell-Agenten",
+      "es": "Agentes de modelos de lenguaje",
+      "ru": "Агенты на языковых моделях",
+      "it": "Agenti basati su modelli linguistici"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-13T06:55:48+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.14009",
+      "title": "Coding Agent Memory Post-Training II: Unlocking the Memory Potential of Pre-trained File Operations for Long-Horizon Tasks via On-Policy Distillation",
+      "authors": [
+        "Lirui Luo",
+        "Kelong Mao",
+        "Xinwei Yang",
+        "Rongqing Li",
+        "Luyu Chen",
+        "Kieran Wong",
+        "Yudong Guo",
+        "Xinrui Wang"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-10",
+      "url": "https://arxiv.org/abs/2611.14009",
+      "pdfUrl": "https://arxiv.org/pdf/2611.14009",
+      "excerpt": "Language-model agents increasingly tackle long-horizon tasks whose interaction histories exceed the model's active context. They must therefore decide what to write down and what to read back, and when to do either. Recent work has begun to use on-policy distillation (OPD) to make memory control part of the policy, relying on memory tools and compaction protocols that lie outside either model's pre-training. However, this weakens the distillation on both sides: the teacher cannot give useful guidance on an interface it has never used, and the student samples too few meaningful memory actions for that guidance to take effect. To study this problem, we introduce Coding Agent Memory Gym II (CAMG-II), a suite of long-horizon agentic-RL environments spanning Shop, Coding, AutoResearch, General, and Visual. Alongside each environment's native task interface, CAMG-II provides ordinary Bash access and an episode-persistent workspace, enabling the policy to create, revise, search, and reuse files as memory across context replacements."
+    },
+    {
+      "arxivId": "2611.13615",
+      "title": "Synapse-Control: Making Agent Experience Actionable with Lightweight Runtime Control",
+      "authors": [
+        "Zhiyuan Huang",
+        "Shengan Zheng",
+        "Chenghu Yang",
+        "Song Zhang",
+        "Lingyun Li",
+        "Chen Yu",
+        "Weiquan Huang",
+        "Linpeng Huang"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-11-10",
+      "url": "https://arxiv.org/abs/2611.13615",
+      "pdfUrl": "https://arxiv.org/pdf/2611.13615",
+      "excerpt": "Large language model agents reuse execution experience to improve reliability on complex tool-based tasks. Systems such as Sentry call large models to generate failure diagnoses before retrieving advice, adding inference cost to experience reuse. We present Synapse-Control, an agent runtime whose lightweight control plane selects advice and determines when to send it to the task-executing model. Rules shortlist relevant advice, and a lightweight 1.7B classifier fine-tuned on teacher-labeled state-suggestion pairs scores those candidates instead of generating a diagnosis. Micro-contracts encode reusable interface checks, such as required arguments or valid options, without prescribing complete task programs. A Prompt Value Table records earlier guidance and feedback to limit repeated suggestions through cooldown and token-budget checks. Across 1,308 attempts per method in AppWorld and WebShop, Synapse-Control achieves 270 successes (29.8% more than Base), replaces 4,987 generative diagnosis calls, and reduces auxiliary control time relative to Sentry by 50.2% and 51.0%, respectively."
+    },
+    {
+      "arxivId": "2611.13406",
+      "title": "Stinging the Swarm: Extracting Attacker Intelligence from a Twin-Controller OT Honeypot",
+      "authors": [
+        "Canyon Grey Dell'Omo",
+        "Joao Pedro de Carvalho Voltani"
+      ],
+      "primaryCategory": "cs.CR",
+      "published": "2026-11-10",
+      "url": "https://arxiv.org/abs/2611.13406",
+      "pdfUrl": "https://arxiv.org/pdf/2611.13406",
+      "excerpt": "Autonomous language-model agents can drive industrial controllers over fieldbus protocols, probing a plant at machine speed and in coordinated swarms. We present Talos, an inline gate that judges every agent request to a controller in milliseconds and routes agents it flags as hostile to a device-faithful decoy -- a mirror twin of the real plant -- where their attack continues harmlessly and is read for intelligence. We evaluate the full pipeline (detect -> quarantine -> mirror -> extract) against 2,400 autonomous attacker agents, 600 in each of four tiers that escalate the attacker's effort to stay hidden, from no concealment to an explicit non-disclosure rule and a trained cover story. No write reached the real plant in any tier: the gate denies the damage path and a device-level envelope check backstops it, while unmapped registers are denied without exception and the gate still permits safe-direction stop commands. Decisions are model-driven in every tier with no inference timeouts, closing a common objection to small on-device judges."
+    },
+    {
+      "arxivId": "2611.13329",
+      "title": "Agent-Guided Discovery of Exchange-Correlation Functionals with Physics-based Validation",
+      "authors": [
+        "Achuth Chandrasekhar",
+        "Amir Barati Farimani"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-09",
+      "url": "https://arxiv.org/abs/2611.13329",
+      "pdfUrl": "https://arxiv.org/pdf/2611.13329",
+      "excerpt": "Accurate, compact exchange--correlation functionals are central to predictive density functional theory. Symbolic search and language-model agents can propose new functional forms, but it remains unclear whether their gains survive self-consistency and external evaluation, whether the new terms carry physical content, whether agents outperform evolutionary search, and how language-model backbones compare. We connect frontier LLM agents to a GPU evaluator through the Model Context Protocol, with training-only fitting, persistent memory, and self-consistent and external evaluation. Opus-5.5 agents passed the screening gate with about 40-fold fewer tokens than Codex (GPT-6-Astra) agents and found a candidate with lower validation and held-out errors; only this candidate advanced to self-consistent evaluation. The resulting 13-parameter functional, O159, multiplies same-spin correlation by a smooth density window."
+    },
+    {
+      "arxivId": "2611.13118",
+      "title": "Extracting Published Discussions of 13,616 Galaxies with Language Models",
+      "authors": [
+        "Nolan Koblischke",
+        "Jo Bovy"
+      ],
+      "primaryCategory": "astro-ph.IM",
+      "published": "2026-11-09",
+      "url": "https://arxiv.org/abs/2611.13118",
+      "pdfUrl": "https://arxiv.org/pdf/2611.13118",
+      "excerpt": "Astronomers often have difficulty determining whether an object, such as a star or galaxy of interest, has been discussed in the literature. Existing tools enable object identification and linking in papers but do not record whether an object was genuinely discussed in a paper or just appears in a table or catalog. We address this by using language model agents to identify galaxies discussed in more than two sentences across a corpus of 156,006 arXiv astro-ph papers and extract those discussions. We extract 44,332 discussions of individual galaxies containing 85,314 quotes from 18,641 papers. With sky coordinates for 98.2% of discussions, we group them into 13,616 galaxies. We bring these results together into GalaxyWiki, where users can find literature discussing galaxies, read what was said about them, and follow links to the source papers. The code, dataset, and webpage are available at https://github.com/NolanKoblischke/galaxywiki-paper"
+    },
+    {
+      "arxivId": "2611.13114",
+      "title": "ASPIRE: An Agentic System-Identification Platform for Iterative Reasoning and Exploration",
+      "authors": [
+        "Erik Derner",
+        "Jiří Kubalík",
+        "Robert Babuška"
+      ],
+      "primaryCategory": "cs.RO",
+      "published": "2026-11-09",
+      "url": "https://arxiv.org/abs/2611.13114",
+      "pdfUrl": "https://arxiv.org/pdf/2611.13114",
+      "excerpt": "System identification requires expert decisions on the identification method, incorporation of prior physical knowledge, and model validation. We propose ASPIRE, a framework for nonlinear system identification in which a large language model agent selects and executes the identification method. ASPIRE constructs closed-form, nonlinear static or dynamic models from measured data, optionally supplemented by a system description, the intended use of the model, and physical requirements expressed formally or in natural language. Each model includes its parameters, an estimation record, an interpretation of its terms, and an error evaluated on test data inaccessible to the agent. Formal physical requirements are verified independently. ASPIRE operates autonomously or interactively, allowing the agent to ask questions and the user to request further analyses and identification rounds. We evaluate ASPIRE on three measured systems: a mobile robot, a rotational system with dry friction, and a laboratory fermenter. Each system is tested with and without a description, in five runs per task."
+    },
+    {
+      "arxivId": "2611.12856",
+      "title": "WorkflowArena: Benchmarking Executable Workflow Orchestration in LLM-Based Multi-Agent Systems",
+      "authors": [
+        "Zheng Jiang",
+        "Fang Niu",
+        "Bo Peng",
+        "Houde Qian",
+        "Wenyi Li",
+        "Deyao Hong",
+        "Mingju Gao",
+        "Yizhe Chi"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-11-09",
+      "url": "https://arxiv.org/abs/2611.12856",
+      "pdfUrl": "https://arxiv.org/pdf/2611.12856",
+      "excerpt": "Large language model agents are increasingly deployed as multi-agent systems rather than as a standalone model operating within a single context. Recent agent harnesses allow the model to instantiate worker agents and to author the executable workflow that coordinates them, shifting the design of system structure from developers to the model at run time. The quality of this organization therefore constitutes a distinct capability, yet existing benchmarks either measure end-to-end task completion or evaluate coordination under structures specified in advance. We formalize this capability as workflow orchestration and introduce WorkflowArena, a benchmark of 145 long-horizon tasks spanning 8 professional domains, from software engineering and formal mathematics to legal analysis and 3D production. Each task specifies an initial workspace and an integrated deliverable composed of interdependent components, which is assessed by a hidden verifier."
+    },
+    {
+      "arxivId": "2611.12412",
+      "title": "Unprompted coordination through shared memory in LLM agents: a locked two-implementation replication and extension",
+      "authors": [
+        "Pekka Abrahamsson",
+        "Muhammad Waseem",
+        "Esa Karjalainen",
+        "Petrus Jussila",
+        "Henri Hansen",
+        "Jussi Rasku",
+        "Bilhanan Silverajan",
+        "Kai-Kristian Kemell"
+      ],
+      "primaryCategory": "cs.MA",
+      "published": "2026-11-09",
+      "url": "https://arxiv.org/abs/2611.12412",
+      "pdfUrl": "https://arxiv.org/pdf/2611.12412",
+      "excerpt": "Coordination between large language-model agents has become a central question for AI safety and software engineering, as such agents are deployed in groups that share infrastructure. Existing research tells the agents that partners exist or asks them to coordinate. Whether coordination arises through shared state alone, with nothing disclosing that anyone else is present, is the key question for deployments that share caches and memory between agents, yet it has rarely been examined, and never with independent replication; this study does both. Four agents each received a short arithmetic task and a key-value store presented to each as its own scratch space; two held complementary halves of one computation, and no prompt mentioned other agents, sharing or collaboration. For reliability, the environment was rebuilt independently from a written protocol, and both implementations ran under hashed locks on design, data and analysis. The results bear novelty value in three respects. Joint success occurred only through the shared store."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 560.208,
+      "bytes": 3361484,
+      "sha256": "f3765309da3295bbc2bd9ecc996de76af6019785426aebb59b05adf3b970b3af",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 491.16,
+      "bytes": 2947196,
+      "sha256": "7e1bd286ba0ac73220422f79bec875ab8360d03c9139d8f769d0a81d80da63ed",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 532.8,
+      "bytes": 3197036,
+      "sha256": "44a0cff5deab26a12ed71a9da1f4be4164fca6ac64b8485227aa9f66ef72755d",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 651.312,
+      "bytes": 3908108,
+      "sha256": "887ec4515d45732d9224997aed18ef4a5165b9e7640cc3e94067d2b674458c20",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 549.504,
+      "bytes": 3297260,
+      "sha256": "53e10924e4e766f2a6a0943796fa56458ebed918ecc4e854781c53a4fb947a68",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 676.08,
+      "bytes": 4056716,
+      "sha256": "c0a4170c612288a035f2356d2e84cc2bc7052fd6e35cf281e8d06af3030f54cf",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"language model agents\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(219s), zh=llm(155s), de=llm(209s, 1 quoted), es=llm(221s), ru=llm(166s), it=llm(238s, 1 quoted)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
