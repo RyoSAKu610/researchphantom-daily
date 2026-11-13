@@ -287,6 +287,7 @@ test("index.html: play + download per available language, unavailable languages 
     assert.ok(html.includes("VoiceStudio"), "VoiceStudio is named as the first voice");
     assert.ok(html.includes('id="tearoom"'), "tea-room mode is a separate section");
     assert.ok(html.includes("待庵") && html.includes("如庵") && html.includes("密庵席") && html.includes("黄金の茶室"));
+    assert.ok(html.includes('id="booth"') && html.includes('id="tea-booth"') && html.includes("この席で撮る"), "photo booth inside the tea room");
   } finally {
     await rm(tmp, { recursive: true, force: true });
   }
