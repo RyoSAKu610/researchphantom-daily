@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "date": "2026-11-14",
+  "topic": {
+    "id": "fairness-in-ml",
+    "labels": {
+      "ja": "機械学習の公平性",
+      "zh": "机器学习的公平性",
+      "de": "Fairness im maschinellen Lernen",
+      "es": "Equidad en el aprendizaje automático",
+      "ru": "Справедливость в машинном обучении",
+      "it": "Equità nell'apprendimento automatico"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-16T06:58:43+09:00",
+  "papers": [
+    {
+      "arxivId": "2609.07959",
+      "title": "The Role of Uncertainty in Assessing the Fairness of Machine Learning Models",
+      "authors": [
+        "Francesca Panero",
+        "Ernst C. Wit",
+        "Marco Scutari"
+      ],
+      "primaryCategory": "stat.ML",
+      "published": "2026-09-07",
+      "url": "https://arxiv.org/abs/2609.07959",
+      "pdfUrl": "https://arxiv.org/pdf/2609.07959",
+      "excerpt": "Machine learning models are widely used in clinical applications, social media, law enforcement and critical infrastructure. Verifying whether their outputs are biased against disadvantaged groups or individuals is crucial to ensuring they are fair and allowing their use in such settings. A rigorous risk assessment of possible fairness violations requires quantifying the uncertainty associated with selecting and estimating such models. Yet, this is rarely done in the literature, which focuses on identifying a single model with a suitable trade-off between predictive accuracy and fairness. In this paper, we move beyond point estimation and discuss frequentist and Bayesian approaches to uncertainty quantification for fair machine learning, with practical examples and implications for simulated and real data."
+    },
+    {
+      "arxivId": "2606.28097",
+      "title": "Fair Classification with Efficient and Post-hoc Controllable Fairness-Accuracy Trade-off",
+      "authors": [
+        "Maaya Sakata",
+        "Kazuto Fukuchi"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-06-26",
+      "url": "https://arxiv.org/abs/2606.28097",
+      "pdfUrl": "https://arxiv.org/pdf/2606.28097",
+      "excerpt": "Post-hoc controllability of fair machine learning models, the ability to control the trade-off between fairness and accuracy after training, is valuable for practical deployment. Existing post-processing methods provide such post-hoc controllability but often suffer from significant accuracy degradation, whereas in-processing methods achieve efficient trade-offs but require computationally expensive retraining for each change in trade-off ratio. To achieve both post-hoc controllability and efficient trade-offs, we propose a novel fair classification algorithm that learns effective feature representations to improve the trade-off efficiency of post-processing fair classifiers, by a gradient-based optimization approach. Experimental results on real-world datasets demonstrate that our method achieves trade-off efficiency comparable to, or even surpassing, in-processing methods, without requiring any retraining."
+    },
+    {
+      "arxivId": "2606.12615",
+      "title": "Towards Provably Fair Machine Learning: Bayesian Approaches For Consistent and Transparent Predictions",
+      "authors": [
+        "Owen O'Neill",
+        "Fintan Costello"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-06-10",
+      "url": "https://arxiv.org/abs/2606.12615",
+      "pdfUrl": "https://arxiv.org/pdf/2606.12615",
+      "excerpt": "ML classifiers deployed in high-stakes domains produce predictions whose quality varies systematically across subgroups. For granular subgroups defined by intersections of multiple features, predictions are often inconsistent with the observed data: the model's outputs contradict the evidence available for that subgroup. This problem is exacerbated by regularisation, which improves aggregate performance by collapsing small subgroups into larger groups, disproportionately affecting demographic minorities. We define two requirements for consistent prediction: determinism (identical individuals receive identical predictions) and statistical consistency (we cannot reject, at significance level alpha, the hypothesis that the predictions for a subgroup were drawn from the Bayesian optimal target distribution inferred for that subgroup). From these requirements we derive the Fair Bayesian classifier, which enforces both across every group and subgroup simultaneously and abstains whenever no consistent deterministic prediction is possible."
+    },
+    {
+      "arxivId": "2606.06830",
+      "title": "Learning Fair Demand Models",
+      "authors": [
+        "Adam N. Elmachtoub",
+        "Hyemi Kim",
+        "Jonathan Y. Tan"
+      ],
+      "primaryCategory": "cs.CY",
+      "published": "2026-06-05",
+      "url": "https://arxiv.org/abs/2606.06830",
+      "pdfUrl": "https://arxiv.org/pdf/2606.06830",
+      "excerpt": "Data-driven pricing is increasingly prevalent in sectors such as airlines, lending, insurance, and retail. By learning demand models from customer features and setting prices accordingly, these systems may generate discriminatory outcomes that raise fairness concerns. This leads to fundamental questions - how and where should systems incorporate fairness considerations in the pricing pipeline, and how does it ultimately affect societal outcomes? To answer these, we study a stylized model where a seller has a two-stage decision pipeline comprising linear demand model estimation followed by price optimization. The seller considers fairness notions in training loss, price, and demand, under both parity-wise and Rawlsian perspectives. We show that equalizing training loss across consumer groups leads to multiple solutions, which in turn can result in undesirable outcomes despite being a standard approach in fair machine learning."
+    },
+    {
+      "arxivId": "2604.21711",
+      "title": "Fairness under uncertainty in sequential decisions",
+      "authors": [
+        "Michelle Seng Ah Lee",
+        "Kirtan Padh",
+        "David Watson",
+        "Niki Kilbertus",
+        "Jatinder Singh"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-04-23",
+      "url": "https://arxiv.org/abs/2604.21711",
+      "pdfUrl": "https://arxiv.org/pdf/2604.21711",
+      "excerpt": "Fair machine learning (ML) methods help identify and mitigate the risk that algorithms encode or automate social injustices. Algorithmic approaches alone cannot resolve structural inequalities, but they can support socio-technical decision systems by surfacing discriminatory biases, clarifying trade-offs, and enabling governance. Although fairness is well studied in supervised learning, many real ML applications are online and sequential, with prior decisions informing future ones. Each decision is taken under uncertainty due to unobserved counterfactuals and finite samples, with dire consequences for under-represented groups, systematically under-observed due to historical exclusion and selective feedback. A bank cannot know whether a denied loan would have been repaid, and may have less data on marginalized populations. This paper introduces a taxonomy of uncertainty in sequential decision-making -- model, feedback, and prediction uncertainty -- providing shared vocabulary for assessing systems where uncertainty is unevenly distributed across groups."
+    },
+    {
+      "arxivId": "2603.19745",
+      "title": "Invariant quantile regression for heterogeneous environments",
+      "authors": [
+        "Bo Fu",
+        "Dandan Jiang"
+      ],
+      "primaryCategory": "stat.ME",
+      "published": "2026-03-20",
+      "url": "https://arxiv.org/abs/2603.19745",
+      "pdfUrl": "https://arxiv.org/pdf/2603.19745",
+      "excerpt": "In this paper, we propose an invariant quantile regression (IQR) framework specifically designed for multi-environment datasets, which captures the invariance across different environments. This framework is closely related to transfer learning, causal inference, and fair machine learning, and is motivated by scenarios in which the conditional probability of the response given covariates varies, while certain key variables remain invariant. This perspective differs notably from previous works that restrict attention to the conditional mean, which is often insufficient to capture the full causal relationships between covariates and the response in heterogeneous environments. In contrast, quantile-based invariance naturally accommodates heterogeneity, and aligns more closely with structural causal models, in which variables invariant across environments at one or multiple quantile levels directly indicate potential and stable causal variables."
+    },
+    {
+      "arxivId": "2603.09662",
+      "title": "No evaluation without fair representation : Impact of label and selection bias on the evaluation, performance and mitigation of classification models",
+      "authors": [
+        "Magali Legast",
+        "Toon Calders",
+        "François Fouss"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-03-10",
+      "url": "https://arxiv.org/abs/2603.09662",
+      "pdfUrl": "https://arxiv.org/pdf/2603.09662",
+      "excerpt": "Bias can be introduced in diverse ways in machine learning datasets, for example via selection or label bias. Although these bias types in themselves have an influence on important aspects of fair machine learning, their different impact has been understudied. In this work, we empirically analyze the effect of label bias and several subtypes of selection bias on the evaluation of classification models, on their performance, and on the effectiveness of bias mitigation methods. We also introduce a biasing and evaluation framework that allows to model fair worlds and their biased counterparts through the introduction of controlled bias in real-life datasets with low discrimination. Using our framework, we empirically analyze the impact of each bias type independently, while obtaining a more representative evaluation of models and mitigation methods than with the traditional use of a subset of biased data as test set. Our results highlight different factors that influence how impactful bias is on model performance."
+    },
+    {
+      "arxivId": "2603.06901",
+      "title": "Fairness May Backfire: When Leveling-Down Occurs in Fair Machine Learning",
+      "authors": [
+        "Yi Yang",
+        "Xiangyu Chang",
+        "Pei-yu Chen"
+      ],
+      "primaryCategory": "stat.ML",
+      "published": "2026-03-06",
+      "url": "https://arxiv.org/abs/2603.06901",
+      "pdfUrl": "https://arxiv.org/pdf/2603.06901",
+      "excerpt": "As machine learning (ML) systems increasingly shape access to credit, jobs, and other opportunities, the fairness of algorithmic decisions has become a central concern. Yet it remains unclear when enforcing fairness constraints in these systems genuinely improves outcomes for affected groups or instead leads to \"leveling down,\" making one or both groups worse off. We address this question in a unified, population-level (Bayes) framework for binary classification under prevalent group fairness notions. Our Bayes approach is distribution-free and algorithm-agnostic, isolating the intrinsic effect of fairness requirements from finite-sample noise and from training and intervention specifics. We analyze two deployment regimes for ML classifiers under common legal and governance constraints: attribute-aware decision-making (sensitive attributes available at decision time) and attribute-blind decision-making (sensitive attributes excluded from prediction)."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 587.328,
+      "bytes": 3524204,
+      "sha256": "b6adab4e8dd7cbfd23b212c0e30b0f90d1291c887bd96502b959ad8c3328c6b6",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 433.56,
+      "bytes": 2601596,
+      "sha256": "5c4ab3aceb150459b446689a28f92005578532fc2275fdae646f61004dfcc505",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 470.856,
+      "bytes": 2825372,
+      "sha256": "8a9dd8f88804ccc0f7aad8b93aa023b634c8e9bc87943ff3bc57c8b880b9ef38",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 636.696,
+      "bytes": 3820412,
+      "sha256": "979f878c70141aa42fceb7171ad155d0e2cdb4f09d51363eb6ee62e2dcaef8a3",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 498.72,
+      "bytes": 2992556,
+      "sha256": "38fcbedd399767c08ce79136a8643bd489440da8b8b1c4fc5f62140fb98abca6",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 642.456,
+      "bytes": 3854972,
+      "sha256": "9c195ccdc5bb00e4abe86a29db4c383801bc5463584544e1d2090b55753f7815",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"fairness machine learning\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(202s), zh=llm(106s), de=llm(130s), es=llm(188s), ru=llm(139s), it=llm(187s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}

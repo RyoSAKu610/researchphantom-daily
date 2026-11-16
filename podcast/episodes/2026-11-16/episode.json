@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "date": "2026-11-16",
+  "topic": {
+    "id": "automated-theorem-proving",
+    "labels": {
+      "ja": "定理の自動証明",
+      "zh": "自动定理证明",
+      "de": "Automatisches Theorembeweisen",
+      "es": "Demostración automática de teoremas",
+      "ru": "Автоматическое доказательство теорем",
+      "it": "Dimostrazione automatica di teoremi"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-16T10:50:06+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.16433",
+      "title": "daVinci-Prover: Agent-Native Mid-Training for Formal Theorem Proving",
+      "authors": [
+        "Wenhong Zhu",
+        "Xuefeng Li",
+        "Jiashuo Zhang",
+        "Yu Chen",
+        "Tiantian Mi",
+        "Qipeng Guo",
+        "Pengfei Liu"
+      ],
+      "primaryCategory": "cs.CL",
+      "published": "2026-11-12",
+      "url": "https://arxiv.org/abs/2611.16433",
+      "pdfUrl": "https://arxiv.org/pdf/2611.16433",
+      "excerpt": "Advances in large language models (LLMs) are rapidly transforming formal theorem proving. Yet further progress remains constrained by the lack of a transparent and effective data recipe for systematically improving theorem-proving models. In this work, we argue that effective agentic provers require strong mathematical skill priors to ground theorem proving and agentic trajectories to enable long-horizon, interactive proof construction. To this end, we synthesize an agent-native 33.7B-token mid-training corpus covering decomposition, search, self-verification, and revision, together with verifier-grounded agentic trajectories. We further introduce the daVinci-Prover harness, which enables models to construct proofs and interact with a Lean verifier in an isolated workspace, and use it to collect approximately 36K high-quality agent trajectories for supervised fine-tuning. Our mid-training recipe yields an average improvement of 13.7 points over the matched Qwen3-8B SFT-only baseline across MiniF2F, FATE-M, and ProofNet."
+    },
+    {
+      "arxivId": "2611.14106",
+      "title": "ProofCoder: Continuous Reasoning for Automated Software Verification",
+      "authors": [
+        "Martim Afonso",
+        "Inês Lynce",
+        "Maurizio Morisio",
+        "João F. Ferreira"
+      ],
+      "primaryCategory": "cs.SE",
+      "published": "2026-11-10",
+      "url": "https://arxiv.org/abs/2611.14106",
+      "pdfUrl": "https://arxiv.org/pdf/2611.14106",
+      "excerpt": "Formal verification using proof assistants provides strong correctness guarantees for software, but constructing proofs remains labor-intensive and requires significant expertise. Recent approaches based on large language models (LLMs) have shown promise in automating proof synthesis. However, these approaches typically constrain the model to a rigid tactic-generation loop, in which the surrounding system controls premise retrieval, proof-state management, and backtracking. We introduce ProofCoder, an agentic proof-synthesis system for Rocq that approaches theorem proving from a coding-agent perspective. Rather than generating tactics within a fixed loop, ProofCoder reasons continuously throughout proof search and uses proof-assistant feedback to decide when to gather additional information, inspect proof states, revise previously generated proof fragments, or backtrack to an earlier point in the proof. This allows it to iteratively construct, repair, and refine proofs, at either tactic-level or whole-proof granularity."
+    },
+    {
+      "arxivId": "2611.13821",
+      "title": "C-embeddings of spaces of signed measures",
+      "authors": [
+        "E. A. Reznichenko",
+        "Yu. V. Sadovnichiy"
+      ],
+      "primaryCategory": "math.GN",
+      "published": "2026-11-10",
+      "url": "https://arxiv.org/abs/2611.13821",
+      "pdfUrl": "https://arxiv.org/pdf/2611.13821",
+      "excerpt": "For a Tychonoff space let be the spaces of finitely additive, -additive (Baire), -additive and Radon signed measures on , and let and be the spaces of compactly supported and discrete measures; all of them are regarded as subspaces of with the weak topology. We study when is -embedded ( -embedded) in . We prove that -embeddedness, -embeddedness and -density of in are equivalent, and that they are equivalent to a lifting property: for every continuous map of into a metrizable compact space, the image of every probability measure in is the image of a probability measure in . The main tool is a general theorem, proved in a separate paper, asserting that -embeddedness, -embeddedness and -density are equivalent for dense subspaces of locally convex spaces in the weak topology, and, more generally, of products of first-countable spaces. We characterize the spaces for which , , and are -embedded in (pseudocompactness, pseudo- -boundedness, scatteredness of , and a lifting property of Radon measures, respectively)."
+    },
+    {
+      "arxivId": "2611.09826",
+      "title": "Radial reductions of variable exponent Laplacian equations on warped products with compact symmetry",
+      "authors": [
+        "Jose Luis Diaz Palencia",
+        "Daniel J. Pons",
+        "Enrique G. Reyes"
+      ],
+      "primaryCategory": "math.DG",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09826",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09826",
+      "excerpt": "We study nonlinear elliptic equations of variable exponent type, on non-compact Riemannian manifolds with symmetry. We consider complete warped products where is a non-compact interval, possibly with boundary, and is a compact homogeneous manifold. We establish sufficient conditions on the warping function ensuring a Ricci lower bound, a uniform non-collapsing volume condition, and the orbit-growth hypothesis of the abstract existence theorem proved in \\cite{JFA}. We also obtain comparison bounds for the admissible warping functions. We analyze the corresponding radial equations for the admissible exponential and linear models and , with . For a constant diffusion exponent , we consider explicit decaying profiles , which belong to provided in the exponential case and in the linear case. Under additional explicit parameter restrictions, these profiles solve a resonant equation with a positive bounded coefficient, a construction distinct from the superlinear regime of the abstract existence theorem."
+    },
+    {
+      "arxivId": "2611.09048",
+      "title": "LeanDojo-v2: A Comprehensive Library for AI-Assisted Theorem Proving in Lean",
+      "authors": [
+        "Ryan Hsiang",
+        "William Adkisson",
+        "Robert Joseph George",
+        "Anima Anandkumar"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.09048",
+      "pdfUrl": "https://arxiv.org/pdf/2611.09048",
+      "excerpt": "Building on recent progress in machine learning for formal theorem proving in Lean, we introduce LeanDojo-v2: an end-to-end framework that unifies repository data extraction, LLM fine-tuning, proof search, AI autocompletion, and LLM-assisted theorem proving in a single software library. In addition, we provide Lean4Code, a lightweight IDE that integrates the various features of LeanDojo-v2 through a simple, mathematician-friendly UI. These tools will enable mathematicians and researchers to easily fine-tune language models on domain-specific Lean codebases and experiment with LLM-assisted theorem proving without a complex setup."
+    },
+    {
+      "arxivId": "2611.08277",
+      "title": "LeanContext: Disentangling Mathematical Resources from Local Formal Context in Lean Whole-Proof Generation",
+      "authors": [
+        "Hang Zhang",
+        "Qihao Ye",
+        "Litong Liu",
+        "Yunbei Zhang",
+        "Yugyung Lee",
+        "Yue Zhou",
+        "Bowen Liu",
+        "Emily First"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.08277",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08277",
+      "excerpt": "Neural theorem proving increasingly uses retrieved premises and project context to support proof generation. Evaluating these resources requires measuring the advantage of target-selected declarations over comparable alternatives and how this advantage depends on training. We introduce LeanContext, a benchmark of 129,826 Lean whole-proof generation problems, to investigate these questions. We group selected complete preceding mathematical declarations as Mathematical Context (MC) and the remaining selected local source commands as Environment Context (EC). Four aligned input views support crossed training and inference evaluations with shared targets and original Lean verification environments. For both diffusion- and autoregressive-based models, selected declarations outperform comparable alternatives by a larger margin when training includes MC. Final-input audits identify omitted declarations referenced by the target. Prioritizing these dependencies improves Pass@32 by 1.40% and 1.70% for LLaDA and Llama, respectively, on 2,000 targets."
+    },
+    {
+      "arxivId": "2611.07962",
+      "title": "TCSExam: Evaluating Frontier LLMs on the Full Range of TCS Research",
+      "authors": [
+        "Yifan Luo",
+        "Zhengying Liu",
+        "Yang Yuan",
+        "Zhilin Yang",
+        "Andrew Chi-Chih Yao"
+      ],
+      "primaryCategory": "cs.AI",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.07962",
+      "pdfUrl": "https://arxiv.org/pdf/2611.07962",
+      "excerpt": "Can large language models (LLMs) advance theoretical computer science and resolve its long-standing open conjectures? To study progress toward this goal, we introduce TCSExam, a unified framework and benchmark covering the full range of TCS research. It evaluates theorem proving, solver engineering, and constructions alongside direct attempts to resolve open conjectures, capturing both concrete research accomplishments and progress toward long-standing research goals. TCSExam-Full contains 100 expert-reviewed tasks, with submissions checked by the Lean kernel or an executable task checker. TCSExam-Lite selects 20 tasks, five per track, reducing the number of task attempts by 80% at the same per-attempt budget. We evaluate eight agents on Full and nine on Lite. The TCSExam Index combines all four tracks: GPT-6 Astra leads Full (71.9), and Opus 5.5 leads Lite (72.3). Full and Lite rankings are strongly aligned across eight shared agents (Spearman's ), supporting Lite as a compact, discriminative benchmark."
+    },
+    {
+      "arxivId": "2611.05317",
+      "title": "Simple proof of conditions requiring maximal entanglement for local state verification and discrimination",
+      "authors": [
+        "Somshubhro Bandyopadhyay"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-11-03",
+      "url": "https://arxiv.org/abs/2611.05317",
+      "pdfUrl": "https://arxiv.org/pdf/2611.05317",
+      "excerpt": "For deterministic state verification by separable measurements, the Schmidt rank of an entangled resource must be at least that of the state being verified [N. Yu, R. Duan, and M. Ying, IEEE Trans. Inf. Theory 60, 2069 (2014)], and if the two are equal, the resource must be maximally entangled [S. Akibue, J. Miyazaki, and H. Osaka, Lett. Math. Phys. 116, 110 (2026)]. The latter was derived from a general theorem proved using algebraic geometry. In this paper, we give a simple, self-contained proof of both statements using only linear algebra. We then use these results to show that among pure entangled resources of local dimension at most , a maximally entangled state of is necessary and sufficient for perfect local discrimination of a generic orthogonal basis of , however weakly entangled. The same holds for local implementation of a generic orthogonal measurement."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 365.28,
+      "bytes": 2191916,
+      "sha256": "2045683f1f094083bb8e6c426362934cb1818df785b6655f4ca5f9d32dcdb0bb",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 463.368,
+      "bytes": 2780444,
+      "sha256": "b461ae5ea12b50e37d3ba24093542eacf11b5fef4b2560cec8282c930195ffc8",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 487.848,
+      "bytes": 2927324,
+      "sha256": "35d5423c5220115466a6ca1c93af273bab76b27a78833781cd9e9eeb82922c28",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 655.992,
+      "bytes": 3936188,
+      "sha256": "96f0da7280d74d391654ea1d228c21fe3527ead13e5ac3457c37dbc181a499a4",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 546.36,
+      "bytes": 3278396,
+      "sha256": "871a8261f558540665afdf94adceda2d481536f4918acdd27d7f4e0927bf28bf",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 666.504,
+      "bytes": 3999260,
+      "sha256": "56c6749fd65a2b0721c7fd7672870b1e8b2812af56026a591824e127b920bda6",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"theorem proving\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=template(time budget exhausted at paper 3), zh=llm(154s), de=llm(143s), es=llm(180s), ru=llm(215s), it=llm(1628s)",
+    "audio brief plan adjusted (papers/excerpts) to stay inside the 5-20 minute episode target for: ja (full paper links and abstracts remain in this episode data)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}

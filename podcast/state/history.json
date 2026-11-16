@@ -106,5 +106,17 @@
   {
     "date": "2026-11-13",
     "topicId": "language-model-agents"
+  },
+  {
+    "date": "2026-11-14",
+    "topicId": "fairness-in-ml"
+  },
+  {
+    "date": "2026-11-15",
+    "topicId": "robot-manipulation"
+  },
+  {
+    "date": "2026-11-16",
+    "topicId": "automated-theorem-proving"
   }
 ]
