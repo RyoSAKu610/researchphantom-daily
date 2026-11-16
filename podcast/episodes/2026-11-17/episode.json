@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "date": "2026-11-17",
+  "topic": {
+    "id": "convex-optimization",
+    "labels": {
+      "ja": "凸最適化",
+      "zh": "凸优化",
+      "de": "Konvexe Optimierung",
+      "es": "Optimización convexa",
+      "ru": "Выпуклая оптимизация",
+      "it": "Ottimizzazione convessa"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-17T07:02:40+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.17500",
+      "title": "Adversarially Batched Online Learning",
+      "authors": [
+        "Mingda Qiao",
+        "Kerui Wu"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-12",
+      "url": "https://arxiv.org/abs/2611.17500",
+      "pdfUrl": "https://arxiv.org/pdf/2611.17500",
+      "excerpt": "We introduce adversarially batched online learning, where the learner may update its decision rule only at a restricted set of time steps. Equivalently, the time horizon is partitioned into batches, within which the learner must use a fixed policy. We study this model for four canonical problems: stochastic bandits, online convex optimization, prediction with expert advice, and adversarial bandits. For stochastic bandits, we identify a universal complexity measure based on relative batch growth and establish both gap-dependent and gap-independent regret bounds. We show that the multiplicative penalty relative to the standard gap-dependent complexity can grow superlinearly in batch hardness. For the remaining three, we show that the optimal regret is tightly characterized by the 2-norm of the batch-length sequence. The upper bound is achieved by a batch-oblivious learner who does not know the batch structure, via a generic adaptive doubling trick tailored to this complexity measure. In contrast, the lower bound holds even for batch-aware learners."
+    },
+    {
+      "arxivId": "2611.17143",
+      "title": "A Convex-Analytic Reformulation for Poisoning Attacks on Logistic Regression",
+      "authors": [
+        "Carina Moreira Costa",
+        "Maria Eduarda Pinheiro",
+        "Martin Schmidt"
+      ],
+      "primaryCategory": "cs.LG",
+      "published": "2026-11-12",
+      "url": "https://arxiv.org/abs/2611.17143",
+      "pdfUrl": "https://arxiv.org/pdf/2611.17143",
+      "excerpt": "We study data poisoning attacks on logistic regression with -regularization, where an attacker chooses the features of a fixed number of injected observations with prescribed labels to maximize the logistic loss on the clean training data. Strong convexity of the defender's problem yields an exact reformulation through its first-order optimality conditions. Using convex conjugacy of the softplus function, we replace the sigmoid relations by a single convex optimality-gap inequality and express the attacker's objective as a concave function. A change of variables makes the stationarity condition affine, leaving bounded bilinear equalities as the only nonconvex constraints. We derive finite bounds on all variables involved in these equalities, including a global bound on the coefficient norm and tighter bounds obtained by preprocessing based on convex optimization. Experiments on eight binary classification datasets evaluate attack effectiveness and compare the two reformulations when solved with SCIP."
+    },
+    {
+      "arxivId": "2611.17076",
+      "title": "Adaptive Constraint Sampling for Stochastic Gradient Methods in Constrained Optimization",
+      "authors": [
+        "Erik Müller",
+        "Naum Dimitrieski",
+        "Mohamed-Ali Belabbas",
+        "Christian Ebenbauer"
+      ],
+      "primaryCategory": "math.OC",
+      "published": "2026-11-12",
+      "url": "https://arxiv.org/abs/2611.17076",
+      "pdfUrl": "https://arxiv.org/pdf/2611.17076",
+      "excerpt": "This paper proposes an adaptive constraint-sampling technique for stochastic gradient-based methods to efficiently solve constrained optimization problems with a large number of inequality constraints. The proposed constraint-sampling technique maintains a set of recently violated constraints and draws the constraint used in each iteration uniformly either from this set or from the set of all constraints. This keeps its per-iteration arithmetic overhead independent of the number of constraints. In simulations on synthetic convex optimization problems and in the synthesis of a control barrier function for the Dubins Car, the constraint-sampling technique is shown to significantly outperform uniform constraint sampling."
+    },
+    {
+      "arxivId": "2611.17026",
+      "title": "Accelerated Transformed Primal Dual Methods for Smooth Convex Optimization Problems with Affine Equality Constraints",
+      "authors": [
+        "Long Chen",
+        "Jingrong Wei"
+      ],
+      "primaryCategory": "math.OC",
+      "published": "2026-11-12",
+      "url": "https://arxiv.org/abs/2611.17026",
+      "pdfUrl": "https://arxiv.org/pdf/2611.17026",
+      "excerpt": "Accelerated transformed primal--dual (ATPD) methods are proposed for smooth convex optimization problems with affine equality constraints. The methods combine primal--dual dynamics with a transformation designed to accelerate convergence. In the strongly convex case, ATPD achieves an accelerated linear convergence rate and matches the known lower bounds on first-order oracle complexity in terms of gradient evaluations and matrix--vector products. The analysis distinguishes these two types of computational work when assessing the complexity of the method. For general convex objectives, a homotopy perturbation strategy is introduced, and an accelerated sublinear rate for the modified Lyapunov energy is proved under a uniform boundedness condition on the primal iterates at all homotopy stages. The acceleration mechanism is based on an exponentially stable ATPD flow and a modified discrete Lyapunov function. This continuous-time perspective guides the construction and analysis of the discrete methods."
+    },
+    {
+      "arxivId": "2611.16802",
+      "title": "CODE-PIF: Convex/Deep (CODE) Multiview Pseudoinvariant Features for Multitemporal Multispectral Surface Reflectance Imagery",
+      "authors": [
+        "Chia-Hsiang Lin",
+        "Lino Garda Denaro",
+        "Jian-Kai Huang"
+      ],
+      "primaryCategory": "eess.IV",
+      "published": "2026-11-12",
+      "url": "https://arxiv.org/abs/2611.16802",
+      "pdfUrl": "https://arxiv.org/pdf/2611.16802",
+      "excerpt": "Multitemporal multispectral surface reflectance imagery exhibits radiometric and spectral variability due to atmospheric effects, sensor differences, and actual surface changes, complicating the identification of pseudoinvariant features (PIFs). The SOTA DeepMGCCA captures nonlinear dependencies across acquisition dates, but similarity in its learned feature space does not directly establish consistency in the original reflectance domain. Meanwhile, we believe that the PIFs extracted by DeepMGCCA preserve essential structural characteristics, providing an effective prior to guide subsequent refinement. Therefore, we propose the CODE-PIF architecture, an unsupervised convex/deep (CODE) framework that refines the coarse PIF from DeepMGCCA using convex optimization. Specifically, CODE-PIF uses the data-fitting term to integrate reflectance deviations, correlation-weighted spectral angles, and temporal reference change information to promote radiometric and spectral consistency between predicted PIFs and observed data."
+    },
+    {
+      "arxivId": "2611.16791",
+      "title": "Non-Convex Optimization via Quantum Tunneling Search on a Photonic Chip",
+      "authors": [
+        "Xi-Jun Yuan",
+        "Shuo Zhou",
+        "Yizhou Liu",
+        "Xuan Chen",
+        "Hong-Jing Du",
+        "Xiao-Wen Shang",
+        "Wen-Hao Zhou",
+        "Yu-Xuan Fu"
+      ],
+      "primaryCategory": "quant-ph",
+      "published": "2026-11-12",
+      "url": "https://arxiv.org/abs/2611.16791",
+      "pdfUrl": "https://arxiv.org/pdf/2611.16791",
+      "excerpt": "Non-convex optimization plays an important role in modern machine learning since plenty of real-world problems have objective functions or constraints with non-convex properties. The non-convex nature of landscapes gives rise to numerous local minima and saddle points, dramatically hindering the ability of gradient descent-based methods to explore the landscape and obtain global optima. Here we present quantum tunneling search (QTS), an algorithm based on quantum tunneling walk and local annealing, which effectively explores the non-convex landscape by leveraging the quantum tunneling effect. In experiments, we map an objective function to the potential term of the waveguide Hamiltonian by controlling the refractive index with the femtosecond direct laser writing technique. With a proper input state, the average probability distributions on 10-micrometer-spaced 29 x 1 and 21 x 9 waveguide arrays highlight the local minima of various 1D and 2D non-convex landscapes, respectively."
+    },
+    {
+      "arxivId": "2611.15698",
+      "title": "Learning Mixtures of Exponential Family",
+      "authors": [
+        "Mansi Sood",
+        "Devavrat Shah"
+      ],
+      "primaryCategory": "stat.ML",
+      "published": "2026-11-11",
+      "url": "https://arxiv.org/abs/2611.15698",
+      "pdfUrl": "https://arxiv.org/pdf/2611.15698",
+      "excerpt": "Motivated by causal inference and physical computing systems, we consider the problem of learning mixture of two bounded-support exponential-family distributions with a shared interaction parameter matrix and mixture component-specific linear parameter vectors. The unknown sequence of component labels belongs to a known structured class. We propose an estimator based on a convex loss that avoids the log-partition function; for each fixed label assignment, estimation is a convex optimization problem. We show that the conditional population loss uniquely identifies the interaction matrix and the linear parameter attached to each sample. For a global empirical minimizer, we establish finite-sample bounds on the interaction error in Frobenius norm and the average squared linear-parameter error. The bounds depend on the logarithm of the number of admissible label assignments, and, for fixed dimension and model bounds, imply consistency when this complexity grows sublinearly with sample size. Additional occupancy and separation conditions yield component and label recovery."
+    },
+    {
+      "arxivId": "2611.15144",
+      "title": "Subgradient and Stochastic Finite-Difference Methods for Constrained Strongly Quasiconvex Optimization",
+      "authors": [
+        "Rafik Khachatryan",
+        "Felipe Lara"
+      ],
+      "primaryCategory": "math.OC",
+      "published": "2026-11-11",
+      "url": "https://arxiv.org/abs/2611.15144",
+      "pdfUrl": "https://arxiv.org/pdf/2611.15144",
+      "excerpt": "We propose a projected subgradient method for solving quasiconvex minimization problems. By employing the Clarke subdifferential, we prove that the sequence generated by the proposed algorithm converges to a solution of the minimization problem when the objective function is locally Lipschitz continuous and strongly quasiconvex in the sense of Polyak, under the same assumptions required for convex functions with the convex subdifferential. Moreover, we derive explicit convergence rate estimates for both the iterates and objective function values. In particular, compared with the corresponding results for nonsmooth, locally Lipschitz, strongly convex optimization, our analysis replaces strong convexity with strong quasiconvexity while preserving the order of the convergence rate, thereby extending the guarantees to a class of possibly nonconvex objective functions."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 555.648,
+      "bytes": 3334124,
+      "sha256": "0eccb1097e9eed9d606ef68001c7575ccbdbb78312c6d7e4286f3b142f90b850",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 454.608,
+      "bytes": 2727884,
+      "sha256": "3ae4fe1b1b73be60bf904d5b80e10a6d354830d62cc777767a28a2e789f6dc60",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 497.904,
+      "bytes": 2987660,
+      "sha256": "ced924183dbbc0c11dcdc551a744b24e631400295abc073b1f73521eb5fc4ee3",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 644.88,
+      "bytes": 3869516,
+      "sha256": "0bf7820f65f00d0a7160058c9e31a2667b7794dd2ec9378d5c41d30f9f0e42d5",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 509.76,
+      "bytes": 3058796,
+      "sha256": "525686191ff2ff211d4765bfdfe6f402712ed924c1f081b2737b00ad1b60314a",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 633.84,
+      "bytes": 3803276,
+      "sha256": "7e529c196299aa3f84e898d0068b095be0c08ee7cfece45d5a940bee4fb63341",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"convex optimization\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(255s), zh=llm(144s), de=llm(166s, 1 quoted), es=llm(178s), ru=llm(181s), it=llm(299s, 1 quoted)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
