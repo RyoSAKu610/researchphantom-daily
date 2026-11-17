@@ -122,5 +122,9 @@
   {
     "date": "2026-11-17",
     "topicId": "convex-optimization"
+  },
+  {
+    "date": "2026-11-18",
+    "topicId": "music-generation"
   }
 ]

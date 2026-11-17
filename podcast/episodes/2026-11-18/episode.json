@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "date": "2026-11-18",
+  "topic": {
+    "id": "music-generation",
+    "labels": {
+      "ja": "音楽生成",
+      "zh": "音乐生成",
+      "de": "Musikgenerierung",
+      "es": "Generación de música",
+      "ru": "Генерация музыки",
+      "it": "Generazione musicale"
+    }
+  },
+  "source": "arxiv",
+  "generatedAt": "2026-11-18T07:01:50+09:00",
+  "papers": [
+    {
+      "arxivId": "2611.14971",
+      "title": "Can Music Generation Models Tap Along? Evaluating Generative Approaches to Beat Tracking",
+      "authors": [
+        "Kun Fang",
+        "Ziyu Wang",
+        "Ichiro Fujinaga"
+      ],
+      "primaryCategory": "cs.SD",
+      "published": "2026-11-11",
+      "url": "https://arxiv.org/abs/2611.14971",
+      "pdfUrl": "https://arxiv.org/pdf/2611.14971",
+      "excerpt": "Existing studies have shown that music generative models can generate synchronized tracks that play alongside an input song. Can we extend this capability to develop a generative approach to beat tracking? To answer this question, we equip a pretrained MusicGen model with an audio-conditioning adapter to generate percussion tracks synchronized with the input music, from which we extract the beat positions. We train separate models with percussion targets of varying rhythmic complexity and compare them with two other generative models and conventional beat trackers. On GTZAN, our model achieves performance close to state-of-the-art beat trackers. Our model also demonstrates greater robustness: it shows the smallest drop in F-measure when drums are removed from the input at inference time. In certain genres, such as metal and disco, our model is also less likely to be misled by strong onsets or to miss beats with weak onsets."
+    },
+    {
+      "arxivId": "2611.13834",
+      "title": "MusicFlux: Flexible Conditioning for Text-Guided Music Generation and Editing",
+      "authors": [
+        "Teysir Baoueb",
+        "Leonardo Boulitreau de Menezes Martins Marques",
+        "Paraskevas Stamatiadis",
+        "Ga{ë}l Richard"
+      ],
+      "primaryCategory": "cs.SD",
+      "published": "2026-11-10",
+      "url": "https://arxiv.org/abs/2611.13834",
+      "pdfUrl": "https://arxiv.org/pdf/2611.13834",
+      "excerpt": "Music editing transforms existing recordings while preserving their original attributes. Recent approaches adapt pretrained text-to-music models for tasks like inpainting, event insertion, or restoration by conditioning them with context audio. It was recently proposed for image editing to unify generation and editing by treating the source image as in-context information. However, applying this directly to music is computationally expensive due to long audio sequences. In this work, we develop MusicFlux, a text-guided music editor built on an efficient pretrained flow-matching text-to-audio model. We introduce two conditioning approaches that trade off editing performance and computational efficiency. Experiments show that both are competitive with strong baselines, with one achieving better editing quality and the other preserving the original sequence length and substantially improving computational efficiency."
+    },
+    {
+      "arxivId": "2611.08839",
+      "title": "Functional Dependency beyond Similarity: Hierarchical Decomposition of Training Data Attribution in Music Generative Models",
+      "authors": [
+        "Changheon Han",
+        "Hugh Xuechen Liu",
+        "Ashkan Panahi",
+        "Kıvanç Tatar"
+      ],
+      "primaryCategory": "cs.CY",
+      "published": "2026-11-06",
+      "url": "https://arxiv.org/abs/2611.08839",
+      "pdfUrl": "https://arxiv.org/pdf/2611.08839",
+      "excerpt": "Copyright analysis focuses on the similarity between two works. However, generative AI models learn from training data through functional relations beyond similarity. Training Data Attribution (TDA) estimates the influence of each training instance on a generated output and may serve as a basis for remuneration. However, prior studies find global influence, where a few training instances rank as the most influential for almost every generation. Used directly, TDA scores would distribute part of every remuneration to these instances regardless of what was generated. To address this, we propose a new approach in which TDA scores are decomposed into three levels of influence, namely global indicating the influence of a training data to a trained model, group for its influence on a group of generated outputs (that could be clustered together), and specific for its influence on a single generated output. Our study finds that, across several music generative models and TDA methods, global- and group-level influence is non-negligible in every case."
+    },
+    {
+      "arxivId": "2611.07562",
+      "title": "FUSEMOS: Perceptual Evaluation of Text-to-Music Generation with Dual-Encoder Fusion and Ranking-Aware Composite Loss",
+      "authors": [
+        "Jing Yang",
+        "Haoyu Wang",
+        "Ningning Pan",
+        "Zhao Wang",
+        "Jianxuan Yang",
+        "Gongping Huang"
+      ],
+      "primaryCategory": "eess.AS",
+      "published": "2026-11-05",
+      "url": "https://arxiv.org/abs/2611.07562",
+      "pdfUrl": "https://arxiv.org/pdf/2611.07562",
+      "excerpt": "Perceptual evaluation of generated music is essential for developing text-to-music (TTM) generation systems. Existing automatic music perceptual evaluation methods rely solely on the contrastive language audio pretraining (CLAP) model to extract both audio and text features for predicting human-annotated mean opinion scores (MOS), particularly for overall musical impression (OMI) and textual alignment (TA). However, CLAP is limited in capturing fine-grained musical attributes such as timbre and expressiveness \\emph{etc}. To address this, we propose FUSEMOS, a dual-encoder fusion framework that integrates CLAP with MERT, a self-supervised model pretrained on large scale music audio, to better capture both high level semantic alignment and detailed musical characteristics for more accurate OMI and TA estimation. Furthermore, to overcome the limitations of conventional regression losses in measuring human preferred relative ranking of music segments, we design a novel ranking-aware composite loss function."
+    },
+    {
+      "arxivId": "2611.01047",
+      "title": "How Close to the Theme? Similarity-Label Conditioning for Game Music Generation",
+      "authors": [
+        "Shangxuan Luo",
+        "Zixun Guo",
+        "Jinjie Shi",
+        "Joshua Reiss"
+      ],
+      "primaryCategory": "cs.SD",
+      "published": "2026-10-31",
+      "url": "https://arxiv.org/abs/2611.01047",
+      "pdfUrl": "https://arxiv.org/pdf/2611.01047",
+      "excerpt": "Composers develop music from an original idea, controlling how similar each new section is to it, from near repetition to new material. Game music needs this often, as its material repeats over long play. Music models, however, rarely learn to control similarity from real pieces. We further train a pretrained MIDI model on section pairs from Super Mario pieces. A label states each pair's similarity, and a context vector summarises the given section, or context. For 157 test contexts, the model generates six outputs per label. Twelve measures score the outputs; one main measure each covers melody, pitch content, rhythm and note length. On average, outputs requested as similar are more similar to their context than those requested as dissimilar, and not to other pieces. All twelve measures favour them; each main measure stays significant after correction for multiple tests. On melody, the gap comes mainly from more frequent restatement of the context's melody. Against an otherwise identical model without a label, only the request for high similarity makes outputs more similar."
+    },
+    {
+      "arxivId": "2611.00685",
+      "title": "Text-to-music Generation via Structured Captions AND Interpretable Evaluation",
+      "authors": [
+        "Junkai Wu",
+        "Zhepei Wang",
+        "Ge Zhu",
+        "Sarah Hye-yeon Lee",
+        "Mari Ostendorf",
+        "Nicholas J. Bryan"
+      ],
+      "primaryCategory": "cs.SD",
+      "published": "2026-10-31",
+      "url": "https://arxiv.org/abs/2611.00685",
+      "pdfUrl": "https://arxiv.org/pdf/2611.00685",
+      "excerpt": "Text descriptions of music are central to the performance of text-to-music generation (TTM) methods, but creation of paired text information for music generation is relatively under explored. Here, we propose training latent diffusion/flow-based music generation models conditioned on structured captions (SCAPs) and compare with typical free-form captions via a set of controlled ablations. We compare free-form vs. structured captions, partial vs. full information coverage, and global vs. temporal text information during training, by fine-tuning different configurations of a pretrained flow-based diffusion transformer (DiT) and using a multi-stage inference-time prompt rewriter. Further, we introduce a new text-alignment evaluation protocol inspired by Davidsonian Scene Graphs (DSGs) for a fine-grained, interpretable measure of faithfulness of TTM methods."
+    },
+    {
+      "arxivId": "2610.38252",
+      "title": "A Tutorial on Generative Models for Music Audio",
+      "authors": [
+        "Mateusz Modrzejewski",
+        "Joanna Kurkowska",
+        "Dorien Herremans"
+      ],
+      "primaryCategory": "eess.AS",
+      "published": "2026-10-28",
+      "url": "https://arxiv.org/abs/2610.38252",
+      "pdfUrl": "https://arxiv.org/pdf/2610.38252",
+      "excerpt": "Music audio generation spans instrumental clips, full songs with vocals, edits of existing recordings, and systems that play alongside a musician in real time. This monograph explains the methods behind these systems for readers familiar with neural-network training who are new to music generation. It introduces neural audio codecs and autoencoders, autoregressive and masked token models, diffusion and flow matching, sampling acceleration, and preference optimization in a shared notation. Worked examples connect training objectives and sampling procedures to published systems. The application sections relate the musical requirements of instrumental generation, songs, editing, and live performance to model design. Comparison tables record representations, methods, inputs, tasks, and release information documented in papers and official sources. Symbolic composition, speech, and sound effects are included where they connect to music audio."
+    },
+    {
+      "arxivId": "2610.34247",
+      "title": "Does Notation Matter? MusicXML Tokenisation for Symbolic Music Generation and Understanding",
+      "authors": [
+        "Andrea Poltronieri",
+        "Matteo Spanio",
+        "Simone Chieppa",
+        "Xavier Serra",
+        "Martín Rocamora"
+      ],
+      "primaryCategory": "cs.SD",
+      "published": "2026-10-25",
+      "url": "https://arxiv.org/abs/2610.34247",
+      "pdfUrl": "https://arxiv.org/pdf/2610.34247",
+      "excerpt": "Symbolic music representations encode musical content at varying levels of completeness, from performance-oriented formats such as MIDI to fully notated scores such as MusicXML. Yet the impact of this representational richness on deep learning models remains poorly understood. While tokenisation has been extensively studied for MIDI, score-based formats have received considerably less attention, and MusicXML in particular remains largely unexplored despite being the de-facto standard for score interchange. In this paper, we introduce the first general-purpose tokenisation framework for MusicXML, and conduct a systematic empirical study to determine whether notational richness confers a measurable advantage for deep learning on symbolic music. We train 26 autoregressive and masked language models, comparing MusicXML tokenisation against MIDI and ABC-based representations, probing the effect of different tokenisation strategies within MusicXML, and testing whether music-grammar-aware tokenisation outperforms treating scores as plain text."
+    }
+  ],
+  "languages": {
+    "ja": {
+      "label": "日本語",
+      "status": "ok",
+      "text": "script-ja.txt",
+      "audio": "ja.mp3",
+      "durationSeconds": 539.808,
+      "bytes": 3239084,
+      "sha256": "6f37ff103952deb94704c6c949aada1d3d4b7c06a186e6b563932a0ec0ab6bea",
+      "voice": "kanade",
+      "error": null
+    },
+    "zh": {
+      "label": "中文",
+      "status": "ok",
+      "text": "script-zh.txt",
+      "audio": "zh.mp3",
+      "durationSeconds": 482.256,
+      "bytes": 2893772,
+      "sha256": "e5a8574f20ea786b480466b6eb1ba56f33412729dd9fe70d78527ffdfdaa5c87",
+      "voice": "Phantom-ZH",
+      "error": null
+    },
+    "de": {
+      "label": "Deutsch",
+      "status": "ok",
+      "text": "script-de.txt",
+      "audio": "de.mp3",
+      "durationSeconds": 472.44,
+      "bytes": 2834876,
+      "sha256": "842ec8b417331a3fd03b1ed9678f1859370680e7d421e621c3ba3f37763d6c42",
+      "voice": "Phantom-DE",
+      "error": null
+    },
+    "es": {
+      "label": "Español",
+      "status": "ok",
+      "text": "script-es.txt",
+      "audio": "es.mp3",
+      "durationSeconds": 619.392,
+      "bytes": 3716588,
+      "sha256": "90b5ad4cbfb0172b3e21fba915229ca6f5961f3eb129033923d50722ee6d35a8",
+      "voice": "Phantom-ES",
+      "error": null
+    },
+    "ru": {
+      "label": "Русский",
+      "status": "ok",
+      "text": "script-ru.txt",
+      "audio": "ru.mp3",
+      "durationSeconds": 544.68,
+      "bytes": 3268316,
+      "sha256": "3ab85649d5d81a7d9706dc80e083777b66e5f8f926d4d29947c90e3ff617e264",
+      "voice": "Phantom-RU",
+      "error": null
+    },
+    "it": {
+      "label": "Italiano",
+      "status": "ok",
+      "text": "script-it.txt",
+      "audio": "it.mp3",
+      "durationSeconds": 662.304,
+      "bytes": 3974060,
+      "sha256": "09a49cfa19be2487f658228677cc87df63db8c2fad940d367991ad550045b12f",
+      "voice": "Phantom-IT",
+      "error": null
+    }
+  },
+  "notes": [
+    "papers fetched from the arXiv export API for keyword \"music generation\"",
+    "scripts: local LLM Qwen3.5-9B-Q4_K_M (grounded in the abstracts, validated; failures fall back to the template): ja=llm(240s, 1 quoted), zh=llm(150s), de=llm(154s), es=llm(163s), ru=llm(150s), it=llm(179s)",
+    "TTS engines: ja=irodori, zh=voicestudio, de=voicestudio, es=voicestudio, ru=voicestudio, it=voicestudio"
+  ]
+}
