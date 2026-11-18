@@ -446,10 +446,62 @@ export function teaRoomSection() {
       <p class="tea-kicker">別モード</p>
       <h2 id="tearoom-title">茶室</h2>
       <p class="tea-lead">実在の席を、解説に残る間取りで描いた。写真の模写ではない。</p>
+      <button type="button" class="tea-shoot" data-action="booth-open">この席で撮る</button>
       <a class="tea-back" href="#top">書架に戻る</a>
     </header>
     <nav class="tea-list" aria-label="茶室">${nav}</nav>
     <div class="tea-stage">${ROOMS.map(plate).join("")}</div>
+    <div class="booth" id="booth" hidden>
+      <p class="sr-only" id="booth-status" aria-live="polite"></p>
+      <div class="booth-stage">
+        <canvas id="booth-view" width="960" height="600" aria-label="席の中。左右にドラッグして見回す"></canvas>
+        <p class="booth-facing" id="booth-facing">床の間</p>
+        <p class="booth-hint">ドラッグで中をぐるりと見回す</p>
+      </div>
+      <div class="booth-tools">
+        <p class="booth-name" id="booth-name"></p>
+        <div class="booth-spin">
+          <button type="button" data-action="booth-left" aria-label="左へ見回す">左へ</button>
+          <button type="button" class="booth-shutter" data-action="booth-shutter" aria-label="撮影する">撮る</button>
+          <button type="button" data-action="booth-right" aria-label="右へ見回す">右へ</button>
+        </div>
+        <div class="booth-stamps" role="group" aria-label="シール">
+          <button type="button" data-stamp="flower" aria-pressed="false">花</button>
+          <button type="button" data-stamp="kettle" aria-pressed="false">釜</button>
+          <button type="button" data-stamp="word" aria-pressed="false">一期一会</button>
+          <button type="button" data-stamp="heart" aria-pressed="false">心</button>
+        </div>
+        <div class="booth-pens" role="group" aria-label="ペン">
+          <button type="button" data-pen="#e85d75" aria-pressed="false" aria-label="紅のペン"></button>
+          <button type="button" data-pen="#3d6ea8" aria-pressed="false" aria-label="藍のペン"></button>
+          <button type="button" data-pen="#e8c27a" aria-pressed="false" aria-label="金のペン"></button>
+          <button type="button" data-pen="#1c160b" aria-pressed="false" aria-label="墨のペン"></button>
+        </div>
+        <canvas id="booth-print" width="640" height="400" aria-label="撮った写真。シールとペンで飾れる"></canvas>
+        <div class="booth-strip" id="booth-strip" aria-label="連続ショット"></div>
+        <div class="booth-actions">
+          <button type="button" data-action="booth-save">プリクラを保存</button>
+          <button type="button" data-action="booth-clear">飾りを消す</button>
+          <button type="button" data-action="booth-close">席の絵に戻る</button>
+        </div>
+      </div>
+    </div>
+    <script type="application/json" id="tea-booth">${JSON.stringify(ROOMS.map((room) => ({
+    id: room.id,
+    name: room.name,
+    reading: room.reading,
+    place: room.place,
+    size: room.size,
+    gold: Boolean(room.gold),
+    shoin: Boolean(room.shoin),
+    dim: Boolean(room.dim),
+    nijiri: Boolean(room.nijiri),
+    hearth: room.hearth || "",
+    checker: Boolean(room.checker),
+    kato: Boolean(room.katoBoard),
+    garden: Boolean(room.garden),
+    windows: room.windows.map((item) => item.kind),
+  }))).replace(/</g, "\\u003c")}</script>
   </section>`;
 }
 

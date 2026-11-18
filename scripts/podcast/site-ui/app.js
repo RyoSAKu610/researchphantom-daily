@@ -1314,6 +1314,12 @@
     }
     const teaJump = target.closest("[data-tea-jump]");
     if (teaJump) { showTea(teaJump.dataset.teaJump); return; }
+    const stampBtn = target.closest("[data-stamp]");
+    if (stampBtn) { armBoothStamp(stampBtn.dataset.stamp); return; }
+    const penBtn = target.closest("[data-pen]");
+    if (penBtn) { armBoothPen(penBtn.dataset.pen); return; }
+    const shotBtn = target.closest("[data-shot]");
+    if (shotBtn) { selectBoothShot(Number(shotBtn.dataset.shot)); return; }
     const copyBtn = target.closest("[data-copy]");
     if (copyBtn) { copy(new URL(copyBtn.dataset.copy, location.href).toString(), "RSS の URL をコピーしました"); return; }
     const seekBtn = target.closest(".dock [data-seek-frac]");
@@ -1341,6 +1347,13 @@
         break;
       }
       case "air": drawAir(); break;
+      case "booth-open": openBooth(); break;
+      case "booth-close": closeBooth(); break;
+      case "booth-left": spinBooth(-28); break;
+      case "booth-right": spinBooth(28); break;
+      case "booth-shutter": takeBoothPhoto(); break;
+      case "booth-save": saveBooth(); break;
+      case "booth-clear": clearBoothDecor(); break;
       default: break;
     }
   });
@@ -1363,6 +1376,7 @@
       button.classList.toggle("is-on", on);
       button.setAttribute("aria-current", on ? "true" : "false");
     });
+    if (boothOpen()) loadBoothRoom(rooms[index].dataset.tea);
   }
   function setTeaMode(on) {
     if (!tea) return;
@@ -1377,6 +1391,430 @@
   }
   window.addEventListener("hashchange", () => setTeaMode(location.hash === "#tearoom"));
   if (location.hash === "#tearoom") setTeaMode(true);
+
+  const boothShots = [];
+  let boothYaw = 0;
+  let boothRoom = null;
+  let boothWalls = null;
+  let boothStamp = "";
+  let boothPen = "";
+  let boothShot = 0;
+  let boothDrag = null;
+  const FACES = ["床の間", "脇の窓", "入口", "逆の脇"];
+
+  function boothOpen() {
+    const el = $("#booth");
+    return Boolean(el && !el.hidden);
+  }
+  function boothList() {
+    const node = $("#tea-booth");
+    if (!node) return [];
+    try { return JSON.parse(node.textContent); } catch (err) { return []; }
+  }
+  function loadBoothRoom(id) {
+    boothRoom = boothList().find((room) => room.id === id) || boothList()[0] || null;
+    boothWalls = null;
+    const name = $("#booth-name");
+    if (name && boothRoom) name.textContent = `${boothRoom.name}を見回す`;
+    paintBooth();
+  }
+  function openBooth() {
+    const el = $("#booth");
+    if (!el) return;
+    if (location.hash !== "#tearoom") location.hash = "tearoom";
+    el.hidden = false;
+    doc.body.classList.add("booth-open");
+    const current = ($$(".tea-room.is-on")[0] || {}).dataset?.tea;
+    loadBoothRoom(current);
+    const status = $("#booth-status");
+    if (status && boothRoom) status.textContent = `${boothRoom.name}の中です。ドラッグで見回せます。`;
+  }
+  function closeBooth() {
+    const el = $("#booth");
+    if (el) el.hidden = true;
+    doc.body.classList.remove("booth-open");
+  }
+  function spinBooth(delta) {
+    boothYaw += delta;
+    paintBooth();
+  }
+  function paintWall(ctx, x, y, w, h, face, room) {
+    const gold = room.gold;
+    ctx.fillStyle = gold ? "#c6a45a" : "#322820";
+    ctx.fillRect(x, y, w, h * 0.22);
+    ctx.fillStyle = gold ? "#e2c56a" : room.shoin ? "#e7e0d2" : "#6e5748";
+    ctx.fillRect(x, y + h * 0.22, w, h * 0.46);
+    ctx.fillStyle = "#c6b07a";
+    ctx.fillRect(x, y + h * 0.68, w, h * 0.32);
+    ctx.strokeStyle = "#3a2c1c";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(x, y + h * 0.68);
+    ctx.lineTo(x + w, y + h * 0.68);
+    ctx.stroke();
+    ctx.strokeStyle = gold ? "#8a6a32" : "#241c16";
+    ctx.lineWidth = 3;
+    for (let i = 1; i < 6; i += 1) {
+      const xx = x + (w * i) / 6;
+      ctx.beginPath();
+      ctx.moveTo(xx, y);
+      ctx.lineTo(xx, y + h * 0.22);
+      ctx.stroke();
+    }
+    if (face === 0) {
+      const tx = x + w * 0.52;
+      const ty = y + h * 0.26;
+      const tw = w * 0.34;
+      const th = h * 0.4;
+      ctx.fillStyle = gold ? "#f0d78a" : "#3a2e28";
+      ctx.fillRect(tx, ty, tw, th);
+      ctx.fillStyle = gold ? "#7a1c1c" : "#6b4228";
+      ctx.fillRect(tx - 8, ty, 10, th);
+      ctx.fillStyle = "#f7f1e6";
+      ctx.fillRect(tx + tw * 0.22, ty + 18, tw * 0.5, th * 0.42);
+      ctx.fillStyle = "#3d6a3a";
+      ctx.beginPath();
+      ctx.arc(tx + tw * 0.82, ty + th * 0.62, 7, 0, Math.PI * 2);
+      ctx.fill();
+      if (room.hearth) {
+        ctx.fillStyle = "#1a1612";
+        ctx.fillRect(x + w * 0.16, y + h * 0.74, w * 0.14, h * 0.1);
+        ctx.fillStyle = "#2c2c2c";
+        ctx.beginPath();
+        ctx.ellipse(x + w * 0.23, y + h * 0.76, w * 0.04, h * 0.03, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    if (face === 1) {
+      room.windows.forEach((kind, index) => {
+        const wx = x + w * (0.12 + (index % 3) * 0.28);
+        const wy = y + h * (0.3 + Math.floor(index / 3) * 0.16);
+        const ww = w * 0.18;
+        const wh = h * 0.16;
+        if (kind === "round") {
+          ctx.fillStyle = "#c5d2c2";
+          ctx.beginPath();
+          ctx.ellipse(wx + ww / 2, wy + wh / 2, ww / 2, wh / 2, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (kind === "renji" || kind === "shitaji") {
+          ctx.fillStyle = "#14110e";
+          ctx.fillRect(wx, wy, ww, wh);
+          ctx.strokeStyle = "#d7c39a";
+          ctx.lineWidth = 2;
+          for (let i = 1; i < 6; i += 1) {
+            ctx.beginPath();
+            ctx.moveTo(wx + (ww * i) / 6, wy);
+            ctx.lineTo(wx + (ww * i) / 6, wy + wh);
+            ctx.stroke();
+          }
+        } else {
+          ctx.fillStyle = "#f7f1e4";
+          ctx.fillRect(wx, wy, ww, wh);
+          ctx.strokeStyle = "#8d7352";
+          ctx.lineWidth = 1.5;
+          for (let i = 1; i < 4; i += 1) {
+            ctx.beginPath();
+            ctx.moveTo(wx + (ww * i) / 4, wy);
+            ctx.lineTo(wx + (ww * i) / 4, wy + wh);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(wx, wy + (wh * i) / 4);
+            ctx.lineTo(wx + ww, wy + (wh * i) / 4);
+            ctx.stroke();
+          }
+        }
+      });
+      if (room.kato) {
+        ctx.fillStyle = "#f4efe4";
+        ctx.beginPath();
+        ctx.moveTo(x + w * 0.4, y + h * 0.5);
+        ctx.quadraticCurveTo(x + w * 0.5, y + h * 0.28, x + w * 0.6, y + h * 0.5);
+        ctx.fill();
+      }
+    }
+    if (face === 2) {
+      if (room.nijiri) {
+        ctx.fillStyle = "#100e0c";
+        ctx.fillRect(x + w * 0.14, y + h * 0.5, w * 0.2, h * 0.16);
+        ctx.strokeStyle = "#cbb892";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(x + w * 0.14, y + h * 0.5, w * 0.2, h * 0.16);
+      }
+      if (room.garden) {
+        ctx.fillStyle = "#7fa07a";
+        ctx.fillRect(x + w * 0.55, y + h * 0.28, w * 0.3, h * 0.22);
+      }
+    }
+    if (face === 3 && room.checker) {
+      const size = Math.max(12, w * 0.04);
+      for (let row = 0; row < 6; row += 1) {
+        for (let col = 0; col < 5; col += 1) {
+          ctx.fillStyle = (row + col) % 2 ? "#1d3f72" : "#f4efe6";
+          ctx.fillRect(x + w * 0.58 + col * size, y + h * 0.32 + row * size, size, size);
+        }
+      }
+    }
+    if (room.dim && !gold) {
+      ctx.fillStyle = "rgba(0,0,0,.3)";
+      ctx.fillRect(x, y, w, h);
+    }
+  }
+  function ensureBoothWalls() {
+    const view = $("#booth-view");
+    if (!view || !boothRoom) return null;
+    if (boothWalls && boothWalls.dataset.id === boothRoom.id) return boothWalls;
+    const wall = doc.createElement("canvas");
+    wall.width = view.width * 4;
+    wall.height = view.height;
+    wall.dataset.id = boothRoom.id;
+    const ctx = wall.getContext("2d");
+    for (let face = 0; face < 4; face += 1) paintWall(ctx, face * view.width, 0, view.width, view.height, face, boothRoom);
+    boothWalls = wall;
+    return wall;
+  }
+  function paintBooth() {
+    const view = $("#booth-view");
+    const wall = ensureBoothWalls();
+    if (!view || !wall) return;
+    const ctx = view.getContext("2d");
+    const span = wall.width;
+    const shift = ((boothYaw % 360) + 360) % 360 / 360 * span;
+    ctx.clearRect(0, 0, view.width, view.height);
+    ctx.drawImage(wall, shift, 0, view.width, view.height, 0, 0, view.width, view.height);
+    const remain = span - shift;
+    if (remain < view.width) ctx.drawImage(wall, 0, 0, view.width - remain, view.height, remain, 0, view.width - remain, view.height);
+    const facing = $("#booth-facing");
+    if (facing) {
+      const index = Math.round((((boothYaw % 360) + 360) % 360) / 90) % 4;
+      facing.textContent = FACES[index];
+    }
+  }
+  function takeBoothPhoto() {
+    const view = $("#booth-view");
+    if (!view || !boothRoom) return;
+    const snap = doc.createElement("canvas");
+    snap.width = view.width;
+    snap.height = view.height;
+    snap.getContext("2d").drawImage(view, 0, 0);
+    boothShots.push({ name: boothRoom.name, reading: boothRoom.reading, canvas: snap, stamps: [], strokes: [] });
+    if (boothShots.length > 4) boothShots.shift();
+    boothShot = boothShots.length - 1;
+    const stage = $(".booth-stage");
+    if (stage) {
+      stage.classList.add("is-flash");
+      setTimeout(() => stage.classList.remove("is-flash"), 140);
+    }
+    const status = $("#booth-status");
+    if (status) status.textContent = `${boothRoom.name}を${boothShots.length}枚目に撮りました。`;
+    paintBoothStrip();
+    paintBoothPrint();
+  }
+  function selectedShot() { return boothShots[boothShot] || null; }
+  function paintBoothStrip() {
+    const strip = $("#booth-strip");
+    if (!strip) return;
+    strip.innerHTML = boothShots.map((shot, index) => `<button type="button" data-shot="${index}" class="${index === boothShot ? "is-on" : ""}" aria-label="${shot.name}の${index + 1}枚目"><img alt="" src="${shot.canvas.toDataURL("image/jpeg", 0.7)}"></button>`).join("");
+  }
+  function drawStamp(ctx, stamp, x, y, w, h) {
+    const px = x + stamp.x * w;
+    const py = y + stamp.y * h;
+    ctx.save();
+    ctx.translate(px, py);
+    ctx.fillStyle = "#e85d75";
+    if (stamp.kind === "heart") {
+      ctx.beginPath();
+      ctx.arc(-6, 0, 7, 0, Math.PI * 2);
+      ctx.arc(6, 0, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(-12, 2);
+      ctx.lineTo(0, 16);
+      ctx.lineTo(12, 2);
+      ctx.fill();
+    } else if (stamp.kind === "kettle") {
+      ctx.fillStyle = "#2c2c2c";
+      ctx.fillRect(-10, -4, 20, 14);
+      ctx.strokeStyle = "#2c2c2c";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(12, 4, 6, -1, 1);
+      ctx.stroke();
+    } else if (stamp.kind === "word") {
+      ctx.fillStyle = "#1c160b";
+      ctx.font = "700 18px serif";
+      ctx.textAlign = "center";
+      ctx.fillText("一期一会", 0, 6);
+    } else {
+      ctx.fillStyle = "#f4f1ec";
+      ctx.beginPath();
+      ctx.arc(0, 0, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#3d6a3a";
+      ctx.beginPath();
+      ctx.moveTo(0, 8);
+      ctx.lineTo(0, 20);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function paintBoothPrint() {
+    const print = $("#booth-print");
+    const shot = selectedShot();
+    if (!print) return;
+    const ctx = print.getContext("2d");
+    ctx.fillStyle = "#2a241c";
+    ctx.fillRect(0, 0, print.width, print.height);
+    if (!shot) {
+      ctx.fillStyle = "#a3988a";
+      ctx.font = "18px sans-serif";
+      ctx.fillText("撮ると、ここにプリクラが出ます", 36, print.height / 2);
+      return;
+    }
+    ctx.drawImage(shot.canvas, 16, 16, print.width - 32, print.height - 56);
+    shot.stamps.forEach((stamp) => drawStamp(ctx, stamp, 16, 16, print.width - 32, print.height - 56));
+    shot.strokes.forEach((stroke) => {
+      ctx.strokeStyle = stroke.color;
+      ctx.lineWidth = 4;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      stroke.pts.forEach((pt, index) => {
+        const px = 16 + pt.x * (print.width - 32);
+        const py = 16 + pt.y * (print.height - 56);
+        if (index === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+    });
+    ctx.fillStyle = "#f4efe6";
+    ctx.font = "600 22px serif";
+    ctx.fillText(`${shot.name}　${shot.reading}`, 20, print.height - 16);
+  }
+  function selectBoothShot(index) {
+    if (!boothShots[index]) return;
+    boothShot = index;
+    paintBoothStrip();
+    paintBoothPrint();
+  }
+  function armBoothStamp(kind) {
+    boothStamp = boothStamp === kind ? "" : kind;
+    boothPen = "";
+    $$("[data-stamp]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.stamp === boothStamp && boothStamp !== "")));
+    $$("[data-pen]").forEach((button) => button.setAttribute("aria-pressed", "false"));
+  }
+  function armBoothPen(color) {
+    boothPen = boothPen === color ? "" : color;
+    boothStamp = "";
+    $$("[data-pen]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.pen === boothPen && boothPen !== "")));
+    $$("[data-stamp]").forEach((button) => button.setAttribute("aria-pressed", "false"));
+  }
+  function clearBoothDecor() {
+    const shot = selectedShot();
+    if (!shot) return;
+    shot.stamps = [];
+    shot.strokes = [];
+    paintBoothPrint();
+  }
+  function boothPoint(event, canvas) {
+    const rect = canvas.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    const padX = 16 / canvas.width;
+    const padY = 16 / canvas.height;
+    const innerH = (canvas.height - 56) / canvas.height;
+    return {
+      x: Math.min(1, Math.max(0, (x - padX) / (1 - padX * 2))),
+      y: Math.min(1, Math.max(0, (y - padY) / innerH)),
+    };
+  }
+  function saveBooth() {
+    if (!boothShots.length) { toast("先に撮ってください"); return; }
+    const sheet = doc.createElement("canvas");
+    sheet.width = 720;
+    sheet.height = 88 + boothShots.length * 390 + 72;
+    const ctx = sheet.getContext("2d");
+    ctx.fillStyle = "#f7f1e6";
+    ctx.fillRect(0, 0, sheet.width, sheet.height);
+    ctx.fillStyle = "#1c160b";
+    ctx.font = "700 28px serif";
+    ctx.fillText("音の図書館　茶室プリクラ", 28, 48);
+    boothShots.forEach((shot, index) => {
+      const y = 72 + index * 390;
+      ctx.fillStyle = "#1c160b";
+      ctx.fillRect(24, y, 672, 370);
+      ctx.drawImage(shot.canvas, 36, y + 12, 648, 300);
+      shot.stamps.forEach((stamp) => drawStamp(ctx, stamp, 36, y + 12, 648, 300));
+      shot.strokes.forEach((stroke) => {
+        ctx.strokeStyle = stroke.color;
+        ctx.lineWidth = 4;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        stroke.pts.forEach((pt, i) => {
+          const px = 36 + pt.x * 648;
+          const py = y + 12 + pt.y * 300;
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        });
+        ctx.stroke();
+      });
+      ctx.fillStyle = "#f4efe6";
+      ctx.font = "600 20px serif";
+      ctx.fillText(shot.name, 44, y + 348);
+    });
+    const link = doc.createElement("a");
+    link.href = sheet.toDataURL("image/png");
+    link.download = "tearoom-purikura.png";
+    link.click();
+    toast("プリクラを保存しました");
+  }
+  function bindBooth() {
+    const view = $("#booth-view");
+    const print = $("#booth-print");
+    $$("[data-pen]").forEach((button) => { button.style.background = button.dataset.pen; });
+    if (view) {
+      view.addEventListener("pointerdown", (event) => {
+        boothDrag = { x: event.clientX, id: event.pointerId };
+        view.setPointerCapture(event.pointerId);
+      });
+      view.addEventListener("pointermove", (event) => {
+        if (!boothDrag || boothDrag.id !== event.pointerId) return;
+        boothYaw -= (event.clientX - boothDrag.x) * 0.35;
+        boothDrag.x = event.clientX;
+        paintBooth();
+      });
+      const end = () => { boothDrag = null; };
+      view.addEventListener("pointerup", end);
+      view.addEventListener("pointercancel", end);
+    }
+    if (print) {
+      print.addEventListener("pointerdown", (event) => {
+        const shot = selectedShot();
+        if (!shot) return;
+        const pt = boothPoint(event, print);
+        if (boothStamp) {
+          shot.stamps.push({ kind: boothStamp, x: pt.x, y: pt.y });
+          paintBoothPrint();
+          return;
+        }
+        if (!boothPen) return;
+        boothDrag = { draw: true, id: event.pointerId };
+        shot.strokes.push({ color: boothPen, pts: [pt] });
+        print.setPointerCapture(event.pointerId);
+        paintBoothPrint();
+      });
+      print.addEventListener("pointermove", (event) => {
+        if (!boothDrag || !boothDrag.draw || boothDrag.id !== event.pointerId) return;
+        const shot = selectedShot();
+        const stroke = shot && shot.strokes[shot.strokes.length - 1];
+        if (!stroke) return;
+        stroke.pts.push(boothPoint(event, print));
+        paintBoothPrint();
+      });
+      const end = () => { if (boothDrag && boothDrag.draw) boothDrag = null; };
+      print.addEventListener("pointerup", end);
+      print.addEventListener("pointercancel", end);
+    }
+    paintBoothPrint();
+  }
 
   function drawAir() {
     const node = doc.getElementById("air-catalog");
@@ -1423,6 +1861,11 @@
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const typing = t.closest("textarea, select, [contenteditable=true]") || (t.matches("input") && t.type !== "range");
     if (typing) return;
+    if (boothOpen()) {
+      if (key === "Escape") { e.preventDefault(); closeBooth(); return; }
+      if (key === "ArrowLeft") { e.preventDefault(); spinBooth(-18); return; }
+      if (key === "ArrowRight") { e.preventDefault(); spinBooth(18); return; }
+    }
     if (teaOpen()) {
       if (key === "Escape") { e.preventDefault(); location.hash = "top"; return; }
       if (key === "ArrowLeft") { e.preventDefault(); stepTea(-1); return; }
@@ -1487,6 +1930,7 @@
   paintVolume();
   paintAutoplay();
   paintSleep();
+  bindBooth();
   setView(store.get("view", "grid"));
   applyLang(lang);
   {
